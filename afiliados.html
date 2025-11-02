@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Afiliados | SafeDeFi Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --text: #cfeeff;
+      --border: rgba(255,255,255,0.08);
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', system-ui, sans-serif;
+      background: radial-gradient(900px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(2,6,15,0.6);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      font-size: 1.4rem;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      margin: 0;
+    }
+    .btn-voltar {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(157,78,221,0.4);
+      transition: 0.3s;
+    }
+    .btn-voltar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(157,78,221,0.8);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 40px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 900;
+      font-size: 2rem;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 30px;
+    }
+
+    .info {
+      text-align: center;
+      margin-bottom: 40px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .link-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 650px;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .link-box input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--neon-cyan);
+      font-size: 1rem;
+    }
+    .link-box button {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #001;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 40px;
+      gap: 20px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      width: 240px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .stat-card h3 {
+      font-size: 2rem;
+      margin: 10px 0;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Programa de Afiliados — SafeDeFi Protocol</h1>
+    <a href="index.html" class="btn-voltar">⬅ Voltar</a>
+  </header>
+
+  <main>
+    <h2>Seu Link de Indicação</h2>
+    <p class="info">
+      Compartilhe seu link exclusivo e ganhe recompensas toda vez que alguém se cadastrar ou fizer stake através da sua indicação.<br>
+      Acompanhe abaixo seu desempenho como afiliado:
+    </p>
+
+    <div class="link-box">
+      <input type="text" id="linkAfiliado" readonly>
+      <button onclick="copiarLink()">📋 Copiar</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3 id="indicacoes">0</h3>
+        <p>Indicações Ativas</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="recompensas">0.00 SDP</h3>
+        <p>Recompensas Acumuladas</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 SafeDeFi Protocol — Sistema de Afiliados Oficial</footer>
+
+  <script>
+    // Lê o ID do usuário via URL: afiliado.html?id=usuario123
+    const params = new URLSearchParams(window.location.search);
+    const idUsuario = params.get("id") || "usuario-demo";
+    const linkInput = document.getElementById("linkAfiliado");
+
+    // Gera link de afiliado
+    const linkBase = window.location.origin + "/registro.html?ref=" + idUsuario;
+    linkInput.value = linkBase;
+
+    // Copiar link
+    function copiarLink(){
+      navigator.clipboard.writeText(linkInput.value);
+      alert("Link de afiliado copiado!");
+    }
+
+    // Simulação de crescimento automático
+    let indicacoes = 0;
+    let recompensas = 0;
+    const indicacoesEl = document.getElementById("indicacoes");
+    const recompensasEl = document.getElementById("recompensas");
+
+    setInterval(() => {
+      indicacoes += Math.floor(Math.random() * 2); // +0 ou +1
+      recompensas += Math.random() * 0.05; // 0.01–0.05 SDP
+      indicacoesEl.textContent = indicacoes;
+      recompensasEl.textContent = recompensas.toFixed(3) + " SDP";
+    }, 3000);
+  </script>
+</body>
+</html>

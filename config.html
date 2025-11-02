@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Configurações do Perfil | SafeDeFi Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --text: #d9faff;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(2,6,15,0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+    }
+
+    .btn-voltar {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(157,78,221,0.4);
+      transition: 0.3s;
+    }
+
+    .btn-voltar:hover { transform: scale(1.05); }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 40px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      margin-bottom: 30px;
+    }
+
+    .secao {
+      margin-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 30px;
+    }
+
+    .secao h3 {
+      font-size: 1.3rem;
+      color: var(--neon-cyan);
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0,255,255,0.3);
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .btn-salvar {
+      display: block;
+      margin: 30px auto 0;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #000;
+      font-weight: 700;
+      padding: 12px 25px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-salvar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0,255,255,0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+      margin-left: 10px;
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Configurações do Perfil — SafeDeFi Protocol</h1>
+    <a href="perfil.html" class="btn-voltar">⬅ Voltar ao Perfil</a>
+  </header>
+
+  <main>
+    <h2>Personalize sua Conta</h2>
+
+    <!-- Informações básicas -->
+    <section class="secao">
+      <h3>Informações do Usuário</h3>
+      <label>Nome de Usuário:</label>
+      <input type="text" id="nome" placeholder="Ex: DinhoTrader">
+
+      <label>Email:</label>
+      <input type="email" id="email" placeholder="exemplo@dominio.com">
+
+      <label>Biografia:</label>
+      <textarea id="bio" placeholder="Fale um pouco sobre você..."></textarea>
+    </section>
+
+    <!-- Segurança -->
+    <section class="secao">
+      <h3>Segurança da Conta</h3>
+      <label>Nova Senha:</label>
+      <input type="password" id="senha" placeholder="********">
+
+      <label>Autenticação em Duas Etapas (2FA)
+        <label class="switch">
+          <input type="checkbox" id="doisFatores">
+          <span class="slider"></span>
+        </label>
+      </label>
+    </section>
+
+    <!-- Carteira -->
+    <section class="secao">
+      <h3>Carteira Vinculada</h3>
+      <label>Endereço BNB / BEP20:</label>
+      <input type="text" id="carteira" placeholder="0x...">
+
+      <label>Moeda Preferencial:</label>
+      <select id="moeda">
+        <option value="BNB">BNB</option>
+        <option value="USDT">USDT</option>
+        <option value="SDP">SDP</option>
+      </select>
+    </section>
+
+    <!-- Notificações -->
+    <section class="secao">
+      <h3>Notificações</h3>
+      <label>Ativar notificações de novas publicações
+        <label class="switch">
+          <input type="checkbox" id="notificacoes" checked>
+          <span class="slider"></span>
+        </label>
+      </label>
+      <label>Notificações de novos seguidores
+        <label class="switch">
+          <input type="checkbox" id="seguidores" checked>
+          <span class="slider"></span>
+        </label>
+      </label>
+    </section>
+
+    <button class="btn-salvar" onclick="salvarConfig()">💾 Salvar Alterações</button>
+  </main>
+
+  <footer>© 2025 SafeDeFi Protocol — Configurações de Usuário</footer>
+
+  <script>
+    function salvarConfig() {
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const bio = document.getElementById("bio").value;
+      const carteira = document.getElementById("carteira").value;
+      const moeda = document.getElementById("moeda").value;
+      const doisFatores = document.getElementById("doisFatores").checked;
+
+      alert(`✅ Configurações salvas com sucesso!
+Usuário: ${nome || "Não informado"}
+Email: ${email || "Não informado"}
+Carteira: ${carteira || "Não vinculada"}
+Moeda: ${moeda}
+2FA: ${doisFatores ? "Ativado" : "Desativado"}`);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stake • SafeDefi Protocol</title>
+  <style>
+    :root {
+      --bg-dark: #030b16;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --text-light: #d8e1f0;
+      --text-muted: #9ab3cc;
+    }
+    body {
+      margin:0;
+      font-family:"Poppins",sans-serif;
+      background: linear-gradient(180deg, #000814, #030b16);
+      color: var(--text-light);
+      padding: 0 20px;
+    }
+    header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:20px 0; border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+    header .logo {
+      font-weight:800; font-size:1.3em;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text; color: transparent;
+    }
+    header nav a {
+      color: var(--text-light); text-decoration:none; margin:0 12px;
+    }
+    header nav a:hover {
+      color: var(--neon-cyan);
+    }
+    main {
+      max-width:1000px;
+      margin:40px auto;
+    }
+    .profile {
+      background: rgba(255,255,255,0.03);
+      border-radius:12px; padding:24px; margin-bottom:40px;
+      display:flex; gap:20px; align-items:center;
+    }
+    .profile img {
+      width:80px; height:80px; border-radius:50%;
+      border:2px solid var(--neon-cyan);
+    }
+    .profile-info h2 {
+      margin:0; color: var(--neon-cyan);
+    }
+    .profile-info p {
+      color: var(--text-muted);
+    }
+    .token‐balances {
+      display:flex; gap:16px; margin-top:12px;
+    }
+    .token-card {
+      background: rgba(255,255,255,0.03);
+      border-radius:10px; padding:16px; flex:1;
+      text-align:center;
+    }
+    .token-card h3 {
+      margin:0; color: var(--neon-purple);
+    }
+    .token-card span {
+      font-size:1.2em; font-weight:700;
+    }
+    .stake-section {
+      background: rgba(255,255,255,0.03);
+      border-radius:12px; padding:24px; margin-bottom:40px;
+    }
+    .stake-section h3 {
+      color: var(--neon-cyan);
+      margin-bottom:16px;
+    }
+    .stake-buttons {
+      display:flex; gap:16px; flex-wrap:wrap;
+    }
+    .btn-stake {
+      padding:12px 24px;
+      border:none;
+      border-radius:10px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color:#000;
+      font-weight:700;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .btn-stake:hover {
+      opacity:0.9;
+      transform:scale(1.03);
+    }
+    .stake-details {
+      margin-top:20px;
+      background: rgba(0,0,0,0.2);
+      border-radius:10px; padding:18px;
+      color: var(--text-light);
+    }
+    .info {
+      margin-bottom:40px;
+      background: rgba(255,255,255,0.02);
+      border-radius:12px; padding:24px;
+      color: var(--text-muted);
+    }
+    footer {
+      text-align:center; padding:25px 0;
+      border-top:1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      background:#020912;
+      font-size:.9em;
+    }
+    input[type=number] {
+      padding:10px; border-radius:8px;
+      border:1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.02);
+      color: var(--text-light);
+      width:120px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">SafeDefi Protocol</div>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="cartao.html">Cartão</a>
+      <a href="usuario.html">Perfil</a>
+      <a href="stake.html" style="color:var(--neon-cyan)">Stake</a>
+      <a href="emprestimos.html">Empréstimos</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="profile">
+      <img src="https://i.imgur.com/2Qf2GdO.png" alt="Avatar usuário">
+      <div class="profile-info">
+        <h2>Anderson Martins Alves</h2>
+        <p>Nível de credibilidade: <strong style="color:var(--neon-purple)">Nível 4 • 85%</strong></p>
+        <div class="token‐balances">
+          <div class="token-card">
+            <h3>BNB</h3>
+            <span id="balBNB">0.000</span>
+          </div>
+          <div class="token-card">
+            <h3>USDT</h3>
+            <span id="balUSDT">0.00</span>
+          </div>
+          <div class="token-card">
+            <h3>SDP (em breve)</h3>
+            <span id="balSDP">0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stake-section">
+      <h3>📈 Aplicar e Receber Rendimentos Passivos</h3>
+      <div class="stake-buttons">
+        <button class="btn-stake" onclick="showStakeForm('BNB')">Stake BNB</button>
+        <button class="btn-stake" onclick="showStakeForm('USDT')">Stake USDT</button>
+      </div>
+      <div id="stakeFormArea" class="stake-details">
+        Selecione o token acima para iniciar aplicação.
+      </div>
+    </div>
+
+    <div class="info">
+      <h3>Informações Importantes</h3>
+      <ul>
+        <li>🔹 Rendimentos para USDT: <strong>5% ao ano</strong> (365 dias) sobre o capital aplicado.</li>
+        <li>🔹 Rendimentos para BNB: <strong>0,001% ao ano</strong> (365 dias) sobre o capital aplicado.</li>
+        <li>⚠️ O token SDP ainda não foi lançado na blockchain — será integrado posteriormente.</li>
+        <li>💳 Os rendimentos serão “transferidos diariamente” para sua conta vinculada (cartão / perfil).</li>
+        <li>💼 Esta seção simula aplicações; integração real com wallet/contratos blockchain será implementada futuramente.
+        </li>
+      </ul>
+    </div>
+
+  </main>
+
+  <footer>
+    SafeDefi Protocol © 2025 — Plataforma de Staking & Rendimentos.
+  </footer>
+
+  <script>
+    // Token saldos simulados (em ambiente real, viriam do backend ou wallet)
+    const userBalances = {
+      BNB: 5.0,
+      USDT: 1000.00,
+      SDP: 0.0
+    };
+
+    // Variáveis globais
+    let priceBNB = 0;
+    let priceUSDT = 0;
+    const annualRateUSDT = 0.05; // 5% ao ano
+    const annualRateBNB = 0.00001; // 0,001% ao ano
+
+    document.getElementById('balBNB').textContent = userBalances.BNB.toFixed(3);
+    document.getElementById('balUSDT').textContent = userBalances.USDT.toFixed(2);
+    document.getElementById('balSDP').textContent = userBalances.SDP.toFixed(2);
+
+    // Função para buscar preços via CoinMarketCap API
+    async function fetchPrices(){
+      const apiKey = 'YOUR_CMC_API_KEY'; // substitua pela sua chave
+      const url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=BNB,USDT&convert=USD`;
+      try {
+        const resp = await fetch(url, {
+          headers: {
+            'X-CMC_PRO_API_KEY': apiKey,
+            'Accept': 'application/json'
+          }
+        });
+        const data = await resp.json();
+        priceBNB = data.data.BNB.quote.USD.price;
+        priceUSDT = data.data.USDT.quote.USD.price;
+        console.log('Preço BNB:', priceBNB, 'Preço USDT:', priceUSDT);
+      } catch(e){
+        console.error('Erro ao buscar preços:', e);
+      }
+    }
+
+    fetchPrices();
+
+    // Mostrar formulário para stake
+    function showStakeForm(token){
+      const area = document.getElementById('stakeFormArea');
+      area.innerHTML = `
+        <h4>Aplicar ${token}</h4>
+        Quantidade disponível: <strong>${userBalances[token].toFixed(4)} ${token}</strong><br><br>
+        <label>Insira quantidade a aplicar:</label><br>
+        <input type="number" id="amt${token}" placeholder="0" min="0" max="${userBalances[token]}" step="any"><br><br>
+        <button class="btn-stake" onclick="applyStake('${token}')">Aplicar</button>
+      `;
+    }
+
+    // Aplicar stake e calcular rendimento
+    function applyStake(token){
+      const input = document.getElementById('amt' + token);
+      const amt = parseFloat(input.value);
+      if(isNaN(amt) || amt <= 0 || amt > userBalances[token]){
+        alert('Quantidade inválida.');
+        return;
+      }
+      // retirar do saldo
+      userBalances[token] -= amt;
+      // calcular taxa anual
+      let rate = (token === 'USDT' ? annualRateUSDT : annualRateBNB);
+      let yearlyGain = amt * rate;
+      let dailyGain = yearlyGain / 365;
+      const nextTransfer = dailyGain.toFixed(6) + ` ${token} / dia`;
+
+      document.getElementById('stakeFormArea').innerHTML = `
+        ✅ Aplicado ${amt.toFixed(4)} ${token}.<br>
+        Rendimento estimado: <strong>${yearlyGain.toFixed(6)} ${token}</strong> por ano.<br>
+        Transferência automática diária para seu saldo vinculada.<br>
+        <small>~ ${dailyGain.toFixed(8)} ${token} por dia.</small>
+      `;
+
+      document.getElementById('balBNB').textContent = userBalances.BNB.toFixed(3);
+      document.getElementById('balUSDT').textContent = userBalances.USDT.toFixed(2);
+
+      // Aqui você integraria com backend/blockchain para registrar a aplicação
+      console.log(`Stake de ${amt} ${token} aplicado – rendimento diário ${dailyGain} ${token}`);
+    }
+  </script>
+</body>
+</html>

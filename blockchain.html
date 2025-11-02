@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Security Log | SafeDefi Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --text: #cfeeff;
+      --glass-border: rgba(0,255,255,0.06);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', system-ui, sans-serif;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      backdrop-filter: blur(10px);
+      background: rgba(2,6,15,0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .btn-voltar {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(157,78,221,0.4);
+      transition: 0.3s;
+    }
+
+    .btn-voltar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(157,78,221,0.8);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 40px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+    }
+
+    h2 {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .simulador {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .simulador input {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      width: 120px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    #valor-sdp {
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-size: 1.3rem;
+    }
+
+    .area {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .area img {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(157,78,221,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .preco {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.85);
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+
+    .transactions {
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      max-height: 320px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .tx {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-left: 3px solid var(--neon-purple);
+      background: rgba(0,0,0,0.2);
+      border-radius: 6px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(8px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Security Log — Testnet Blockchain</h1>
+    <a href="index.html" class="btn-voltar">⬅ Voltar ao SafeDeFi protocol</a>
+  </header>
+
+  <main>
+    <h2>Simulador</h2>
+
+    <!-- NAVIO -->
+    <div class="area">
+              <div class="preco" id="preco-navio">⛴️ Calculando preço em tempo real Testnet...</div>
+    </div>
+
+    <div class="simulador">
+      <p>Valor atual do token <b>SDP</b>: <span id="valor-sdp">Carregando...</span></p>
+      <p>Preço base por metro quadrado (navio): <b>0,01 SDP/m²</b></p>
+      <input type="number" id="metros-navio" placeholder="Metros² (1–15000)" min="1" max="15000">
+      <div id="resultado-navio" style="margin-top:15px;font-size:1.1rem;"></div>
+    </div>
+
+    <div class="transactions" id="transactions-navio">
+      <h3 style="color:var(--neon-cyan);text-align:center;">Transações do Navio em Tempo Real</h3>
+    </div>
+
+    <hr style="margin:60px 0;border:0;border-top:1px solid rgba(255,255,255,0.1);">
+
+    <!-- CAMINHÃO -->
+    <div class="area">
+      <img src="https://cdn.pixabay.com/photo/2016/11/29/03/53/truck-1866584_1280.jpg" alt="Caminhão logístico">
+      <div class="preco" id="preco-caminhao">🚛 Calculando preço dos caminhões disponíveis...</div>
+    </div>
+
+    <div class="simulador">
+      <p>Preço base por metro quadrado (caminhão): <b>0,05 SDP/m²</b></p>
+      <input type="number" id="metros-caminhao" placeholder="Metros² (1–100)" min="1" max="100">
+      <div id="resultado-caminhao" style="margin-top:15px;font-size:1.1rem;"></div>
+    </div>
+
+    <div class="transactions" id="transactions-caminhao">
+      <h3 style="color:var(--neon-purple);text-align:center;">Transações de Caminhões em Tempo Real</h3>
+    </div>
+  </main>
+ <footer>Estamos iniciando a fase de coleta de sementes/estágio inicial , buscando parceiros estratégicos que não apenas invistam, mas também agreguem experiência, rede de contatos e know-how no setor Web3.</footer>
+  <footer>© 2025 SafeDeFi Protocol — Security Log Division</footer>
+
+  <script>
+    const valorSDP = document.getElementById("valor-sdp");
+
+    // NAVIO
+    const metrosNavio = document.getElementById("metros-navio");
+    const resultadoNavio = document.getElementById("resultado-navio");
+    const txNavio = document.getElementById("transactions-navio");
+    const precoNavio = document.getElementById("preco-navio");
+
+    // CAMINHÃO
+    const metrosCaminhao = document.getElementById("metros-caminhao");
+    const resultadoCaminhao = document.getElementById("resultado-caminhao");
+    const txCaminhao = document.getElementById("transactions-caminhao");
+    const precoCaminhao = document.getElementById("preco-caminhao");
+
+    // Configuração
+    let valorToken = 1.00;
+    const precoPorMetroNavio = 0.01;
+    const precoPorMetroCaminhao = 0.05;
+    const capacidadeNavio = 15000;
+    const capacidadeCaminhao = 1000;
+
+    // Atualiza valor do token
+    function atualizarValorSDP() {
+      const variacao = (Math.random() - 0.5) * 0.05;
+      valorToken = Math.max(0.5, valorToken + variacao);
+      valorSDP.textContent = valorToken.toFixed(4) + " USD";
+      atualizarPrecoNavio();
+      atualizarPrecoCaminhao();
+    }
+
+    // Preço Navio
+    function atualizarPrecoNavio() {
+      const disponivel = Math.floor(Math.random() * capacidadeNavio);
+      const totalSDP = disponivel * precoPorMetroNavio;
+      const totalUSD = totalSDP * valorToken;
+      precoNavio.innerHTML = `⚓ Espaço disponível: <b>${disponivel.toLocaleString()} m²</b> | Valor total: <b>${totalSDP.toFixed(2)} SDP</b> ≈ ${totalUSD.toFixed(2)} USD`;
+    }
+
+    // Preço Caminhão
+    function atualizarPrecoCaminhao() {
+      const disponivel = Math.floor(Math.random() * capacidadeCaminhao);
+      const totalSDP = disponivel * precoPorMetroCaminhao;
+      const totalUSD = totalSDP * valorToken;
+      precoCaminhao.innerHTML = `🚛 Caminhões disponíveis: <b>${disponivel}</b> | Valor total estimado: <b>${totalSDP.toFixed(2)} SDP</b> ≈ ${totalUSD.toFixed(2)} USD`;
+    }
+
+    // Simuladores
+    metrosNavio.addEventListener("input", () => {
+      const m = parseFloat(metrosNavio.value);
+      if (isNaN(m) || m <= 0) return resultadoNavio.textContent = "";
+      const totalSDP = m * precoPorMetroNavio;
+      resultadoNavio.innerHTML = `💰 <b>${totalSDP.toFixed(3)} SDP</b> ≈ ${(totalSDP * valorToken).toFixed(2)} USD`;
+    });
+
+    metrosCaminhao.addEventListener("input", () => {
+      const m = parseFloat(metrosCaminhao.value);
+      if (isNaN(m) || m <= 0) return resultadoCaminhao.textContent = "";
+      const totalSDP = m * precoPorMetroCaminhao;
+      resultadoCaminhao.innerHTML = `💰 <b>${totalSDP.toFixed(3)} SDP</b> ≈ ${(totalSDP * valorToken).toFixed(2)} USD`;
+    });
+
+    // Transações simuladas
+    function gerarCarteira() {
+      const chars = "abcdef0123456789";
+      let id = "";
+      for (let i = 0; i < 16; i++) id += chars[Math.floor(Math.random() * chars.length)];
+      return id.slice(0, 4) + "••••••••••••••••";
+    }
+
+    function gerarTransacao(destino) {
+      const remetente = gerarCarteira();
+      const destinatario = gerarCarteira();
+      const quantidade = (Math.random() * (Math.random() > 0.8 ? 3000 : 50)).toFixed(2);
+      const tx = document.createElement("div");
+      tx.className = "tx";
+      tx.innerHTML = `💸 <b>${remetente}</b> → <b>${destinatario}</b> | ${quantidade} SDP`;
+      destino.appendChild(tx);
+      if (destino.children.length > 25) destino.removeChild(destino.firstChild);
+      destino.scrollTop = destino.scrollHeight;
+    }
+
+    // Intervalos
+    setInterval(atualizarValorSDP, 2000);
+    setInterval(() => gerarTransacao(txNavio), 1500);
+    setInterval(() => gerarTransacao(txCaminhao), 1800);
+    setInterval(atualizarPrecoNavio, 3000);
+    setInterval(atualizarPrecoCaminhao, 3500);
+
+    atualizarValorSDP();
+  </script>
+</body>
+</html>

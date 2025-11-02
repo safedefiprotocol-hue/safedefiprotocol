@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Curso Web3 - SafeDefi Protocol</title>
+
+  <!-- Fonts & Libraries -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwIiB4Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiMGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGMzY2ZmIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJNMTggMjAgTDUwIDIwIEw4MiA1MCBMNTAgODAgTDE4IDgwIEw0NiA1MCBMMTggMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ===========================
+       Variables & Base
+       =========================== */
+    :root{
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff6b6b;
+      --neon-green: #4ecdc4;
+      --muted: rgba(160,240,255,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --text: #cfeeff;
+      --accent-1: #4ecdc4;
+      --max-width: 1200px;
+      --radius-lg: 16px;
+      --glass-border: rgba(0,255,255,0.06);
+      --glass-border-2: rgba(157,78,221,0.05);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:24px}
+
+    /* ===========================
+       Header
+       =========================== */
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:1000;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(2,6,15,0.6), rgba(2,6,15,0.25));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding:12px 0;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-hex{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,247,255,0.08), inset 0 -6px 24px rgba(0,0,0,0.3);
+      transform: rotate(12deg);
+    }
+    .logo-hex svg{filter: drop-shadow(0 6px 20px rgba(157,78,221,0.12));}
+    .title{font-weight:800; font-size:1rem; letter-spacing:0.2px; color:white}
+    .subtitle{font-size:0.78rem;color:rgba(160,240,255,0.9);opacity:0.9}
+
+    nav ul{display:flex;gap:18px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:rgba(160,240,255,0.9)}
+    nav a:hover{background: linear-gradient(90deg, rgba(0,247,255,0.06), rgba(157,78,221,0.04)); color:var(--neon-cyan); transform:translateY(-2px);}
+
+    .cta{
+      padding:8px 16px;border-radius:30px;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      font-weight:700;color:#031025;box-shadow: 0 6px 20px rgba(0,247,255,0.08);
+      border:none;cursor:pointer;
+    }
+    .cta:active{transform:translateY(1px)}
+
+    /* ===========================
+       Course Hero Section
+       =========================== */
+    .course-hero {
+      margin-top: 100px;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .course-title {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 6px 30px rgba(0,247,255,0.1);
+    }
+
+    .course-subtitle {
+      font-size: 20px;
+      color: rgba(160,240,255,0.8);
+      max-width: 800px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    /* ===========================
+       Warning Banner
+       =========================== */
+    .warning-banner {
+      background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(157,78,221,0.05));
+      border: 1px solid rgba(255,107,107,0.3);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 40px auto;
+      max-width: 1000px;
+      backdrop-filter: blur(10px);
+    }
+
+    .warning-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .warning-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,107,107,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--neon-pink);
+    }
+
+    .warning-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--neon-pink);
+      margin: 0;
+    }
+
+    .warning-content {
+      color: rgba(160,240,255,0.9);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .warning-list {
+      margin: 20px 0;
+      padding-left: 20px;
+    }
+
+    .warning-list li {
+      margin-bottom: 10px;
+      color: rgba(160,240,255,0.8);
+    }
+
+    /* ===========================
+       Course Content
+       =========================== */
+    .course-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .course-section {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .section-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #031025;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+      color: rgba(160,240,255,0.7);
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    /* ===========================
+       Step by Step Guide
+       =========================== */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      padding: 25px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(0,247,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #031025;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--neon-cyan);
+    }
+
+    .step-description {
+      color: rgba(160,240,255,0.8);
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .step-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ===========================
+       Security Tips
+       =========================== */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .security-tip {
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      padding: 25px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .security-tip:hover {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(78,205,196,0.3);
+      transform: translateY(-2px);
+    }
+
+    .security-tip.good {
+      border-left: 4px solid var(--neon-green);
+    }
+
+    .security-tip.bad {
+      border-left: 4px solid var(--neon-pink);
+    }
+
+    .security-tip.warning {
+      border-left: 4px solid #f1c40f;
+    }
+
+    .tip-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .tip-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .tip-icon.good {
+      background: rgba(78,205,196,0.2);
+      color: var(--neon-green);
+    }
+
+    .tip-icon.bad {
+      background: rgba(255,107,107,0.2);
+      color: var(--neon-pink);
+    }
+
+    .tip-icon.warning {
+      background: rgba(241,196,15,0.2);
+      color: #f1c40f;
+    }
+
+    .tip-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .tip-description {
+      color: rgba(160,240,255,0.7);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ===========================
+       Audience Sections
+       =========================== */
+    .audience-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 20px;
+    }
+
+    .audience-tab {
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .audience-tab.active {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #031025;
+      border-color: transparent;
+    }
+
+    .audience-tab:hover:not(.active) {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .audience-content {
+      display: none;
+    }
+
+    .audience-content.active {
+      display: block;
+    }
+
+    /* ===========================
+       Practice Section
+       =========================== */
+    .practice-section {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .practice-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 20px;
+      padding: 50px 40px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+      max-width: 600px;
+      margin: 0 auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .practice-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .practice-description {
+      color: rgba(160,240,255,0.8);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .practice-btn {
+      padding: 15px 30px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #031025;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .practice-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,247,255,0.3);
+    }
+
+    /* ===========================
+       Responsive
+       =========================== */
+    @media (max-width: 768px) {
+      .course-title {
+        font-size: 36px;
+      }
+      
+      .course-section {
+        padding: 25px;
+      }
+      
+      .step {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .security-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .audience-tabs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo-hex" id="logoHex">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#041029" stroke-width="0.6" fill="#021025" opacity="0.22"></path>
+            <path d="M7 9.2h10M7 14.8h10" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="title">SafeDefi Protocol</div>
+          <div class="subtitle">Curso Web3 - Segurança & Conexão</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="curso.html" class="active">Curso</a></li>
+          <li><a href="carteiraweb.html">Carteira</a></li>
+          <li><a href="#security">Segurança</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="cta" id="walletBtn">Conectar Carteira</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Course Hero -->
+  <section class="course-hero">
+    <div class="container">
+      <h1 class="course-title">Curso Completo Web3</h1>
+      <p class="course-subtitle">
+        Aprenda a conectar sua carteira de forma segura e proteger seus ativos no ecossistema blockchain. 
+        Do básico ao avançado, para leigos e profissionais.
+      </p>
+    </div>
+  </section>
+
+  <!-- Warning Banner -->
+  <div class="container">
+    <div class="warning-banner">
+      <div class="warning-header">
+        <div class="warning-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h2 class="warning-title">AVISO DE SEGURANÇA CRÍTICO</h2>
+      </div>
+      <div class="warning-content">
+        <p><strong>⚠️ ATENÇÃO LEIGOS E PROFISSIONAIS:</strong></p>
+        <ul class="warning-list">
+          <li><strong>NÃO PEDIREMOS SUAS CHAVES DE CARTEIRA</strong> - Nunca compartilhe sua seed phrase ou chave privada com ninguém</li>
+          <li><strong>SE SUA CARTEIRA WEB3 FOR PERDIDA, NÃO HÁ COMO RECUPERÁ-LA</strong> - Suas chaves são sua única responsabilidade</li>
+          <li><strong>SE SUA CONTA POR EMAIL FOR PERDIDA</strong> - Entre em contato conosco e iremos responder imediatamente</li>
+          <li><strong>DESCONFIE DE OFERTAS MUITO BOAS</strong> - Se parece bom demais para ser verdade, provavelmente é</li>
+        </ul>
+        <p style="color: var(--neon-pink); font-weight: 600; margin-top: 20px;">
+          🛡️ Sua segurança é nossa prioridade número 1!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Content -->
+  <div class="course-content">
+    <!-- Audience Selection -->
+   <div class="course-section">
+  <div class="section-header">
+    <div class="section-icon">
+      <i class="fas fa-users"></i>
+    </div>
+    <div>
+      <h2 class="section-title">Para Quem é Este Curso?</h2>
+      <p class="section-subtitle">Escolha seu nível de experiência</p>
+    </div>
+  </div>
+
+  <div class="audience-tabs" role="tablist" aria-label="Níveis do curso" style="display:flex;gap:8px;margin-top:12px;">
+    <div class="audience-tab active" data-audience="beginner" role="tab" tabindex="0" aria-selected="true">👶 Iniciante Total</div>
+    <div class="audience-tab" data-audience="intermediate" role="tab" tabindex="0" aria-selected="false">🚀 Já Conheço o Básico</div>
+    <div class="audience-tab" data-audience="professional" role="tab" tabindex="0" aria-selected="false">💼 Profissional Web3</div>
+  </div>
+
+  <!-- BEGINNER CONTENT -->
+  <div class="audience-content active" id="beginner-content" style="margin-top:18px;">
+    <h3 style="color: var(--neon-cyan); margin-bottom: 12px;">Começando do Zero</h3>
+    <p style="color: rgba(160,240,255,0.8); line-height: 1.6; margin-bottom: 18px;">
+      Se você é novo no mundo das criptomoedas e Web3, está no lugar certo! Vamos explicar 
+      tudo passo a passo, desde os conceitos mais básicos.
+    </p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <!-- Botão que abre o arquivo indicado pelo usuário (nome conforme sua mensagem) -->
+      <button id="btnCursoBasico" class="cta" style="padding:10px 18px; font-weight:700; border-radius:10px; cursor:pointer;">
+        Iniciar Curso Básico
+      </button>
+
+      <button id="btnCursoProfissional" class="cta" style="padding:10px 18px; font-weight:700; border-radius:10px; cursor:pointer; background:linear-gradient(90deg,var(--neon-purple),var(--neon-cyan));">
+        Ir para Curso Profissional
+      </button>
+    </div>
+  </div>
+
+  <!-- INTERMEDIATE CONTENT -->
+  <div class="audience-content" id="intermediate-content" style="display:none;margin-top:18px;">
+    <h3 style="color: var(--neon-cyan); margin-bottom: 12px;">Você já conhece o básico</h3>
+    <p style="color: rgba(160,240,255,0.8); line-height: 1.6; margin-bottom: 18px;">
+      Conteúdos para quem já tem contato com wallets, transações e quer aprofundar o conhecimento.
+    </p>
+    <div style="display:flex;gap:12px">
+      <button class="cta" style="padding:10px 18px; font-weight:700; border-radius:10px;">Ver Aulas Intermediárias</button>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL CONTENT -->
+  <div class="audience-content" id="professional-content" style="display:none;margin-top:18px;">
+    <h3 style="color: var(--neon-cyan); margin-bottom: 12px;">Nível Profissional</h3>
+    <p style="color: rgba(160,240,255,0.8); line-height: 1.6; margin-bottom: 18px;">
+      Conteúdo avançado focado em arquitetura Web3, smart contracts e integrações de mercado.
+    </p>
+    <div style="display:flex;gap:12px">
+      <button id="btnCursoProfionalFromTab" class="cta" style="padding:10px 18px; font-weight:700; border-radius:10px; background:linear-gradient(90deg,var(--neon-purple),var(--neon-cyan));">
+        Acessar Curso Profissional
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching (simples)
+  (function(){
+    const tabs = document.querySelectorAll('.audience-tab');
+    const contents = {
+      beginner: document.getElementById('beginner-content'),
+      intermediate: document.getElementById('intermediate-content'),
+      professional: document.getElementById('professional-content')
+    };
+
+    function activate(aud){
+      tabs.forEach(t=> {
+        const is = t.dataset.audience === aud;
+        t.classList.toggle('active', is);
+        t.setAttribute('aria-selected', is ? 'true' : 'false');
+      });
+      // show/hide contents
+      Object.keys(contents).forEach(k=>{
+        if(k === aud){
+          contents[k].style.display = '';
+          contents[k].classList.add('active');
+        } else {
+          contents[k].style.display = 'none';
+          contents[k].classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach(t=> t.addEventListener('click', ()=> activate(t.dataset.audience)));
+    tabs.forEach(t=> t.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') activate(t.dataset.audience); }));
+
+    // Default active
+    activate('beginner');
+  })();
+
+  // Navigation buttons — abrem os arquivos indicados (nomes conforme sua mensagem)
+  document.getElementById('btnCursoBasico').addEventListener('click', function(){
+    // abre o arquivo local carusobasico.html
+    window.location.href = 'carusobasico.html';
+  });
+
+  document.getElementById('btnCursoProfissional').addEventListener('click', function(){
+    // abre o arquivo local cursoprofisional.html
+    window.location.href = 'cursoprofisional.html';
+  });
+
+  // também vinculamos o botão dentro da aba profissional para facilidade
+  document.getElementById('btnCursoProfionalFromTab').addEventListener('click', function(){
+    window.location.href = 'cursoprofisional.html';
+  });
+</script>
+
+        
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4 class="step-title">O que é uma Carteira Web3?</h4>
+              <p class="step-description">
+                Uma carteira Web3 é como sua conta bancária pessoal no mundo digital. 
+                Ela guarda suas criptomoedas e permite que você interaja com aplicações descentralizadas.
+              </p>
+              <p style="color: var(--neon-green); font-weight: 600;">
+                💡 Pense nela como uma combinação de conta bancária + identidade digital
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4 class="step-title">Instalando o MetaMask</h4>
+              <p class="step-description">
+                MetaMask é a carteira mais popular. É uma extensão para seu navegador que 
+                funciona como ponte entre você e a blockchain.
+              </p>
+              <p style="color: var(--neon-cyan); font-weight: 600;">
+                🔧 Vamos instalar juntos no próximo módulo!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intermediate Content -->
+      <div class="audience-content" id="intermediate-content">
+        <h3 style="color: var(--neon-cyan); margin-bottom: 20px;">Aprimorando Conhecimentos</h3>
+        <p style="color: rgba(160,240,255,0.8); line-height: 1.6; margin-bottom: 25px;">
+          Você já conhece o básico? Vamos aprofundar em segurança avançada e melhores práticas.
+        </p>
+        
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4 class="step-title">Carteiras Hardware</h4>
+              <p class="step-description">
+                Para maiores valores, recomendamos carteiras físicas como Ledger ou Trezor. 
+                Elas mantêm suas chaves offline, longe de hackers.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4 class="step-title">Múltiplas Carteiras</h4>
+              <p class="step-description">
+                Use diferentes carteiras para diferentes propósitos: uma para transações diárias, 
+                outra para economias, e uma hardware para grandes valores.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Content -->
+      <div class="audience-content" id="professional-content">
+        <h3 style="color: var(--neon-cyan); margin-bottom: 20px;">Para Profissionais</h3>
+        <p style="color: rgba(160,240,255,0.8); line-height: 1.6; margin-bottom: 25px;">
+          Tópicos avançados para quem já trabalha com Web3 e DeFi.
+        </p>
+        
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4 class="step-title">Smart Contract Security</h4>
+              <p class="step-description">
+                Análise de contratos inteligentes, auditorias de segurança e padrões de desenvolvimento seguro.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4 class="step-title">Multi-sig Wallets</h4>
+              <p class="step-description">
+                Implementação de carteiras multi-assinatura para projetos DAO e empresas, 
+                requerendo múltiplas aprovações para transações.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connection Guide -->
+    <div class="course-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-plug"></i>
+        </div>
+        <div>
+          <h2 class="section-title">Como Conectar sua Carteira</h2>
+          <p class="section-subtitle">Guia passo a passo seguro</p>
+        </div>
+      </div>
+
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4 class="step-title">Instale o MetaMask</h4>
+            <p class="step-description">
+              Acesse <a href="https://metamask.io" target="_blank" style="color: var(--neon-cyan);">metamask.io</a> 
+              e instale a extensão no seu navegador. É gratuito e seguro.
+            </p>
+            <p style="color: var(--neon-green); font-weight: 600;">
+              ✅ Só baixe do site oficial! Cuidado com falsificações.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4 class="step-title">Crie sua Carteira</h4>
+            <p class="step-description">
+              Siga o processo de criação e <strong>ANOTE SUA SEED PHRASE</strong> em um local seguro offline. 
+              Esta é a única forma de recuperar sua carteira.
+            </p>
+            <p style="color: var(--neon-pink); font-weight: 600;">
+              🔒 Nunca digite sua seed phrase em nenhum site!
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4 class="step-title">Conecte ao SafeDefi</h4>
+            <p class="step-description">
+              Clique em "Conectar Carteira" no nosso site. O MetaMask abrirá um popup seguro 
+              pedindo sua permissão.
+            </p>
+            <p style="color: var(--neon-cyan); font-weight: 600;">
+              🔗 A conexão é segura - só compartilha seu endereço público
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4 class="step-title">Verifique a Conexão</h4>
+            <p class="step-description">
+              Após conectar, você verá seu endereço encurtado no site. 
+              Isso significa que está tudo funcionando corretamente!
+            </p>
+            <p style="color: var(--neon-green); font-weight: 600;">
+              🎉 Parabéns! Você está conectado ao Web3 com segurança.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Tips -->
+    <div class="course-section">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div>
+          <h2 class="section-title">Dicas de Segurança Essenciais</h2>
+          <p class="section-subtitle">Proteja-se contra golpes e hacks</p>
+        </div>
+      </div>
+
+      <div class="security-grid">
+        <div class="security-tip good">
+          <div class="tip-header">
+            <div class="tip-icon good">
+              <i class="fas fa-check"></i>
+            </div>
+            <h3 class="tip-title">FAÇA ISSO</h3>
+          </div>
+          <p class="tip-description">
+            Use hardware wallet para grandes valores, verifique sempre os endereços de contrato, 
+            mantenha backups offline da seed phrase.
+          </p>
+        </div>
+
+        <div class="security-tip bad">
+          <div class="tip-header">
+            <div class="tip-icon bad">
+              <i class="fas fa-times"></i>
+            </div>
+            <h3 class="tip-title">NUNCA FAÇA</h3>
+          </div>
+          <p class="tip-description">
+            Compartilhar seed phrase, clicar em links suspeitos, confiar em ofertas milagrosas, 
+            usar a mesma senha em múltiplos serviços.
+          </p>
+        </div>
+
+        <div class="security-tip warning">
+          <div class="tip-header">
+            <div class="tip-icon warning">
+              <i class="fas fa-exclamation"></i>
+            </div>
+            <h3 class="tip-title">CUIDADO COM</h3>
+          </div>
+          <p class="tip-description">
+            Phishing sites falsos, airdrops suspeitos, contratos não auditados, 
+            influencers promovendo projetos desconhecidos.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 30px; padding: 20px; background: rgba(255,107,107,0.1); border-radius: 12px; border: 1px solid rgba(255,107,107,0.3);">
+        <h4 style="color: var(--neon-pink); margin-bottom: 15px;">🚨 Sinais de Alerta Imediatos</h4>
+        <ul style="color: rgba(160,240,255,0.8); line-height: 1.6;">
+          <li>Site pedindo sua seed phrase</li>
+          <li>Transação pedindo permissão ilimitada</li>
+          <li>URL do site diferente do oficial</li>
+          <li>Popups pedindo para "atualizar" ou "validar" carteira</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Practice Section -->
+    <div class="practice-section">
+      <div class="practice-card">
+        <h2 class="practice-title">Hora de Praticar!</h2>
+        <p class="practice-description">
+          Agora que você aprendeu a teoria, está na hora de conectar sua carteira 
+          de forma segura no SafeDefi Protocol.
+        </p>
+        <button class="practice-btn" onclick="window.location.href='carteiraweb.html'">
+          <i class="fas fa-play"></i>
+          Conectar Carteira Agora
+        </button>
+        <p style="color: rgba(160,240,255,0.6); margin-top: 20px; font-size: 14px;">
+          👆 Clique acima para ir para a página segura de conexão
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Audience Tabs Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.audience-tab');
+      const contents = document.querySelectorAll('.audience-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const audience = this.getAttribute('data-audience');
+          
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab and corresponding content
+          this.classList.add('active');
+          document.getElementById(`${audience}-content`).classList.add('active');
+        });
+      });
+
+      // Smooth animations
+     

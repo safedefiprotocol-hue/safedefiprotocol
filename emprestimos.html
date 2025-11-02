@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empréstimos • SafeDefi Protocol</title>
+  <style>
+    :root {
+      --bg-dark: #030b16;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --text-light: #d8e1f0;
+      --text-muted: #9ab3cc;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(180deg, #000814, #030b16);
+      color: var(--text-light);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(0,0,0,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .logo {
+      font-weight: 800;
+      font-size: 1.3em;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    header nav a {
+      color: var(--text-light);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: 0.3s;
+    }
+
+    header nav a:hover {
+      color: var(--neon-cyan);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .profile-section {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.08);
+    }
+
+    .profile-section img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-cyan);
+    }
+
+    .profile-info h2 {
+      margin: 0;
+      color: var(--neon-cyan);
+      font-size: 1.5em;
+    }
+
+    .profile-info p {
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+
+    .tokens {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .token-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 15px 20px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .token-card h3 {
+      color: var(--neon-cyan);
+      margin-bottom: 5px;
+    }
+
+    .token-card span {
+      font-weight: 600;
+      font-size: 1.1em;
+    }
+
+    .loan-section {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 40px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.08);
+    }
+
+    .loan-section h3 {
+      color: var(--neon-purple);
+      margin-bottom: 20px;
+    }
+
+    .loan-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .loan-btn {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .loan-btn:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .loan-details {
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 15px;
+      color: var(--text-light);
+    }
+
+    .info-section {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.05);
+    }
+
+    .info-section h3 {
+      color: var(--neon-cyan);
+      margin-bottom: 15px;
+    }
+
+    .info-section ul {
+      list-style: none;
+      padding: 0;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      background: #020912;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">SafeDefi Protocol</div>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="cartao.html">Cartão</a>
+      <a href="usuario.html">Perfil</a>
+      <a href="stake.html">Stake</a>
+      <a href="emprestimos.html" style="color: var(--neon-cyan);">Empréstimos</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Perfil e Saldos -->
+    <div class="profile-section">
+      <img src="https://i.imgur.com/2Qf2GdO.png" alt="Usuário">
+      <div class="profile-info">
+        <h2>Anderson Martins Alves</h2>
+        <p>Nível de credibilidade: <strong style="color:var(--neon-purple)">97%</strong></p>
+
+        <div class="tokens">
+          <div class="token-card">
+            <h3>BNB</h3>
+            <span id="saldoBNB">12.5</span>
+          </div>
+          <div class="token-card">
+            <h3>USDT</h3>
+            <span id="saldoUSDT">2350</span>
+          </div>
+          <div class="token-card">
+            <h3>SDP</h3>
+            <span id="saldoSDP">18000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empréstimos -->
+    <div class="loan-section">
+      <h3>💰 Solicitar Empréstimo</h3>
+      <div class="loan-buttons">
+        <button class="loan-btn" onclick="calcularEmprestimo('BNB')">Emprestar em BNB</button>
+        <button class="loan-btn" onclick="calcularEmprestimo('USDT')">Emprestar em USDT</button>
+        <button class="loan-btn" onclick="calcularEmprestimo('SDP')">Emprestar em SDP</button>
+      </div>
+
+      <div id="loanResult" class="loan-details">
+        Selecione um token para visualizar o valor disponível para empréstimo.
+      </div>
+    </div>
+
+    <!-- Créditos -->
+    <div class="loan-section">
+      <h3>💳 Abrir Linha de Crédito</h3>
+      <div class="loan-buttons">
+        <button class="loan-btn" onclick="calcularCredito('BNB')">Crédito BNB</button>
+        <button class="loan-btn" onclick="calcularCredito('USDT')">Crédito USDT</button>
+        <button class="loan-btn" onclick="calcularCredito('SDP')">Crédito SDP</button>
+      </div>
+
+      <div id="creditoResult" class="loan-details">
+        Selecione um token para visualizar sua linha de crédito.
+      </div>
+    </div>
+
+    <!-- Regras e Política -->
+    <div class="info-section">
+      <h3>📜 Política de Empréstimos e Crédito</h3>
+      <ul>
+        <li>🪙 Você pode solicitar até <strong>20%</strong> do seu saldo em empréstimo.</li>
+        <li>💸 Juros diários equivalentes d/% de BNB + taxa de <strong>0,0001 BNB/dia</strong>.</li>
+        <li>💳 Linha de crédito: limite de até <strong>1.1x</strong> o valor total em conta.</li>
+        <li>⚠️ Juros de <strong>1.5% ao dia</strong> em BNB para atrasos superiores a 30 dias.</li>
+        <li>🔒 Depósitos serão congelados se houver tentativa de golpe ou uso indevido.</li>
+        <li>🤝 Nosso objetivo é incentivar o uso consciente e sustentável dos créditos.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    SafeDefi Protocol © 2025 — Plataforma de Empréstimos e Créditos Web3 Inteligentes.
+  </footer>
+
+  <script>
+    const saldos = {
+      BNB: 12.5,
+      USDT: 2350,
+      SDP: 18000
+    };
+
+    function calcularEmprestimo(token) {
+      const valor = saldos[token];
+      const emprestimo = valor * 0.2;
+      document.getElementById("loanResult").innerHTML = `
+        💰 Você pode solicitar até <strong>${emprestimo.toFixed(4)} ${token}</strong> como empréstimo.<br><br>
+        🕒 Juros semelhantes à AAVE + taxa fixa de <strong>0,0001 BNB/dia</strong> enquanto o saldo estiver ativo.
+      `;
+    }
+
+    function calcularCredito(token) {
+      const valor = saldos[token];
+      const credito = valor * 1.1;
+      document.getElementById("creditoResult").innerHTML = `
+        💳 Sua linha de crédito é de até <strong>${credito.toFixed(4)} ${token}</strong>.<br><br>
+        ⚠️ Caso use o crédito e atrase o pagamento, incidirá <strong>1.5% ao dia</strong> em BNB após 30 dias.
+      `;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Comunidades | SafeDeFi Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --text: #d9faff;
+      --card-bg: rgba(255,255,255,0.02);
+      --border: rgba(255,255,255,0.05);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(900px 700px at 5% 5%, rgba(13,20,40,0.5), transparent 30%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(2,6,15,0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+    }
+
+    .btn-voltar {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(157,78,221,0.4);
+      transition: 0.3s;
+    }
+    .btn-voltar:hover { transform: scale(1.05); }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 30px;
+    }
+
+    h2 {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      font-size: 2rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .search-bar input {
+      width: 60%;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+    .search-bar input:focus {
+      box-shadow: 0 0 10px rgba(0,255,255,0.3);
+      border-color: var(--neon-cyan);
+    }
+
+    .comunidades-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .comunidade-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 25px;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .comunidade-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0,255,255,0.15);
+    }
+
+    .comunidade-card h3 {
+      font-size: 1.3rem;
+      color: var(--neon-cyan);
+      margin: 0 0 10px;
+    }
+
+    .comunidade-card p {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .comunidade-card .hashtag {
+      color: var(--neon-purple);
+      font-weight: 600;
+    }
+
+    .btn-entrar {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      border: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-entrar:hover { transform: scale(1.05); }
+
+    .secao {
+      margin-top: 50px;
+    }
+
+    .secao h3 {
+      font-size: 1.4rem;
+      color: var(--neon-cyan);
+      margin-bottom: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Comunidades — SafeDeFi Protocol</h1>
+    <a href="perfil.html" class="btn-voltar">⬅ Voltar ao Perfil</a>
+  </header>
+
+  <main>
+    <h2>Minhas Comunidades</h2>
+
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="🔍 Buscar por nome ou #hashtag..." oninput="buscarComunidades()">
+    </div>
+
+    <section class="secao" id="minhas-comunidades">
+      <h3>Comunidades que Interagi</h3>
+      <div class="comunidades-grid" id="lista-comunidades"></div>
+    </section>
+
+    <section class="secao">
+      <h3>Comunidades em Alta 🚀</h3>
+      <div class="comunidades-grid" id="tendencias"></div>
+    </section>
+  </main>
+
+  <footer>© 2025 SafeDeFi Protocol — Comunidades Descentralizadas</footer>
+
+  <script>
+    const comunidades = [
+      { nome: "SafeDeFi Traders", desc: "Discussões sobre trading, estratégias e análise de mercado cripto.", hashtag: "#trading" },
+      { nome: "SDP Holders", desc: "Espaço para holders e investidores do token SDP.", hashtag: "#holders" },
+      { nome: "Blockchain Education", desc: "Aprenda sobre Web3, DeFi e segurança cripto.", hashtag: "#educacao" },
+      { nome: "NFT Crew", desc: "Comunidade de criadores e colecionadores de NFTs.", hashtag: "#nft" },
+      { nome: "Crypto Mulheres", desc: "Comunidade para mulheres que investem e acreditam em finanças descentralizadas.", hashtag: "#womenincrypto" },
+      { nome: "SafeDeFi Builders", desc: "Grupo de desenvolvedores e criadores do ecossistema SafeDeFi.", hashtag: "#builders" }
+    ];
+
+    const lista = document.getElementById("lista-comunidades");
+    const tendencias = document.getElementById("tendencias");
+
+    function carregarComunidades() {
+      comunidades.slice(0, 3).forEach(c => {
+        lista.innerHTML += criarCard(c);
+      });
+      comunidades.slice(3).forEach(c => {
+        tendencias.innerHTML += criarCard(c);
+      });
+    }
+
+    function criarCard(c) {
+      return `
+        <div class="comunidade-card">
+          <h3>${c.nome}</h3>
+          <p>${c.desc}</p>
+          <p class="hashtag">${c.hashtag}</p>
+          <button class="btn-entrar">Entrar</button>
+        </div>
+      `;
+    }
+
+    function buscarComunidades() {
+      const termo = document.getElementById("search").value.toLowerCase();
+      const filtradas = comunidades.filter(c =>
+        c.nome.toLowerCase().includes(termo) || c.hashtag.toLowerCase().includes(termo)
+      );
+      lista.innerHTML = filtradas.map(criarCard).join('') || "<p>Nenhuma comunidade encontrada.</p>";
+    }
+
+    carregarComunidades();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SafeDefi Protocol - Login com MetaMask</title>
+
+  <!-- Fonts & Libraries -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwIiB4Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiMGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGMzY2ZmIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJNMTggMjAgTDUwIDIwIEw4MiA1MCBMNTAgODAgTDE4IDgwIEw0NiA1MCBMMTggMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ===========================
+       Variables & Base
+       =========================== */
+    :root{
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff6b6b;
+      --muted: rgba(160,240,255,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --text: #cfeeff;
+      --accent-1: #4ecdc4;
+      --max-width: 1200px;
+      --radius-lg: 16px;
+      --glass-border: rgba(0,255,255,0.06);
+      --glass-border-2: rgba(157,78,221,0.05);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:24px}
+
+    /* ===========================
+       Header
+       =========================== */
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:1000;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(2,6,15,0.6), rgba(2,6,15,0.25));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding:12px 0;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-hex{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,247,255,0.08), inset 0 -6px 24px rgba(0,0,0,0.3);
+      transform: rotate(12deg);
+    }
+    .logo-hex svg{filter: drop-shadow(0 6px 20px rgba(157,78,221,0.12));}
+    .title{font-weight:800; font-size:1rem; letter-spacing:0.2px; color:white}
+    .subtitle{font-size:0.78rem;color:rgba(160,240,255,0.9);opacity:0.9}
+
+    nav ul{display:flex;gap:18px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:rgba(160,240,255,0.9)}
+    nav a:hover{background: linear-gradient(90deg, rgba(0,247,255,0.06), rgba(157,78,221,0.04)); color:var(--neon-cyan); transform:translateY(-2px);}
+
+    .cta{
+      padding:8px 16px;border-radius:30px;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      font-weight:700;color:#031025;box-shadow: 0 6px 20px rgba(0,247,255,0.08);
+      border:none;cursor:pointer;
+    }
+    .cta:active{transform:translateY(1px)}
+
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .wallet-address {
+      font-size: 14px;
+      font-family: monospace;
+    }
+
+    /* ===========================
+       Anonymous User Screen
+       =========================== */
+    .anonymous-container {
+      margin-top: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .anonymous-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 24px;
+      padding: 50px 40px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+      max-width: 500px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+    }
+
+    .anonymous-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #031025;
+    }
+
+    .anonymous-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .anonymous-subtitle {
+      color: rgba(160,240,255,0.8);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .anonymous-features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #031025;
+      flex-shrink: 0;
+    }
+
+    .feature-text {
+      text-align: left;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--neon-cyan);
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: rgba(160,240,255,0.7);
+    }
+
+    .auth-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .auth-btn {
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .metamask-btn {
+      background: linear-gradient(90deg, #f6851b, #e2761b);
+      color: white;
+    }
+
+    .metamask-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(246, 133, 27, 0.4);
+    }
+
+    .traditional-btn {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .traditional-btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .continue-anonymous {
+      margin-top: 20px;
+      color: rgba(160,240,255,0.6);
+      font-size: 14px;
+    }
+
+    .continue-anonymous a {
+      color: var(--neon-cyan);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* ===========================
+       MetaMask Connection Modal
+       =========================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .auth-modal {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 24px;
+      padding: 40px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.8);
+      max-width: 450px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: rgba(160,240,255,0.6);
+      font-size: 24px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--neon-cyan);
+    }
+
+    .modal-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+
+    .modal-subtitle {
+      color: rgba(160,240,255,0.7);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .wallet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .wallet-option {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .wallet-option:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(0,247,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    .wallet-option.active {
+      background: rgba(0,247,255,0.1);
+      border-color: var(--neon-cyan);
+    }
+
+    .wallet-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f6851b, #e2761b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .wallet-info-modal {
+      flex: 1;
+    }
+
+    .wallet-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--neon-cyan);
+    }
+
+    .wallet-desc {
+      font-size: 14px;
+      color: rgba(160,240,255,0.6);
+    }
+
+    .connect-btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #031025;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .connect-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,247,255,0.3);
+    }
+
+    .connect-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .install-metamask {
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(246, 133, 27, 0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(246, 133, 27, 0.3);
+    }
+
+    .install-metamask a {
+      color: #f6851b;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* ===========================
+       Profile Container
+       =========================== */
+    .profile-container {
+      margin-top: 100px;
+      display: none;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      padding: 20px;
+    }
+
+    .profile-container.active {
+      display: grid;
+    }
+
+    @media (max-width: 1024px) {
+      .profile-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .profile-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .profile-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+      margin-bottom: 20px;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #031025;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .wallet-display {
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .wallet-address-profile {
+      font-family: monospace;
+      font-size: 14px;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+
+    .wallet-balance {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .balance-amount {
+      font-weight: 600;
+      color: var(--neon-cyan);
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255,107,107,0.1);
+      color: var(--neon-pink);
+      border: 1px solid rgba(255,107,107,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255,107,107,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ===========================
+       Loading States
+       =========================== */
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-left: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ===========================
+       Responsive
+       =========================== */
+    @media (max-width: 768px) {
+      .anonymous-card {
+        padding: 30px 20px;
+      }
+      
+      .auth-modal {
+        padding: 30px 20px;
+      }
+      
+      .wallet-info {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+     <button class="sidebar-toggle" id="sidebarToggle">
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="sidebar-menu" id="sidebarMenu">
+  <ul><li><a href="usuario.html"> Usuário</a></li>
+    <li><a href="#"> Stake</a></li>
+    <li><a href="#"> Afiliados</a></li>
+    <li><a href="#"> Serviços</a></li>
+    <li><a href="#"> Cursos</a></li>
+  </ul>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo-hex" id="logoHex">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#041029" stroke-width="0.6" fill="#021025" opacity="0.22"></path>
+            <path d="M7 9.2h10M7 14.8h10" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="title">SafeDefi Protocol</div>
+          <div class="subtitle" id="userStatus">Usuário Anônimo</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="#" class="active">Perfil</a></li>
+          <li><a href="#">Comunidade</a></li>
+          <li><a href="#" id="notificationsLink">Notificações</a></li>
+          <li><a href="#" id="authLink">Conectar Carteira</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="wallet-info" id="walletInfo" style="display: none;">
+          <i class="fas fa-wallet"></i>
+          <span class="wallet-address" id="walletAddressShort"></span>
+        </div>
+        <button class="cta" id="walletBtn">Carteira SDP</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Anonymous User Screen -->
+  <div class="container anonymous-container" id="anonymousScreen">
+    <div class="anonymous-card">
+      <div class="anonymous-icon">
+        <i class="fas fa-user-secret"></i>
+      </div>
+      <h1 class="anonymous-title">Acesso Web3</h1>
+      <p class="anonymous-subtitle">
+        Conecte sua carteira Ethereum para acessar todos os recursos do SafeDefi Protocol. 
+        Sua identidade blockchain, seus dados.
+      </p>
+      
+      <div class="anonymous-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fab fa-ethereum"></i>
+          </div>
+          <div class="feature-text">
+            <div class="feature-title">Login Sem Senhas</div>
+            <div class="feature-desc">Conecte-se instantaneamente com sua carteira</div>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="feature-text">
+            <div class="feature-title">Controle Total</div>
+            <div class="feature-desc">Você controla seus dados e identidade</div>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-coins"></i>
+          </div>
+          <div class="feature-text">
+            <div class="feature-title">Acesso Completo</div>
+            <div class="feature-desc">Staking, governança e todos os recursos DeFi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-buttons">
+        <button class="auth-btn metamask-btn" id="connectWalletBtn">
+          <i class="fab fa-ethereum"></i>
+          Conectar com MetaMask
+        </button>
+        
+        <button class="auth-btn traditional-btn" id="showTraditionalModal">
+          <i class="fas fa-user-plus"></i>
+          Criar Conta Tradicional
+        </button>
+      </div>
+
+      <div class="continue-anonymous">
+        <a id="continueAnonymous">Continuar navegando anonimamente</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Container -->
+  <div class="container profile-container" id="profileContainer">
+    <!-- Profile Sidebar -->
+    <div class="profile-sidebar">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h2 class="profile-name" id="userName">Usuário Web3</h2>
+          <div class="profile-title" id="userTitle">Membro da Comunidade</div>
+        </div>
+
+        <div class="wallet-display">
+          <div class="wallet-address-profile" id="walletAddressFull"></div>
+          <div class="wallet-balance">
+            <span>Saldo SDP:</span>
+            <span class="balance-amount" id="walletBalance">0.00</span>
+          </div>
+        </div>
+
+        <button class="logout-btn" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i> Desconectar Carteira
+        </button>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+      <div class="profile-card">
+        <h3 style="margin-top: 0; color: var(--neon-cyan);">Bem-vindo ao Web3!</h3>
+        <p style="color: rgba(160,240,255,0.8); line-height: 1.6;">
+          Sua carteira Ethereum está conectada e você tem acesso completo a todas as 
+          funcionalidades descentralizadas do SafeDefi Protocol.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+          <div style="text-align: center; padding: 20px; background: rgba(0,247,255,0.05); border-radius: 12px; border: 1px solid rgba(0,247,255,0.1);">
+            <i class="fab fa-ethereum" style="font-size: 24px; color: var(--neon-cyan); margin-bottom: 10px;"></i>
+            <div style="font-weight: 600;">Identidade Web3</div>
+            <div style="font-size: 12px; color: rgba(160,240,255,0.6);">Baseada na blockchain</div>
+          </div>
+          
+          <div style="text-align: center; padding: 20px; background: rgba(157,78,221,0.05); border-radius: 12px; border: 1px solid rgba(157,78,221,0.1);">
+            <i class="fas fa-vote-yea" style="font-size: 24px; color: var(--neon-purple); margin-bottom: 10px;"></i>
+            <div style="font-weight: 600;">Governança</div>
+            <div style="font-size: 12px; color: rgba(160,240,255,0.6);">Participe das votações</div>
+          </div>
+          
+          <div style="text-align: center; padding: 20px; background: rgba(255,107,107,0.05); border-radius: 12px; border: 1px solid rgba(255,107,107,0.1);">
+            <i class="fas fa-coins" style="font-size: 24px; color: var(--neon-pink); margin-bottom: 10px;"></i>
+            <div style="font-weight: 600;">Staking</div>
+            <div style="font-size: 12px; color: rgba(160,240,255,0.6);">Ganhe recompensas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wallet Connection Modal -->
+  <div class="modal-overlay" id="walletModal">
+    <div class="auth-modal">
+      <button class="modal-close" id="closeWalletModal">&times;</button>
+      <h2 class="modal-title">Conectar Carteira</h2>
+      <p class="modal-subtitle">Escolha sua carteira Web3 preferida</p>
+      
+      <div class="wallet-options">
+        <div class="wallet-option active" id="metamaskOption">
+          <div class="wallet-icon">
+            <i class="fab fa-ethereum"></i>
+          </div>
+          <div class="wallet-info-modal">
+            <div class="wallet-name">MetaMask</div>
+            <div class="wallet-desc">Carteira Ethereum mais popular</div>
+          </div>
+        </div>
+        
+        <div class="wallet-option" id="walletConnectOption">
+          <div class="wallet-icon" style="background: linear-gradient(135deg, #3b99fc, #2a6dfb);">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <div class="wallet-info-modal">
+            <div class="wallet-name">WalletConnect</div>
+            <div class="wallet-desc">Conecte carteiras móveis</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="connect-btn" id="connectBtn">
+        <i class="fab fa-ethereum"></i>
+        Conectar com MetaMask
+      </button>
+
+      <div class="install-metamask" id="installMetamask" style="display: none;">
+        <p>MetaMask não detectado. <a href="https://metamask.io/download.html" target="_blank">Instalar MetaMask</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Estado do usuário
+    let userState = {
+      isLoggedIn: false,
+      userData: null,
+      walletAddress: null,
+      walletBalance: '0.00'
+    };
+
+    // Elementos da DOM
+    const anonymousScreen = document.getElementById('anonymousScreen');
+    const profileContainer = document.getElementById('profileContainer');
+    const userStatus = document.getElementById('userStatus');
+    const authLink = document.getElementById('authLink');
+    const walletInfo = document.getElementById('walletInfo');
+    const walletAddressShort = document.getElementById('walletAddressShort');
+    const walletAddressFull = document.getElementById('walletAddressFull');
+    const walletBalance = document.getElementById('walletBalance');
+    const userName = document.getElementById('userName');
+    const userTitle = document.getElementById('userTitle');
+    
+    // Botões
+    const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    // Modal
+    const walletModal = document.getElementById('walletModal');
+    const closeWalletModal = document.getElementById('closeWalletModal');
+    const connectBtn = document.getElementById('connectBtn');
+    const installMetamask = document.getElementById('installMetamask');
+
+    // Verificar se MetaMask está disponível
+    const isMetaMaskInstalled = () => {
+      return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+    };
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      checkUserState();
+      setupEventListeners();
+      checkMetaMaskAvailability();
+    });
+
+    // Verificar estado do usuário
+    function checkUserState() {
+      const savedUser = localStorage.getItem('safedefi_web3_user');
+      if (savedUser) {
+        userState = JSON.parse(savedUser);
+        if (userState.isLoggedIn && userState.walletAddress) {
+          showProfile();
+        } else {
+          showAnonymous();
+        }
+      } else {
+        showAnonymous();
+      }
+    }
+
+    // Mostrar tela anônima
+    function showAnonymous() {
+      anonymousScreen.style.display = 'flex';
+      profileContainer.classList.remove('active');
+      userStatus.textContent = 'Usuário Anônimo';
+      authLink.textContent = 'Conectar Carteira';
+      walletInfo.style.display = 'none';
+    }
+
+    // Mostrar perfil do usuário
+    function showProfile() {
+      anonymousScreen.style.display = 'none';
+      profileContainer.classList.add('active');
+      
+      if (userState.userData) {
+        userName.textContent = userState.userData.name;
+        userTitle.textContent = `Nível ${userState.userData.level} - ${userState.userData.title}`;
+      }
+      
+      if (userState.walletAddress) {
+        const shortAddress = `${userState.walletAddress.slice(0, 6)}...${userState.walletAddress.slice(-4)}`;
+        userStatus.textContent = shortAddress;
+        walletAddressShort.textContent = shortAddress;
+        walletAddressFull.textContent = userState.walletAddress;
+        walletBalance.textContent = userState.walletBalance;
+        walletInfo.style.display = 'flex';
+      }
+      
+      authLink.textContent = 'Perfil';
+    }
+
+    // Configurar event listeners
+    function setupEventListeners() {
+      // Conectar carteira
+      connectWalletBtn.addEventListener('click', () => {
+        if (isMetaMaskInstalled()) {
+          walletModal.classList.add('active');
+        } else {
+          installMetamask.style.display = 'block';
+          walletModal.classList.add('active');
+        }
+      });
+
+      // Fechar modal
+      closeWalletModal.addEventListener('click', () => {
+        walletModal.classList.remove('active');
+        installMetamask.style.display = 'none';
+      });
+
+      // Conectar com MetaMask
+      connectBtn.addEventListener('click', connectMetaMask);
+
+      // Logout
+      logoutBtn.addEventListener('click', handleLogout);
+
+      // Verificar mudanças na conta MetaMask
+      if (isMetaMaskInstalled()) {
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
+        window.ethereum.on('chainChanged', handleChainChanged);
+      }
+    }
+
+    // Verificar disponibilidade do MetaMask
+    function checkMetaMaskAvailability() {
+      if (!isMetaMaskInstalled()) {
+        connectWalletBtn.innerHTML = `
+          <i class="fab fa-ethereum"></i>
+          Instalar MetaMask
+        `;
+        connectWalletBtn.onclick = () => {
+          window.open('https://metamask.io/download.html', '_blank');
+        };
+      }
+    }
+
+    // Conectar com MetaMask
+    async function connectMetaMask() {
+      if (!isMetaMaskInstalled()) {
+        showNotification('MetaMask não encontrado. Por favor, instale a extensão.', 'error');
+        return;
+      }
+
+      try {
+        connectBtn.disabled = true;
+        connectBtn.innerHTML = '<div class="spinner"></div> Conectando...';
+
+        // Solicitar acesso às contas
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts'
+        });
+
+        if (accounts.length === 0) {
+          throw new Error('Nenhuma conta encontrada');
+        }
+
+        const address = accounts[0];
+        
+        // Obter saldo (simulado para demonstração)
+        const balance = await getWalletBalance(address);
+
+        // Criar perfil do usuário
+        userState = {
+          isLoggedIn: true,
+          walletAddress: address,
+          walletBalance: balance,
+          userData: {
+            name: `Usuário ${address.slice(2, 6)}`,
+            username: `user_${address.slice(2, 8)}`,
+            level: Math.floor(Math.random() * 5) + 1,
+            title: ['Iniciante', 'Explorador', 'Confiável', 'Expert', 'Mestre'][Math.floor(Math.random() * 5)],
+            joinDate: new Date().toISOString()
+          }
+        };
+
+        // Salvar no localStorage
+        localStorage.setItem('safedefi_web3_user', JSON.stringify(userState));
+
+        // Fechar modal e mostrar perfil
+        walletModal.classList.remove('active');
+        showProfile();
+        showNotification('Carteira conectada com sucesso!', 'success');
+
+      } catch (error) {
+        console.error('Erro ao conectar MetaMask:', error);
+        showNotification('Erro ao conectar carteira: ' + error.message, 'error');
+      } finally {
+        connectBtn.disabled = false;
+        connectBtn.innerHTML = '<i class="fab fa-ethereum"></i> Conectar com MetaMask';
+      }
+    }
+
+    // Obter saldo da carteira (simulado)
+    async function getWalletBalance(address) {
+      // Em uma implementação real, você buscaria o saldo real da blockchain
+      // Aqui estamos simulando um saldo para demonstração
+      return (Math.random() * 1000).toFixed(2);
+    }
+
+    // Manipular mudança de contas
+    function handleAccountsChanged(accounts) {
+      if (accounts.length === 0) {
+        // Usuário desconectou todas as contas
+        handleLogout();
+      } else if (accounts[0] !== userState.walletAddress) {
+        // Usuário mudou de conta
+        showNotification('Conta alterada. Reconectando...', 'info');
+        connectMetaMask();
+      }
+    }
+
+    // Manipular mudança de rede
+    function handleChainChanged(chainId) {
+      showNotification('Rede alterada. Atualizando...', 'info');
+      // Recarregar a página para garantir compatibilidade
+      window.location.reload();
+    }
+
+    // Logout
+    function handleLogout() {
+      userState = {
+        isLoggedIn: false,
+        userData: null,
+        walletAddress: null,
+        walletBalance: '0.00'
+      };
+      
+      // Remover do localStorage
+      localStorage.removeItem('safedefi_web3_user');
+      
+      // Mostrar tela anônima
+      showAnonymous();
+      showNotification('Carteira desconectada', 'info');
+    }
+
+    // Sistema de notificações
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(30,6,50,0.9));
+        color: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(0,247,255,0.3);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+      `;
+      
+      if (type === 'success') {
+        notification.style.borderColor = 'rgba(78,205,196,0.5)';
+      } else if (type === 'error') {
+        notification.style.borderColor = 'rgba(255,107,107,0.5)';
+      }
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Animação de entrada
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 10);
+      
+      // Remover após 5 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

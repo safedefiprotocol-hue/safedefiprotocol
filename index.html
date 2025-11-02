@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SafeDefi Protocol</title>
+
+  <!-- Fonts & Libraries -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwIiB4Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiMGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGMzY2ZmIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJNMTggMjAgTDUwIDIwIEw4MiA1MCBMNTAgODAgTDE4IDgwIEw0NiA1MCBMMTggMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
+<a href="index.html" class="btn-voltar">⬅ Voltar para o SafeDeFi Protocol</a>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ===========================
+       Variables & Base
+       =========================== */
+       
+    .btn-cartao {
+  display:inline-block;
+  padding:10px 18px;
+  background:linear-gradient(90deg,#00b0ff,#8c3cff);
+  color:white;
+  border:none;
+  border-radius:8px;
+  text-decoration:none;
+  font-family:'Orbitron', sans-serif;
+  font-weight:600;
+  box-shadow:0 0 18px rgba(140,60,255,0.6);
+  transition:0.3s;
+}
+.btn-cartao:hover {
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(140,60,255,0.9);
+}
+   
+    :root{
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff6b6b;
+      --muted: rgba(160,240,255,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --text: #cfeeff;
+      --accent-1: #4ecdc4;
+      --max-width: 1200px;
+      --radius-lg: 16px;
+      --glass-border: rgba(0,255,255,0.06);
+      --glass-border-2: rgba(157,78,221,0.05);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:24px}
+
+    /* ===========================
+       Header
+       =========================== */
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:1000;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(2,6,15,0.6), rgba(2,6,15,0.25));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding:12px 0;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-hex{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,247,255,0.08), inset 0 -6px 24px rgba(0,0,0,0.3);
+      transform: rotate(12deg);
+    }
+    .logo-hex svg{filter: drop-shadow(0 6px 20px rgba(157,78,221,0.12));}
+    .title{font-weight:800; font-size:1rem; letter-spacing:0.2px; color:white}
+    .subtitle{font-size:0.78rem;color:rgba(160,240,255,0.9);opacity:0.9}
+
+    nav ul{display:flex;gap:18px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:rgba(160,240,255,0.9)}
+    nav a:hover{background: linear-gradient(90deg, rgba(0,247,255,0.06), rgba(157,78,221,0.04)); color:var(--neon-cyan); transform:translateY(-2px);}
+
+    .cta{
+      padding:8px 16px;border-radius:30px;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      font-weight:700;color:#031025;box-shadow: 0 6px 20px rgba(0,247,255,0.08);
+      border:none;cursor:pointer;
+    }
+    .cta:active{transform:translateY(1px)}
+
+    /* ===========================
+       Hero
+       =========================== */
+    .hero{
+      min-height:100vh;display:grid;align-items:center;padding-top:96px;padding-bottom:40px;
+      position:relative;overflow:hidden;
+    }
+
+    /* particle canvas fills hero */
+    #bgCanvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+
+    .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 520px;gap:32px;align-items:center;padding:40px 24px}
+    @media (max-width:980px){ .hero-inner{grid-template-columns:1fr; padding:20px} }
+
+    .hero-left{padding:28px; border-radius:18px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid var(--glass-border); box-shadow: 0 20px 60px rgba(3,6,12,0.6); transform: translateZ(0); }
+    .hero-right{padding:18px;border-radius:18px;background: linear-gradient(180deg, rgba(10,10,10,0.25), rgba(0,0,0,0.15)); border:1px solid rgba(255,255,255,0.02); box-shadow: inset 0 2px 8px rgba(255,255,255,0.02);}
+
+    h1.big{
+      font-size:44px;line-height:1.02;margin:0;padding:0;
+      background:linear-gradient(90deg,var(--neon-cyan),#0072ff,var(--neon-purple));
+      -webkit-background-clip:text; color:transparent; font-weight:900;
+      text-shadow: 0 6px 30px rgba(0,247,255,0.04);
+    }
+    p.lead{color:rgba(160,240,255,0.9);font-size:15px;margin-top:10px;max-width:52ch}
+
+    .controls{margin-top:18px;display:flex;gap:12px;align-items:center}
+    .ghost{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);cursor:pointer}
+    .kbd{background:rgba(255,255,255,0.02);border-radius:8px;padding:6px 8px;font-weight:700;font-size:13px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* small stats */
+    .stats-row{display:flex;gap:12px;margin-top:18px}
+    .stat { flex:1; padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(0,255,255,0.03); text-align:center }
+    .stat .num{font-weight:900;font-size:20px;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple)); -webkit-background-clip:text;color:transparent}
+    .stat .label{font-size:12px;color:rgba(160,240,255,0.6)}
+
+    /* ===========================
+       Right Panel - Network + Cards
+       =========================== */
+    .network-stage{height:520px;border-radius:14px; overflow:hidden; position:relative}
+    #networkCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+    .network-overlay{position:relative;z-index:2;padding:18px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+
+    .floating-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+      border:1px solid rgba(255,255,255,0.02);
+      padding:14px;border-radius:12px;color:var(--text);
+      width:200px;backdrop-filter: blur(6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .floating-card:hover{transform:translateY(-8px) scale(1.02);box-shadow: 0 24px 60px rgba(0,0,0,0.6)}
+
+    .card-grid{display:flex;gap:12px;align-items:center}
+    .card-title{font-weight:700;font-size:14px}
+    .card-sub{font-size:12px;color:rgba(160,240,255,0.6)}
+
+    /* ===========================
+       Sections
+       =========================== */
+    section{padding:72px 24px}
+    .section-title{
+      font-size:28px;margin:0 0 10px 0;
+      background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      -webkit-background-clip:text;color:transparent;font-weight:800
+    }
+
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media (max-width:980px){ .grid-3{grid-template-columns:1fr} }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.02)
+    }
+
+    /* tokenomics chart container */
+    .chart-wrap{height:320px;display:flex;align-items:center;justify-content:center}
+
+    /* FAQ */
+    details{background:var(--glass);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.02)}
+    summary{cursor:pointer;font-weight:700}
+    details[open]{box-shadow: 0 18px 60px rgba(0,0,0,0.6);}
+
+    /* Footer */
+    footer{padding:40px 24px;background:linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2));border-top:1px solid rgba(255,255,255,0.02);margin-top:40px}
+    .footer-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    @media (max-width:650px){ .footer-row{flex-direction:column;align-items:flex-start} }
+
+    /* small utilities: glow, glitch, typing */
+    .glow{text-shadow: 0 6px 30px rgba(0,247,255,0.12);}
+    .glitch{
+      position:relative;color:transparent;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      -webkit-background-clip:text;font-weight:900;font-size:32px; letter-spacing:-0.5px;
+    }
+    .typing{font-weight:700;font-size:18px;color:var(--neon-cyan);display:inline-block}
+
+    /* scroll reveal helpers */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1;transform:none}
+
+    /* small responsive tweaks */
+    @media (max-width:680px){
+      .logo-hex{width:46px;height:46px}
+      h1.big{font-size:28px}
+      .hero-inner{grid-template-columns:1fr}
+      .network-stage{height:360px}
+    }
+
+    /* ===========================
+       NEW: Notification System
+       =========================== */
+    .notification-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notification {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(30, 6, 50, 0.9));
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 247, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      max-width: 300px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      border-color: rgba(78, 205, 196, 0.5);
+    }
+
+    .notification.error {
+      border-color: rgba(255, 107, 107, 0.5);
+    }
+
+    .notification.warning {
+      border-color: rgba(255, 230, 109, 0.5);
+    }
+
+    /* ===========================
+       NEW: Theme Toggle
+       =========================== */
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===========================
+       NEW: Mobile Menu
+       =========================== */
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(2, 6, 15, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      nav ul.active {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* ===========================
+       NEW: Loading Spinner
+       =========================== */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 247, 255, 0.2);
+      border-left: 4px solid var(--neon-cyan);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ===========================
+       NEW: Form Improvements
+       =========================== */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 0 2px rgba(0, 247, 255, 0.2);
+    }
+
+    .form-input.error {
+      border-color: var(--neon-pink);
+    }
+
+    .error-message {
+      color: var(--neon-pink);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* ===========================
+       Security Log Styles
+       =========================== */
+    .security-log-container {
+      background: rgba(25, 25, 35, 0.9);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 40px auto;
+      max-width: 1200px;
+    }
+
+    .security-log-header {
+      background: rgba(15, 15, 25, 0.95);
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .security-logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .security-logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+      border-radius: 8px;
+      margin-right: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      animation: pulse 2s infinite;
+    }
+
+    .security-logo:before, .security-logo:after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border: 2px solid white;
+      border-radius: 4px;
+    }
+
+    .security-logo:before {
+      transform: translate(-5px, -5px);
+    }
+
+    .security-logo:after {
+      transform: translate(5px, 5px);
+    }
+
+    .security-title-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .security-main-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .security-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.5px;
+    }
+
+    .security-status-indicator {
+      display: flex;
+      align-items: center;
+      background: rgba(46, 204, 113, 0.2);
+      padding: 8px 15px;
+      border-radius: 20px;
+      color: #2ecc71;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .security-status-dot {
+      width: 8px;
+      height: 8px;
+      background: #2ecc71;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: blink 2s infinite;
+    }
+
+    .security-timeline-container {
+      padding: 25px 30px;
+      background: rgba(20, 20, 30, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .security-timeline-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .security-timeline {
+      height: 30px;
+      background: rgba(40, 40, 60, 0.8);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .security-timeline-progress {
+      position: absolute;
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 100%);
+      border-radius: 6px;
+    }
+
+    .security-timeline-thumb {
+      position: absolute;
+      width: 12px;
+      height: 36px;
+      background: white;
+      border-radius: 3px;
+      top: -3px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .security-timeline-thumb.start {
+      left: 60%;
+    }
+
+    .security-timeline-thumb.end {
+      right: 0;
+    }
+
+    .security-controls {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      background: rgba(20, 20, 30, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .security-filter-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .security-filter-btn {
+      background: rgba(60, 60, 80, 0.8);
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .security-filter-btn.active {
+      background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+    }
+
+    .security-filter-btn:hover {
+      background: rgba(80, 80, 100, 0.8);
+    }
+
+    .security-action-controls {
+      display: flex;
+    }
+
+    .security-control-btn {
+      background: rgba(60, 60, 80, 0.8);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .security-control-btn:hover {
+      background: rgba(80, 80, 100, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .security-logs-container {
+      padding: 30px;
+    }
+
+    .security-logs-header {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr;
+      padding: 15px 20px;
+      background: rgba(30, 30, 45, 0.8);
+      border-radius: 8px 8px 0 0;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .security-logs {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .security-log-entry {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr;
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeIn 0.5s ease;
+      transition: background 0.3s ease;
+    }
+
+    .security-log-entry:hover {
+      background: rgba(40, 40, 60, 0.5);
+    }
+
+    .security-log-time {
+      color: #8e2de2;
+      font-weight: 500;
+    }
+
+    .security-log-event {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .security-log-user {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .security-log-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      width: fit-content;
+    }
+
+    .security-status-success {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+    }
+
+    .security-status-warning {
+      background: rgba(241, 196, 15, 0.2);
+      color: #f1c40f;
+    }
+
+    .security-status-danger {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+    }
+
+    .security-status-info {
+      background: rgba(52, 152, 219, 0.2);
+      color: #3498db;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+
+    /* Security log scrollbar styling */
+    .security-logs::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .security-logs::-webkit-scrollbar-track {
+      background: rgba(30, 30, 45, 0.8);
+      border-radius: 4px;
+    }
+
+    .security-logs::-webkit-scrollbar-thumb {
+      background: rgba(74, 0, 224, 0.6);
+      border-radius: 4px;
+    }
+
+    .security-logs::-webkit-scrollbar-thumb:hover {
+      background: rgba(142, 45, 226, 0.8);
+    }
+
+    .security-footer {
+      padding: 15px 30px;
+      background: rgba(15, 15, 25, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .security-live-indicator {
+      display: flex;
+      align-items: center;
+    }
+
+    .security-live-dot {
+      width: 8px;
+      height: 8px;
+      background: #e74c3c;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: blink 1s infinite;
+    }
+    
+    
+  </style>
+  
+</head>
+<body>
+ <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo-hex" id="logoHex">
+          <!-- simple hex / chip icon -->
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#041029" stroke-width="0.6" fill="#021025" opacity="0.22"></path>
+            <path d="M7 9.2h10M7 14.8h10" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="title">SafeDefi Protocol</div>
+          <div class="subtitle">Segurança · Sustentabilidade · Crescimento</div>
+        </div>
+      </div>
+
+<nav>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+  <nav>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+  <ul id="navMenu">
+    <li><a href="cartao.html" class="btn-cartao">Cartão Security Log</a></li>
+    <li><a href="visao.html">sobre</a></li>
+    <li><a href="inscrever.html">Inscrição</a></li>
+    <li><a href="usuario.html">Perfil</a></li>
+    <li><a href="afiliados.html">Afiliados</a></li>
+    <li><a href="blockchain.html">Blockchain</a></li>
+    <li><a href="emprestimos.html">Emprestimos</a></li>
+    <li><a href="noticiasprojeto.html" class="btn-visao">Noticias</a></li>
+  </ul>
+  
+</nav>
+  <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+  <ul id="navMenu">
+    <li><a href="cursos.html">Cursos</a></li>
+    <li><a href="notificacao.html">notificação</a></li>
+    <li><a href=".html">carteira</a></li>
+    <li><a href="solana.html">COMPRAR</a></li>
+    <li><a href="aviso.html">Aviso</a></li>
+    <li><a href="#security">Segurança</a></li>
+    <li><a href="visao.html" class="btn-visao">Visão</a></li>
+
+  </ul>
+</nav>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="theme-toggle" id="themeToggle" title="Alternar tema">
+          🌙
+        </button>
+        <button class="cta" id="joinBtn">Participar da Pré-venda</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Container -->
+  <div class="notification-container" id="notificationContainer"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="container hero-inner">
+      <!-- LEFT: Title & CTAs -->
+      <div class="hero-left">
+        
+            </div>
+          </div>
+
+          <div>
+            <h1 class="big glow">SafeDefi Protocol</h1>
+            <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+              <div class="glitch">Segurança · Sustentabilidade</div>
+            </div>
+
+            <p class="lead">Além do DeFi é transformar o SafeDeFi Protocol em um ecossistema logistico descentralizado, onde produtos e serviços podem ser comprados sem os altos impostos que tornam o empreendedorismo inviável em alguns países. Entre agora na pré-venda e participe dessa construção.</p>
+
+            <div class="controls">
+              <button class="cta" id="primaryCTA">Entrar na Pré-venda</button>
+              <button class="ghost" id="playDemo">Ver Demo</button>
+              <div class="kbd">Estágio 1 • $0.05</div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat">
+                <div class="num" id="statInvest">2,365</div>
+                <div class="label">Investidores</div>
+              </div>
+              <div class="stat">
+                <div class="num" id="statPrice">$0.05</div>
+                <div class="label">Preço Inicial</div>
+              </div>
+              <div class="stat">
+                <div class="num" id="statTx">1,732</div>
+                <div class="label">Transações</div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px">
+              <span class="typing" id="typingArea"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Network visual + cards -->
+      <div class="hero-right">
+        <div class="network-stage" id="networkStage">
+          <canvas id="networkCanvas"></canvas>
+
+          <div class="network-overlay">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:12px;color:rgba(160,240,255,0.6)">Rede SDP</div>
+                <div style="font-weight:800;font-size:20px">Nó Distribuído • Conectado</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:12px;color:rgba(160,240,255,0.6)">Taxa</div>
+                <div style="font-weight:800;font-size:18px">0.2%</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:center;justify-content:center">
+              <div class="floating-card reveal" style="transform:translateY(0)">
+                <div class="card-title">Staking</div>
+                <div class="card-sub">APY variável • Recompensas crescentes</div>
+                <div style="margin-top:10px;font-weight:800;font-size:18px;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));-webkit-background-clip:text;color:transparent">~6%</div>
+              </div>
+
+              <div class="floating-card reveal">
+                <div class="card-title">Queima Programada</div>
+                <div class="card-sub">15% do supply inicial</div>
+                <div style="margin-top:10px;font-weight:800;font-size:18px;background:linear-gradient(90deg,var(--neon-pink),var(--neon-purple));-webkit-background-clip:text;color:transparent">149.848.498 M</div>
+              </div>
+
+              <div class="floating-card reveal">
+                <div class="card-title">Auditoria</div>
+                <div class="card-sub">Auditoria contínua por parceiros</div>
+                <div style="margin-top:10px;font-weight:800;font-size:18px">✔️ Concluída</div>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-size:12px;color:rgba(160,240,255,0.6)">Nós Ativos</div>
+              <div style="font-weight:800">128</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="reveal">
+      <div style="height:20px"></div>
+
+      <div class="grid-3">
+        <div class="panel reveal">
+          <h4 style="margin:0 0 8px 0">Indentidade Digital</h4>
+          <p style="color:rgba(160,240,255,0.7)">Fornecer identidade digital e pagamentos para marketplaces terceiros. Contratos auditados, ferramentas de monitoramento on-chain e mecanismos de governança real.</p>
+        </div>
+        <div class="panel reveal">
+          <h4 style="margin:0 0 8px 0">Ecossistema de Educação e Inovação </h4>
+          <p style="color:rgba(160,240,255,0.7)"> Oferecer capacitação e infraestrutura para outros empreendedores.</p>
+        </div>
+        <div class="panel reveal">
+          <h4 style="margin:0 0 8px 0">Integração com Ecossistema Financeiro:</h4>
+          <p style="color:rgba(160,240,255,0.7)">Buscaremos parcerias com FinTechs e gateways de pagamento para que o SDP seja uma opção de pagamento e recebimento dentro de seus apps, um caminho mais viável e rápido do que tentar substituir os gigantes do varejo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKENOMICS -->
+  <section id="tokenomics" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Tokenomics</h2>
+      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-top:18px">
+        <div style="flex:1;min-width:320px" class="panel reveal">
+          <h4 style="margin-top:0">Distribuição</h4>
+          <ul style="color:rgba(160,240,255,0.75);margin-left:18px">
+            <li>Pré-venda — 40% </li>
+            <li>Liquidez — 25% </li>
+            <li>Queima — 15% </li>
+            <li>Desenvolvimento — 10% </li>
+            <li>Marketing — 5% </li>
+            <li>Equipe — 5% </li>
+          </ul>
+        </div>
+
+        <div style="width:460px;min-width:300px" class="panel reveal">
+          <div style="height:320px" class="chart-wrap">
+            <canvas id="distChart" width="420" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:20px"></div>
+
+      <div class="panel reveal">
+        <h4 style="margin-top:0">Cronograma de Liberação</h4>
+        <div style="height:220px" class="chart-wrap">
+          <canvas id="releaseChart" width="900" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Prova de Confiança Section -->
+  <section id="trust-proof" class="reveal" style="padding:80px 20px; text-align:center; background:rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-radius:20px; margin:80px auto; max-width:1200px; box-shadow:0 0 30px rgba(0,255,200,0.2);">
+    <h2 style="font-size:2.5rem; color:#0ff; margin-bottom:20px;">🔒 Prova de Confiança</h2>
+    <p style="color:#ccc; max-width:900px; margin:0 auto 40px; font-size:1.2rem;">
+      Cada produto ou serviço dentro do <strong>SafeDeFi Protocol</strong> é autenticado e validado na blockchain, garantindo <span style="color:#0ff;">autenticidade, responsabilidade e transparência total</span>.
+    </p>
+
+    <div class="trust-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:25px; margin-top:40px;">
+      <!-- Card 1 -->
+      <div class="trust-card">
+        <h3>🔑 Como funciona</h3>
+        <ul>
+          <li>Cada produto ou serviço recebe um <strong>hash exclusivo</strong> na blockchain.</li>
+          <li>Esse hash é vinculado ao prestador via <strong>Web3 ID</strong>.</li>
+          <li>O histórico fica <strong>público e imutável</strong>.</li>
+        </ul>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="trust-card">
+        <h3>🌟 Benefícios</h3>
+        <ul>
+          <li><strong>Autenticidade:</strong> validação de legitimidade.</li>
+          <li><strong>Responsabilidade:</strong> histórico auditável, sem espaço para fraude.</li>
+          <li><strong>Transparência:</strong> qualquer pessoa pode consultar os registros.</li>
+        </ul>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="trust-card">
+        <h3>🚀 Impacto no Marketplace</h3>
+        <p>
+          O SafeDeFi Protocol cria um <strong>ecossistema confiável</strong>, onde cada transação possui uma assinatura digital imutável, fortalecendo segurança e confiança para usuários e investidores.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section id="newsletter" class="reveal" style="padding:60px 20px; text-align:center; background:rgba(0,0,0,0.3); backdrop-filter: blur(10px); border-radius:20px; margin:80px auto; max-width:800px;">
+    <h2 style="font-size:2rem; color:#0ff; margin-bottom:20px;">📧 Fique por Dentro</h2>
+    <p style="color:#ccc; max-width:600px; margin:0 auto 30px; font-size:1.1rem;">
+      Receba atualizações sobre o desenvolvimento do SafeDeFi Protocol e oportunidades exclusivas.
+    </p>
+    
+    <form id="newsletterForm" style="max-width:500px; margin:0 auto;">
+      <div class="form-group">
+        <input type="email" class="form-input" id="newsletterEmail" placeholder="Seu melhor e-mail" required>
+        <div class="error-message" id="emailError"></div>
+      </div>
+      <button type="submit" class="cta" style="width:100%;">Inscrever-se</button>
+    </form>
+  </section>
+
+  <!-- SECURITY LOG SECTION -->
+  <section id="security" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Sistema de Monitoramento de Segurança</h2>
+      <p style="color:rgba(160,240,255,0.8);max-width:900px">Monitoramento em tempo real de todas as atividades do protocolo SafeDefi para garantir a máxima segurança e transparência.</p>
+      
+      <div class="security-log-container">
+        <div class="security-log-header">
+          <div class="security-logo-container">
+            <div class="security-logo"></div>
+            <div class="security-title-container">
+              <div class="security-main-title">SafeDefi Security Log</div>
+              <div class="security-subtitle">Sistema de monitoramento em tempo real</div>
+            </div>
+          </div>
+          <div class="security-status-indicator">
+            <div class="security-status-dot"></div>
+            Sistema Seguro
+          </div>
+        </div>
+        
+        <div class="security-timeline-container">
+          <div class="security-timeline-label">
+            <span>Início: 0s</span>
+            <span>Fim: 7.2s</span>
+          </div>
+          <div class="security-timeline">
+            <div class="security-timeline-progress"></div>
+            <div class="security-timeline-thumb start"></div>
+            <div class="security-timeline-thumb end"></div>
+          </div>
+        </div>
+        
+        <div class="security-controls">
+          <div class="security-filter-controls">
+            <button class="security-filter-btn active">Todos os Eventos</button>
+            <button class="security-filter-btn">Segurança</button>
+            <button class="security-filter-btn">Sistema</button>
+            <button class="security-filter-btn">Atividade do Usuário</button>
+          </div>
+          <div class="security-action-controls">
+            <button class="security-control-btn" id="securityRefresh">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="security-control-btn" id="securityDownload">
+              <i class="fas fa-download"></i>
+            </button>
+            <button class="security-control-btn" id="securitySettings">
+              <i class="fas fa-cog"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="security-logs-container">
+          <div class="security-logs-header">
+            <div>Tempo</div>
+            <div>Evento</div>
+            <div>Usuário</div>
+            <div>Status</div>
+          </div>
+          <div class="security-logs" id="securityLogEntries">
+            <!-- Log entries will be added here by JavaScript -->
+          </div>
+        </div>
+        
+        <div class="security-footer">
+          <div>Última atualização: <span id="securityCurrentTime"></span></div>
+          <div class="security-live-indicator">
+            <div class="security-live-dot"></div>
+            Feed Ao Vivo Ativo
+          </div>
+          <div>Total de Eventos: <span id="securityEventCount">0</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-row">
+      <div>
+        <div style="font-weight:800">SafeDefi Protocol</div>
+        <div style="font-size:13px;color:rgba(160,240,255,0.6)">Objetivo: Buscamos alianças com instituições públicas e fundações para validar nosso protocolo de identidade digital. Imagine o SafeDeFi Protocol sendo usado para emitir credenciais profissionais verificadas, ou para garantir a procedência de produtos em cooperação com uma agência de exportação.
+
+Impacto: Isso não é apenas 'lobby'. É acesso a problemas reais em grande escala e uma via rápida para conformidade regulatória, um enorme diferencial para fundos preocupados com compliance.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       Scripts: particles, network, charts, interactions
+       =========================== -->
+  <script>
+    /* ===========================
+       Utility: Resize canvases to device pixel ratio
+       =========================== */
+    function fitCanvas(canvas) {
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      return ctx;
+    }
+
+    /* ===========================
+       Background particle field (bgCanvas)
+       =========================== */
+    (function initParticles(){
+      const canvas = document.getElementById('bgCanvas');
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      const ctx = fitCanvas(canvas);
+      let w = canvas.width, h = canvas.height;
+
+      let particles = [];
+      const count = Math.floor(Math.max(60, Math.min(170, (window.innerWidth*window.innerHeight)/6000)));
+
+      function rand(min,max){return Math.random()*(max-min)+min}
+      function makeParticles(){
+        particles = [];
+        for(let i=0;i<count;i++){
+          particles.push({
+            x: Math.random()*window.innerWidth,
+            y: Math.random()*window.innerHeight,
+            r: Math.random()*2.6 + 0.6,
+            vx: (Math.random()-0.5)*0.35,
+            vy: (Math.random()-0.5)*0.35,
+            hue: Math.random()*360,
+            life: Math.random()*100
+          });
+        }
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        // subtle gradient overlay
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        // draw particles
+        for(let p of particles){
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life += 0.2;
+          // wrap
+          if(p.x < -20) p.x = window.innerWidth + 20;
+          if(p.x > window.innerWidth + 20) p.x = -20;
+          if(p.y < -20) p.y = window.innerHeight + 20;
+          if(p.y > window.innerHeight + 20) p.y = -20;
+
+          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
+          gradient.addColorStop(0, 'rgba(0,247,255,0.12)');
+          gradient.addColorStop(0.5, 'rgba(157,78,221,0.06)');
+          gradient.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath();
+          ctx.fillStyle = gradient;
+          ctx.arc(p.x, p.y, p.r*2.5, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        // draw faint network lines between nearby particles
+        for(let i=0;i<particles.length;i++){
+          for(let j=i+1;j<particles.length;j++){
+            const a = particles[i], b = particles[j];
+            const dx = a.x-b.x, dy = a.y-b.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < 140){
+              const alpha = 0.06 * (1 - (dist/140));
+              ctx.strokeStyle = `rgba(0,247,255,${alpha})`;
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+
+      makeParticles();
+      window.addEventListener('resize', ()=>{
+        fitCanvas(canvas);
+        w = canvas.width; h = canvas.height;
+        makeParticles();
+      });
+
+      draw();
+    })();
+
+    /* ===========================
+       Network canvas — nodes & interactive lines (networkCanvas)
+       =========================== */
+    (function initNetwork(){
+      const canvas = document.getElementById('networkCanvas');
+      const ctx = fitCanvas(canvas);
+      let nodes = [];
+      const nodeCount = 10;
+      const padding = 60;
+
+      function setup(){
+        fitCanvas(canvas);
+        nodes = [];
+        const rect = canvas.getBoundingClientRect();
+        const W = rect.width, H = rect.height;
+        for(let i=0;i<nodeCount;i++){
+          nodes.push({
+            x: padding + Math.random()*(W - padding*2),
+            y: padding + Math.random()*(H - padding*2),
+            r: 6 + Math.random()*6,
+            vx: (Math.random()-0.5)*0.6,
+            vy: (Math.random()-0.5)*0.6,
+            hue: 180 + Math.random()*120
+          });
+        }
+      }
+
+      function drawNetwork(){
+        const rect = canvas.getBoundingClientRect();
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        // drop shadow gradient
+        const grd = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+        grd.addColorStop(0, 'rgba(0,0,0,0.0)');
+        grd.addColorStop(1, 'rgba(0,0,0,0.25)');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        // move nodes
+        for(let n of nodes){
+          n.x += n.vx;
+          n.y += n.vy;
+
+          const rect = canvas.getBoundingClientRect();
+          if(n.x < 20){ n.x = 20; n.vx *= -1 }
+          if(n.x > rect.width-20){ n.x = rect.width-20; n.vx *= -1 }
+          if(n.y < 20){ n.y = 20; n.vy *= -1 }
+          if(n.y > rect.height-20){ n.y = rect.height-20; n.vy *= -1 }
+        }
+
+        // draw lines
+        for(let i=0;i<nodes.length;i++){
+          for(let j=i+1;j<nodes.length;j++){
+            const a = nodes[i], b = nodes[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < 200){
+              const alpha = 0.12 * (1 - (dist/200));
+              ctx.strokeStyle = `rgba(157,78,221,${alpha})`;
+              ctx.lineWidth = 1.2 * (1 - dist/200);
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // draw nodes
+        for(let n of nodes){
+          // glow
+          ctx.beginPath();
+          const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r*7);
+          g.addColorStop(0, 'rgba(0,247,255,0.12)');
+          g.addColorStop(0.6, 'rgba(157,78,221,0.06)');
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = g;
+          ctx.arc(n.x, n.y, n.r*4, 0, Math.PI*2);
+          ctx.fill();
+
+          // inner circle
+          ctx.beginPath();
+          ctx.fillStyle = '#00e6ff';
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(drawNetwork);
+      }
+
+      // user mouse push
+      canvas.addEventListener('mousemove', (e)=>{
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        nodes.forEach(n=>{
+          const dx = n.x - mx, dy = n.y - my;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if(dist < 120){
+            // repel slightly
+            const ang = Math.atan2(dy, dx);
+            n.vx += Math.cos(ang) * 0.08;
+            n.vy += Math.sin(ang) * 0.08;
+          }
+        });
+      });
+
+      setup();
+      window.addEventListener('resize', setup);
+      drawNetwork();
+    })();
+
+    /* ===========================
+       Chart.js tokenomics charts
+       =========================== */
+    (function initCharts(){
+      // Distribuição - Doughnut
+      const ctx = document.getElementById('distChart').getContext('2d');
+      const distChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pré-venda 40%','Liquidez 25%','Queima 15%','Desenv 10%','Marketing 5%','Equipe 5%'],
+          datasets: [{
+            data: [40,25,15,10,5,5],
+            backgroundColor: ['#00f7ff','#ff6b6b','#4ecdc4','#ffe66d','#6a0572','#9d4edd'],
+            hoverOffset: 18,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '58%',
+          responsive:true,
+          plugins:{
+            legend:{position:'bottom',labels:{color:'rgba(160,240,255,0.9)'}}
+          }
+        }
+      });
+
+      // Release timeline - Line
+      const ctx2 = document.getElementById('releaseChart').getContext('2d');
+      const releaseChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['Jan 2025','Abr 2025','Jul 2025','Out 2025','Jan 2026','Abr 2026','Jul 2026','Out 2026'],
+          datasets: [
+            { label:'Pré-venda', data:[40,30,20,10,5,2,0,0], borderColor:'#00f7ff', tension:0.4, fill:true, backgroundColor:'rgba(0,247,255,0.06)'},
+            { label:'Equipe', data:[0,0,0,0,5,10,15,20], borderColor:'#9d4edd', tension:0.4, fill:true, backgroundColor:'rgba(157,78,221,0.06)'},
+            { label:'Desenv', data:[0,5,10,15,20,25,30,35], borderColor:'#4ecdc4', tension:0.4, fill:true, backgroundColor:'rgba(78,205,196,0.04)'}
+          ]
+        },
+        options:{
+          responsive:true,
+          plugins:{legend:{labels:{color:'rgba(160,240,255,0.9)'}}},
+          scales:{
+            x:{ticks:{color:'rgba(160,240,255,0.8)'}},
+            y:{ticks:{color:'rgba(160,240,255,0.8)'},beginAtZero:true,max:100}
+          }
+        }
+      });
+    })();
+
+    /* ===========================
+       Typing effect + micro-interactions (anime.js)
+       =========================== */
+    (function typingAndUI(){
+      const phrases = [
+        "Contratos auditados • Governança DAO",
+        "Queima estratégica • Modelagem deflacionária",
+        "Staking com recompensas • Segurança em primeiro lugar"
+      ];
+      const el = document.getElementById('typingArea');
+      let idx = 0;
+
+      function typePhrase(i){
+        const text = phrases[i].split('');
+        el.textContent = '';
+        let p = 0;
+        const t = setInterval(()=>{
+          el.textContent += text[p++];
+          if(p >= text.length){
+            clearInterval(t);
+            setTimeout(()=>erase(), 1400);
+          }
+        }, 28);
+        function erase(){
+          const r = setInterval(()=>{
+            el.textContent = el.textContent.slice(0,-1);
+            if(el.textContent.length === 0){
+              clearInterval(r);
+              idx = (idx+1) % phrases.length;
+              setTimeout(()=>typePhrase(idx), 300);
+            }
+          }, 18);
+        }
+      }
+      typePhrase(0);
+
+      // subtle logo animation
+      anime({
+        targets: '#logoHex',
+        rotate: [12, -8, 12],
+        duration: 6000,
+        easing: 'easeInOutSine',
+        loop:true
+      });
+
+      // reveal on scroll
+      const reveals = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.12});
+      reveals.forEach(n=>io.observe(n));
+
+      // small hover micro animation for join button
+      const join = document.getElementById('joinBtn');
+      join.addEventListener('mouseenter', ()=> {
+        anime({
+          targets: join,
+          scale:1.06,
+          duration:220,
+          easing:'spring(1,80,10,0)'
+        });
+      });
+      join.addEventListener('mouseleave', ()=> {
+        anime({targets:join,scale:1,duration:220,easing:'easeOutQuad'});
+      });
+
+      // stat counter animation
+      function countAnim(elm, from, to, duration=1200){
+        const start = performance.now();
+        requestAnimationFrame(function tick(now){
+          const t = Math.min(1, (now - start) / duration);
+          const v = Math.floor(from + (to - from) * t);
+          elm.textContent = v.toLocaleString();
+          if(t < 1) requestAnimationFrame(tick);
+        });
+      }
+      countAnim(document.getElementById('statInvest'), 1000, 2365, 1200);
+      countAnim(document.getElementById('statTx'), 400, 1732, 1200);
+
+      // demo button pulses network nodes for a moment
+      document.getElementById('playDemo').addEventListener('click', ()=>{
+        anime({
+          targets: '.floating-card',
+          translateY: [-4,0,-10,0],
+          duration: 1400,
+          delay: anime.stagger(80),
+          easing: 'easeInOutQuad'
+        });
+      });
+    })();
+
+    /* ===========================
+       Small: Smooth scroll for nav links
+       =========================== */
+    (function smoothScroll(){
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          const target = document.querySelector(a.getAttribute('href'));
+          if(!target) return;
+          window.scrollTo({top: target.getBoundingClientRect().top + window.scrollY - 84, behavior:'smooth'});
+        });
+      });
+    })();
+
+    /* ===========================
+       Small polish: reduce motion if prefers-reduced-motion
+       =========================== */
+    (function reduceMotion(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('*').forEach(el => el.style.transition = 'none');
+      }
+    })();
+
+    /* ===========================
+       NEW: Notification System
+       =========================== */
+    function showNotification(message, type = 'info', duration = 5000) {
+      const container = document.getElementById('notificationContainer');
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      container.appendChild(notification);
+      
+      // Trigger animation
+      setTimeout(() => notification.classList.add('show'), 10);
+      
+      // Auto remove after duration
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, duration);
+    }
+
+    /* ===========================
+       NEW: Theme Toggle
+       =========================== */
+    const themeToggle = document.getElementById('themeToggle');
+    let isDarkMode = true;
+
+    themeToggle.addEventListener('click', () => {
+      isDarkMode = !isDarkMode;
+      
+      if (isDarkMode) {
+        // Switch to dark mode
+        document.documentElement.style.setProperty('--bg-1', '#03040a');
+        document.documentElement.style.setProperty('--bg-2', '#060818');
+        document.documentElement.style.setProperty('--text', '#cfeeff');
+        themeToggle.textContent = '🌙';
+        showNotification('Modo escuro ativado', 'success');
+      } else {
+        // Switch to light mode
+        document.documentElement.style.setProperty('--bg-1', '#f0f2f5');
+        document.documentElement.style.setProperty('--bg-2', '#ffffff');
+        document.documentElement.style.setProperty('--text', '#333333');
+        themeToggle.textContent = '☀️';
+        showNotification('Modo claro ativado', 'success');
+      }
+    });
+
+    /* ===========================
+       NEW: Mobile Menu Toggle
+       =========================== */
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking on a link
+    document.querySelectorAll('#navMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+      });
+    });
+
+    /* ===========================
+       NEW: Form Validation
+       =========================== */
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterEmail = document.getElementById('newsletterEmail');
+    const emailError = document.getElementById('emailError');
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = newsletterEmail.value.trim();
+      
+      // Reset error state
+      newsletterEmail.classList.remove('error');
+      emailError.textContent = '';
+      
+      if (!email) {
+        newsletterEmail.classList.add('error');
+        emailError.textContent = 'Por favor, insira seu e-mail';
+        return;
+      }
+      
+      if (!validateEmail(email)) {
+        newsletterEmail.classList.add('error');
+        emailError.textContent = 'Por favor, insira um e-mail válido';
+        return;
+      }
+      
+      // Simulate form submission
+      showNotification('Inscrição realizada com sucesso!', 'success');
+      newsletterForm.reset();
+    });
+
+    /* ===========================
+       Security Log System
+       =========================== */
+    (function initSecurityLog() {
+      // Sample log data
+      const securityLogEvents = [
+        { time: "10:23:45", event: "Autenticação de usuário bem-sucedida", user: "admin@safedefi.com", status: "success" },
+        { time: "10:24:12", event: "Tentativa de login falhou", user: "unknown@external.com", status: "danger" },
+        { time: "10:25:03", event: "Regra de firewall atualizada", user: "sysadmin@safedefi.com", status: "info" },
+        { time: "10:26:51", event: "Backup de banco de dados iniciado", user: "backup@safedefi.com", status: "info" },
+        { time: "10:27:34", event: "Atividade suspeita na rede detectada", user: "system", status: "warning" },
+        { time: "10:28:17", event: "Violação de política de segurança", user: "user23@safedefi.com", status: "danger" },
+        { time: "10:29:42", event: "Atualização do sistema aplicada", user: "system", status: "success" },
+        { time: "10:30:15", event: "Novo dispositivo registrado", user: "user45@safedefi.com", status: "info" },
+        { time: "10:31:28", event: "Exportação de dados concluída", user: "analyst@safedefi.com", status: "success" },
+        { time: "10:32:05", event: "Múltiplas tentativas de login falharam", user: "unknown@external.com", status: "danger" }
+      ];
+
+      // Status class mapping
+      const securityStatusClasses = {
+        "success": "security-status-success",
+        "warning": "security-status-warning",
+        "danger": "security-status-danger",
+        "info": "security-status-info"
+      };
+
+      // Function to update current time
+      function updateSecurityTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        document.getElementById('securityCurrentTime').textContent = timeString;
+      }
+
+      // Function to add log entries with animation
+      function addSecurityLogEntries() {
+        const logsContainer = document.getElementById('securityLogEntries');
+        const eventCount = document.getElementById('securityEventCount');
+        
+        securityLogEvents.forEach((log, index) => {
+          setTimeout(() => {
+            const logEntry = document.createElement('div');
+            logEntry.className = 'security-log-entry';
+            
+            logEntry.innerHTML = `
+              <div class="security-log-time">${log.time}</div>
+              <div class="security-log-event">${log.event}</div>
+              <div class="security-log-user">${log.user}</div>
+              <div class="security-log-status ${securityStatusClasses[log.status]}">${log.status.toUpperCase()}</div>
+            `;
+            
+            logsContainer.appendChild(logEntry);
+            
+            // Update event count
+            eventCount.textContent = index + 1;
+            
+            // Scroll to the bottom
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+          }, index * 800); // Stagger the entries
+        });
+      }
+
+      // Initialize the log entries when page loads
+      updateSecurityTime();
+      addSecurityLogEntries();
+      
+      // Update time every second
+      setInterval(updateSecurityTime, 1000);
+      
+      // Add new log entries periodically to simulate live feed
+      setInterval(() => {
+        const logs = [
+          { time: new Date().toLocaleTimeString(), event: "Verificação de integridade do sistema", user: "system", status: "success" },
+          { time: new Date().toLocaleTimeString(), event: "Análise de tráfego de rede", user: "monitor@safedefi.com", status: "info" },
+          { time: new Date().toLocaleTimeString(), event: "Transação blockchain confirmada", user: "blockchain@safedefi.com", status: "success" },
+          { time: new Date().toLocaleTimeString(), event: "Scan de vulnerabilidades concluído", user: "security@safedefi.com", status: "info" }
+        ];
+        
+        const randomLog = logs[Math.floor(Math.random() * logs.length)];
+        const logsContainer = document.getElementById('securityLogEntries');
+        const eventCount = document.getElementById('securityEventCount');
+        
+        const logEntry = document.createElement('div');
+        logEntry.className = 'security-log-entry';
+        
+        logEntry.innerHTML = `
+          <div class="security-log-time">${randomLog.time}</div>
+          <div class="security-log-event">${randomLog.event}</div>
+          <div class="security-log-user">${randomLog.user}</div>
+          <div class="security-log-status ${securityStatusClasses[randomLog.status]}">${randomLog.status.toUpperCase()}</div>
+        `;
+        
+        logsContainer.appendChild(logEntry);
+        eventCount.textContent = parseInt(eventCount.textContent) + 1;
+        
+        // Scroll to the bottom
+        logsContainer.scrollTop = logsContainer.scrollHeight;
+      }, 7000);
+
+      // Add animation to timeline thumbs
+      document.querySelectorAll('.security-timeline-thumb').forEach(thumb => {
+        thumb.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+          
+          function onMouseMove(e) {
+            // This would normally update the position based on mouse movement
+            // For this example, we'll just add a visual effect
+            thumb.style.transform = 'scale(1.2)';
+          }
+          
+          function onMouseUp() {
+            thumb.style.transform = 'scale(1)';
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+          }
+        });
+      });
+
+      // Filter button functionality
+      document.querySelectorAll('.security-filter-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.security-filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          this.classList.add('active');
+          
+          // In a real implementation, this would filter the logs
+          showNotification(`Filtro aplicado: ${this.textContent}`, 'info');
+        });
+      });
+
+      // Control buttons functionality
+      document.getElementById('securityRefresh').addEventListener('click', () => {
+        showNotification('Logs de segurança atualizados', 'success');
+      });
+
+      document.getElementById('securityDownload').addEventListener('click', () => {
+        showNotification('Download do relatório de segurança iniciado', 'info');
+      });
+
+      document.getElementById('securitySettings').addEventListener('click', () => {
+        showNotification('Configurações de segurança abertas', 'info');
+      });
+    })();
+
+    // Initialize with a welcome notification
+    setTimeout(() => {
+      showNotification('Bem-vindo ao SafeDefi Protocol!', 'success');
+    }, 1000);
+      document.getElementById("joinBtn").addEventListener("click", function() {
+    window.location.href = "prevenda.html";
+  });
+
+  document.getElementById("primaryCTA").addEventListener("click", function() {
+    window.location.href = "prevenda.html";
+  });
+  </script>
+  
+</body>
+</html>

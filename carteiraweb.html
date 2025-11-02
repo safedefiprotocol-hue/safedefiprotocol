@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SafeDefi Protocol - Conexão MetaMask</title>
+
+  <!-- Fonts & Libraries -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwIiB4Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiMGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGMzY2ZmIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJNMTggMjAgTDUwIDIwIEw4MiA1MCBMNTAgODAgTDE4IDgwIEw0NiA1MCBMMTggMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ===========================
+       Variables & Base
+       =========================== */
+    :root{
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff6b6b;
+      --muted: rgba(160,240,255,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --text: #cfeeff;
+      --accent-1: #4ecdc4;
+      --max-width: 1200px;
+      --radius-lg: 16px;
+      --glass-border: rgba(0,255,255,0.06);
+      --glass-border-2: rgba(157,78,221,0.05);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:24px}
+
+    /* ===========================
+       Header
+       =========================== */
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:1000;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(2,6,15,0.6), rgba(2,6,15,0.25));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding:12px 0;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-hex{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,247,255,0.08), inset 0 -6px 24px rgba(0,0,0,0.3);
+      transform: rotate(12deg);
+    }
+    .logo-hex svg{filter: drop-shadow(0 6px 20px rgba(157,78,221,0.12));}
+    .title{font-weight:800; font-size:1rem; letter-spacing:0.2px; color:white}
+    .subtitle{font-size:0.78rem;color:rgba(160,240,255,0.9);opacity:0.9}
+
+    nav ul{display:flex;gap:18px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:rgba(160,240,255,0.9)}
+    nav a:hover{background: linear-gradient(90deg, rgba(0,247,255,0.06), rgba(157,78,221,0.04)); color:var(--neon-cyan); transform:translateY(-2px);}
+
+    .cta{
+      padding:8px 16px;border-radius:30px;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      font-weight:700;color:#031025;box-shadow: 0 6px 20px rgba(0,247,255,0.08);
+      border:none;cursor:pointer;
+    }
+    .cta:active{transform:translateY(1px)}
+
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .wallet-address {
+      font-size: 14px;
+      font-family: monospace;
+    }
+
+    /* ===========================
+       Main Content
+       =========================== */
+    .main-container {
+      margin-top: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .connection-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 24px;
+      padding: 50px 40px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+      max-width: 500px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+    }
+
+    .connection-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #031025;
+    }
+
+    .connection-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .connection-subtitle {
+      color: rgba(160,240,255,0.8);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .connection-status {
+      padding: 15px;
+      border-radius: 12px;
+      margin: 20px 0;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .status-connected {
+      background: rgba(78,205,196,0.1);
+      border-color: rgba(78,205,196,0.3);
+      color: var(--accent-1);
+    }
+
+    .status-disconnected {
+      background: rgba(255,107,107,0.1);
+      border-color: rgba(255,107,107,0.3);
+      color: var(--neon-pink);
+    }
+
+    .connection-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .connection-btn {
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .metamask-btn {
+      background: linear-gradient(90deg, #f6851b, #e2761b);
+      color: white;
+    }
+
+    .metamask-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(246, 133, 27, 0.4);
+    }
+
+    .metamask-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .disconnect-btn {
+      background: rgba(255,107,107,0.1);
+      color: var(--neon-pink);
+      border: 1px solid rgba(255,107,107,0.3);
+    }
+
+    .disconnect-btn:hover {
+      background: rgba(255,107,107,0.2);
+      transform: translateY(-2px);
+    }
+
+    .wallet-details {
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .wallet-info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .wallet-info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: rgba(160,240,255,0.6);
+    }
+
+    .info-value {
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    /* ===========================
+       Loading States
+       =========================== */
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-left: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ===========================
+       Responsive
+       =========================== */
+    @media (max-width: 768px) {
+      .connection-card {
+        padding: 30px 20px;
+      }
+      
+      .wallet-info {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo-hex" id="logoHex">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#041029" stroke-width="0.6" fill="#021025" opacity="0.22"></path>
+            <path d="M7 9.2h10M7 14.8h10" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="title">SafeDefi Protocol</div>
+          <div class="subtitle" id="userStatus">Desconectado</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="#" class="active">Conexão</a></li>
+          <li><a href="#">Comunidade</a></li>
+          <li><a href="#" id="notificationsLink">Notificações</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="wallet-info" id="walletInfo" style="display: none;">
+          <i class="fas fa-wallet"></i>
+          <span class="wallet-address" id="walletAddressShort"></span>
+        </div>
+        <button class="cta" id="walletBtn">Conectar Carteira</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container main-container">
+    <div class="connection-card">
+      <div class="connection-icon">
+        <i class="fab fa-ethereum"></i>
+      </div>
+      <h1 class="connection-title">Conexão Web3</h1>
+      <p class="connection-subtitle">
+        Conecte sua carteira Ethereum para acessar todos os recursos do SafeDefi Protocol.
+      </p>
+
+      <!-- Status da Conexão -->
+      <div class="connection-status" id="connectionStatus">
+        <i class="fas fa-circle" style="color: var(--neon-pink);"></i>
+        <span>Desconectado</span>
+      </div>
+
+      <!-- Detalhes da Carteira (quando conectado) -->
+      <div class="wallet-details" id="walletDetails" style="display: none;">
+        <div class="wallet-info-item">
+          <span class="info-label">Endereço:</span>
+          <span class="info-value" id="walletAddressFull"></span>
+        </div>
+        <div class="wallet-info-item">
+          <span class="info-label">Rede:</span>
+          <span class="info-value" id="networkInfo"></span>
+        </div>
+        <div class="wallet-info-item">
+          <span class="info-label">Saldo:</span>
+          <span class="info-value" id="walletBalance">0.00 ETH</span>
+        </div>
+      </div>
+
+      <!-- Botões de Conexão -->
+      <div class="connection-buttons">
+        <button class="connection-btn metamask-btn" id="connectBtn">
+          <i class="fab fa-ethereum"></i>
+          Conectar com MetaMask
+        </button>
+
+        <button class="connection-btn disconnect-btn" id="disconnectBtn" style="display: none;">
+          <i class="fas fa-sign-out-alt"></i>
+          Desconectar Carteira
+        </button>
+      </div>
+
+      <!-- Informações de Debug -->
+      <div style="margin-top: 30px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <h4 style="margin: 0 0 10px 0; color: var(--neon-cyan);">Informações de Debug:</h4>
+        <div style="font-size: 12px; font-family: monospace; color: rgba(160,240,255,0.7);">
+          <div>MetaMask Detectado: <span id="debugMetaMask">Verificando...</span></div>
+          <div>Contas Conectadas: <span id="debugAccounts">0</span></div>
+          <div>ID da Rede: <span id="debugChainId">-</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Estado da aplicação
+    let appState = {
+      isConnected: false,
+      accounts: [],
+      chainId: null,
+      balance: '0.00'
+    };
+
+    // Elementos da DOM
+    const userStatus = document.getElementById('userStatus');
+    const walletInfo = document.getElementById('walletInfo');
+    const walletAddressShort = document.getElementById('walletAddressShort');
+    const walletAddressFull = document.getElementById('walletAddressFull');
+    const walletBalance = document.getElementById('walletBalance');
+    const networkInfo = document.getElementById('networkInfo');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const walletDetails = document.getElementById('walletDetails');
+    const connectBtn = document.getElementById('connectBtn');
+    const disconnectBtn = document.getElementById('disconnectBtn');
+    const walletBtn = document.getElementById('walletBtn');
+
+    // Elementos de debug
+    const debugMetaMask = document.getElementById('debugMetaMask');
+    const debugAccounts = document.getElementById('debugAccounts');
+    const debugChainId = document.getElementById('debugChainId');
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', async function() {
+      console.log('Iniciando aplicação Web3...');
+      
+      // Verificar se MetaMask está instalado
+      await checkMetaMask();
+      
+      // Configurar event listeners
+      setupEventListeners();
+      
+      // Tentar conectar automaticamente se já estava conectado
+      await tryAutoConnect();
+    });
+
+    // Verificar se MetaMask está instalado
+    async function checkMetaMask() {
+      if (typeof window.ethereum !== 'undefined') {
+        console.log('✅ MetaMask detectado!');
+        debugMetaMask.textContent = '✅ Sim';
+        debugMetaMask.style.color = '#4ecdc4';
+        
+        // Verificar versão do MetaMask
+        const provider = window.ethereum;
+        if (provider.isMetaMask) {
+          console.log('✅ É MetaMask oficial');
+        }
+      } else {
+        console.log('❌ MetaMask não detectado');
+        debugMetaMask.textContent = '❌ Não';
+        debugMetaMask.style.color = '#ff6b6b';
+        connectBtn.disabled = true;
+        connectBtn.innerHTML = '<i class="fab fa-ethereum"></i> MetaMask Não Encontrado';
+        showNotification('MetaMask não encontrado. Por favor, instale a extensão.', 'error');
+      }
+    }
+
+    // Configurar event listeners
+    function setupEventListeners() {
+      // Botão de conectar
+      connectBtn.addEventListener('click', connectWallet);
+      
+      // Botão de desconectar
+      disconnectBtn.addEventListener('click', disconnectWallet);
+      
+      // Botão da carteira no header
+      walletBtn.addEventListener('click', connectWallet);
+      
+      // Listeners do MetaMask
+      if (window.ethereum) {
+        // Contas alteradas
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
+        
+        // Rede alterada
+        window.ethereum.on('chainChanged', handleChainChanged);
+        
+        // Conectividade
+        window.ethereum.on('connect', handleConnect);
+        window.ethereum.on('disconnect', handleDisconnect);
+      }
+    }
+
+    // Tentar conexão automática
+    async function tryAutoConnect() {
+      if (window.ethereum) {
+        try {
+          // Verificar se já temos permissão
+          const accounts = await window.ethereum.request({ 
+            method: 'eth_accounts' 
+          });
+          
+          if (accounts.length > 0) {
+            console.log('🔗 Conexão automática detectada');
+            await handleConnected(accounts);
+          }
+        } catch (error) {
+          console.error('Erro na conexão automática:', error);
+        }
+      }
+    }
+
+    // Conectar carteira
+    async function connectWallet() {
+      if (!window.ethereum) {
+        showNotification('MetaMask não encontrado. Instale a extensão.', 'error');
+        return;
+      }
+
+      try {
+        console.log('🔄 Iniciando conexão...');
+        
+        // Mostrar estado de carregamento
+        connectBtn.disabled = true;
+        connectBtn.innerHTML = '<div class="spinner"></div> Conectando...';
+
+        // Solicitar acesso às contas
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+          params: [] // Parâmetros vazios para MetaMask
+        });
+
+        console.log('✅ Contas recebidas:', accounts);
+        
+        if (accounts.length === 0) {
+          throw new Error('Nenhuma conta selecionada');
+        }
+
+        await handleConnected(accounts);
+
+      } catch (error) {
+        console.error('❌ Erro ao conectar:', error);
+        
+        let errorMessage = 'Erro ao conectar carteira';
+        
+        if (error.code === 4001) {
+          errorMessage = 'Conexão rejeitada pelo usuário';
+        } else if (error.code === -32002) {
+          errorMessage = 'Solicitação de conexão já pendente';
+        } else {
+          errorMessage = error.message || 'Erro desconhecido';
+        }
+        
+        showNotification(errorMessage, 'error');
+        
+        // Resetar botão
+        connectBtn.disabled = false;
+        connectBtn.innerHTML = '<i class="fab fa-ethereum"></i> Conectar com MetaMask';
+      }
+    }
+
+    // Manipular conexão bem-sucedida
+    async function handleConnected(accounts) {
+      console.log('🎉 Conectado com sucesso!');
+      
+      appState.accounts = accounts;
+      appState.isConnected = true;
+      
+      // Obter informações da rede
+      await updateNetworkInfo();
+      
+      // Obter saldo
+      await updateBalance();
+      
+      // Atualizar UI
+      updateUI();
+      
+      showNotification('Carteira conectada com sucesso!', 'success');
+    }
+
+    // Atualizar informações da rede
+    async function updateNetworkInfo() {
+      try {
+        const chainId = await window.ethereum.request({ 
+          method: 'eth_chainId' 
+        });
+        
+        appState.chainId = chainId;
+        debugChainId.textContent = chainId;
+        
+        // Mapear chainId para nome da rede
+        const networkMap = {
+          '0x1': 'Ethereum Mainnet',
+          '0x3': 'Ropsten Testnet',
+          '0x4': 'Rinkeby Testnet',
+          '0x5': 'Goerli Testnet',
+          '0x2a': 'Kovan Testnet',
+          '0x89': 'Polygon Mainnet',
+          '0x13881': 'Polygon Mumbai',
+          '0x38': 'BSC Mainnet',
+          '0x61': 'BSC Testnet'
+        };
+        
+        const networkName = networkMap[chainId] || `Rede Desconhecida (${chainId})`;
+        networkInfo.textContent = networkName;
+        
+      } catch (error) {
+        console.error('Erro ao obter informações da rede:', error);
+        networkInfo.textContent = 'Erro';
+      }
+    }
+
+    // Atualizar saldo
+    async function updateBalance() {
+      try {
+        if (appState.accounts.length === 0) return;
+        
+        const balance = await window.ethereum.request({
+          method: 'eth_getBalance',
+          params: [appState.accounts[0], 'latest']
+        });
+        
+        // Converter de wei para ETH
+        const balanceInEth = parseInt(balance, 16) / 1e18;
+        appState.balance = balanceInEth.toFixed(4);
+        walletBalance.textContent = `${appState.balance} ETH`;
+        
+      } catch (error) {
+        console.error('Erro ao obter saldo:', error);
+        walletBalance.textContent = 'Erro';
+      }
+    }
+
+    // Atualizar interface do usuário
+    function updateUI() {
+      const account = appState.accounts[0];
+      const shortAddress = `${account.slice(0, 6)}...${account.slice(-4)}`;
+      
+      // Header
+      userStatus.textContent = shortAddress;
+      walletAddressShort.textContent = shortAddress;
+      walletInfo.style.display = 'flex';
+      
+      // Detalhes da carteira
+      walletAddressFull.textContent = account;
+      walletDetails.style.display = 'block';
+      
+      // Status da conexão
+      connectionStatus.innerHTML = '<i class="fas fa-circle" style="color: #4ecdc4;"></i> Conectado';
+      connectionStatus.className = 'connection-status status-connected';
+      
+      // Botões
+      connectBtn.style.display = 'none';
+      disconnectBtn.style.display = 'flex';
+      walletBtn.textContent = 'Carteira Conectada';
+      
+      // Debug
+      debugAccounts.textContent = appState.accounts.length;
+    }
+
+    // Desconectar carteira
+    function disconnectWallet() {
+      console.log('🔒 Desconectando...');
+      
+      appState = {
+        isConnected: false,
+        accounts: [],
+        chainId: null,
+        balance: '0.00'
+      };
+      
+      // Atualizar UI para estado desconectado
+      userStatus.textContent = 'Desconectado';
+      walletInfo.style.display = 'none';
+      walletDetails.style.display = 'none';
+      
+      connectionStatus.innerHTML = '<i class="fas fa-circle" style="color: #ff6b6b;"></i> Desconectado';
+      connectionStatus.className = 'connection-status status-disconnected';
+      
+      connectBtn.style.display = 'flex';
+      disconnectBtn.style.display = 'none';
+      connectBtn.disabled = false;
+      connectBtn.innerHTML = '<i class="fab fa-ethereum"></i> Conectar com MetaMask';
+      walletBtn.textContent = 'Conectar Carteira';
+      
+      // Debug
+      debugAccounts.textContent = '0';
+      debugChainId.textContent = '-';
+      
+      showNotification('Carteira desconectada', 'info');
+    }
+
+    // =============================================
+    // HANDLERS DE EVENTOS DO METAMASK
+    // =============================================
+
+    // Contas alteradas
+    async function handleAccountsChanged(accounts) {
+      console.log('🔄 Contas alteradas:', accounts);
+      
+      if (accounts.length === 0) {
+        console.log('👤 Usuário desconectou todas as contas');
+        disconnectWallet();
+      } else {
+        console.log('🔄 Conta alterada para:', accounts[0]);
+        await handleConnected(accounts);
+      }
+    }
+
+    // Rede alterada
+    async function handleChainChanged(chainId) {
+      console.log('🔄 Rede alterada:', chainId);
+      
+      // MetaMask recomenda recarregar a página
+      showNotification('Rede alterada. Atualizando informações...', 'info');
+      
+      // Atualizar informações
+      appState.chainId = chainId;
+      await updateNetworkInfo();
+      await updateBalance();
+      
+      // Forçar atualização da UI
+      updateUI();
+    }
+
+    // Conectado
+    function handleConnect(connectInfo) {
+      console.log('🔗 Conectado:', connectInfo);
+      showNotification('Conectado à rede', 'success');
+    }
+
+    // Desconectado
+    function handleDisconnect(error) {
+      console.log('🔒 Desconectado:', error);
+      showNotification('Desconectado da rede', 'error');
+      disconnectWallet();
+    }
+
+    // =============================================
+    // SISTEMA DE NOTIFICAÇÕES
+    // =============================================
+
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(30,6,50,0.9));
+        color: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(0,247,255,0.3);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        font-family: 'Montserrat', sans-serif;
+      `;
+      
+      // Cor da borda baseada no tipo
+      if (type === 'success') {
+        notification.style.borderColor = 'rgba(78,205,196,0.5)';
+      } else if (type === 'error') {
+        notification.style.borderColor = 'rgba(255,107,107,0.5)';
+      } else if (type === 'warning') {
+        notification.style.borderColor = 'rgba(241,196,15,0.5)';
+      }
+      
+      // Ícone baseado no tipo
+      let icon = 'ℹ️';
+      if (type === 'success') icon = '✅';
+      if (type === 'error') icon = '❌';
+      if (type === 'warning') icon = '⚠️';
+      
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 18px;">${icon}</span>
+          <span>${message}</span>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Animação de entrada
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 10);
+      
+      // Remover após 5 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 5000);
+    }
+
+    // =============================================
+    // FUNÇÕES AUXILIARES
+    // =============================================
+
+    // Função para testar manualmente a conexão
+    window.testConnection = async function() {
+      console.log('🧪 Testando conexão...');
+      await connectWallet();
+    };
+
+    // Função para verificar status
+    window.getConnectionStatus = function() {
+      return appState;
+    };
+
+    console.log('🚀 Aplicação Web3 carregada e pronta!');
+  </script>
+</body>
+</html>

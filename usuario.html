@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Perfil - SafeDefi Protocol</title>
+
+  <!-- Fonts & Libraries -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwIiB4Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiMGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGMzY2ZmIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJNMTggMjAgTDUwIDIwIEw4MiA1MCBMNTAgODAgTDE4IDgwIEw0NiA1MCBMMTggMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ===========================
+       Variables & Base
+       =========================== */
+    :root{
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff6b6b;
+      --muted: rgba(160,240,255,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --text: #cfeeff;
+      --accent-1: #4ecdc4;
+      --max-width: 1200px;
+      --radius-lg: 16px;
+      --glass-border: rgba(0,255,255,0.06);
+      --glass-border-2: rgba(157,78,221,0.05);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:24px}
+
+    /* ===========================
+       Header
+       =========================== */
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:1000;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(2,6,15,0.6), rgba(2,6,15,0.25));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding:12px 0;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-hex{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,247,255,0.08), inset 0 -6px 24px rgba(0,0,0,0.3);
+      transform: rotate(12deg);
+    }
+    .logo-hex svg{filter: drop-shadow(0 6px 20px rgba(157,78,221,0.12));}
+    .title{font-weight:800; font-size:1rem; letter-spacing:0.2px; color:white}
+    .subtitle{font-size:0.78rem;color:rgba(160,240,255,0.9);opacity:0.9}
+
+    nav ul{display:flex;gap:18px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:rgba(160,240,255,0.9)}
+    nav a:hover{background: linear-gradient(90deg, rgba(0,247,255,0.06), rgba(157,78,221,0.04)); color:var(--neon-cyan); transform:translateY(-2px);}
+
+    .cta{
+      padding:8px 16px;border-radius:30px;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      font-weight:700;color:#031025;box-shadow: 0 6px 20px rgba(0,247,255,0.08);
+      border:none;cursor:pointer;
+    }
+    .cta:active{transform:translateY(1px)}
+
+    /* ===========================
+       Profile Layout
+       =========================== */
+    .profile-container {
+      margin-top: 100px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      padding: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .profile-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===========================
+       Profile Sidebar
+       =========================== */
+    .profile-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .profile-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+      margin-bottom: 20px;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      padding: 4px;
+      position: relative;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-1);
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-title {
+      color: rgba(160,240,255,0.7);
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--neon-cyan);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(160,240,255,0.6);
+    }
+
+    .credibility-level {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .level-title {
+      font-size: 14px;
+      color: rgba(160,240,255,0.7);
+      margin-bottom: 8px;
+    }
+
+    .level-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .level-progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      border-radius: 4px;
+      width: 75%;
+    }
+
+    .level-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    .level-current {
+      color: var(--neon-cyan);
+      font-weight: 600;
+    }
+
+    .level-next {
+      color: rgba(160,240,255,0.6);
+    }
+
+    .profile-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .profile-menu li {
+      margin-bottom: 8px;
+    }
+
+    .profile-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      color: rgba(160,240,255,0.8);
+    }
+
+    .profile-menu a:hover, .profile-menu a.active {
+      background: linear-gradient(90deg, rgba(0,247,255,0.08), rgba(157,78,221,0.05));
+      color: var(--neon-cyan);
+    }
+
+    .profile-menu i {
+      margin-right: 12px;
+      font-size: 18px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* ===========================
+       Profile Content
+       =========================== */
+    .profile-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .content-section {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(3,6,12,0.6);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ===========================
+       Create Post
+       =========================== */
+    .create-post {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .post-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      padding: 2px;
+    }
+
+    .post-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-1);
+    }
+
+    .post-input {
+      flex: 1;
+      padding: 15px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: var(--text);
+      font-family: inherit;
+      resize: none;
+      min-height: 60px;
+    }
+
+    .post-input:focus {
+      outline: none;
+      border-color: var(--neon-cyan);
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: rgba(160,240,255,0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background: rgba(0,247,255,0.08);
+      color: var(--neon-cyan);
+    }
+
+    .post-btn {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #031025;
+      font-weight: 600;
+      border: none;
+    }
+
+    /* ===========================
+       Posts Feed
+       =========================== */
+    .post {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .post:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .post-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      padding: 2px;
+    }
+
+    .post-user-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-1);
+    }
+
+    .post-user-info h4 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .post-user-info span {
+      font-size: 12px;
+      color: rgba(160,240,255,0.6);
+    }
+
+    .post-content {
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .post-image {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .post-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .post-stats {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(160,240,255,0.6);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .post-actions-row {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 8px 0;
+    }
+
+    .post-action {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: rgba(160,240,255,0.7);
+    }
+
+    .post-action:hover {
+      background: rgba(0,247,255,0.08);
+      color: var(--neon-cyan);
+    }
+
+    /* ===========================
+       Notifications
+       =========================== */
+    .notification-item {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: all 0.3s ease;
+    }
+
+    .notification-item:hover {
+      background: rgba(0,247,255,0.05);
+      border-color: rgba(0,247,255,0.1);
+    }
+
+    .notification-item.unread {
+      background: rgba(0,247,255,0.08);
+      border-color: rgba(0,247,255,0.15);
+    }
+
+    .notification-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      padding: 2px;
+      flex-shrink: 0;
+    }
+
+    .notification-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-1);
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-text {
+      margin-bottom: 5px;
+      line-height: 1.4;
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: rgba(160,240,255,0.6);
+    }
+
+    .notification-badge {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    /* ===========================
+       Communities
+       =========================== */
+    .communities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .community-card {
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: all 0.3s ease;
+    }
+
+    .community-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,247,255,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .community-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      padding: 3px;
+    }
+
+    .community-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-1);
+    }
+
+    .community-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .community-members {
+      font-size: 12px;
+      color: rgba(160,240,255,0.6);
+      margin-bottom: 15px;
+    }
+
+    .join-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      color: #031025;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .join-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .joined-btn {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+
+    /* ===========================
+       Responsive
+       =========================== */
+    @media (max-width: 768px) {
+      .profile-container {
+        padding: 10px;
+      }
+      
+      .profile-card, .content-section {
+        padding: 15px;
+      }
+      
+      .post-actions {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      .communities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo-hex" id="logoHex">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#041029" stroke-width="0.6" fill="#021025" opacity="0.22"></path>
+            <path d="M7 9.2h10M7 14.8h10" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="title">SafeDefi Protocol</div>
+          <div class="subtitle">Perfil do Usuário</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="usuario.html" class="active">Perfil</a></li>
+          <li><a href="comunidade.html">Comunidade</a></li>
+          <li><a href="notificacao.html">Notificações</a></li>
+          <li><a href="config.html">Configurações</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="cta" id="joinBtn">Carteira SDP</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Profile Container -->
+  <div class="container profile-container">
+    <!-- Profile Sidebar -->
+    <div class="profile-sidebar">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+          </div>
+          <h2 class="profile-name">Carlos Silva</h2>
+          <div class="profile-title">Investidor SDP Nível 4</div>
+          
+          <div class="profile-stats">
+            <div class="stat-item">
+              <div class="stat-value">142</div>
+              <div class="stat-label">Posts</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">3.2K</div>
+              <div class="stat-label">Seguidores</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">587</div>
+              <div class="stat-label">Seguindo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="credibility-level">
+          <div class="level-title">Nível de Credibilidade</div>
+          <div class="level-bar">
+            <div class="level-progress"></div>
+          </div>
+          <div class="level-info">
+            <span class="level-current">Nível 4 - Confiável</span>
+            <span class="level-next">Próximo: 85%</span>
+          </div>
+        </div>
+
+        <ul class="profile-menu">
+          <li><a href="#" class="active"><i class="fas fa-user"></i> Meu Perfil</a></li>
+          <li><a href="#"><i class="fas fa-bell"></i> Notificações <span style="background: var(--neon-cyan); color: #031025; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: auto;">3</span></a></li>
+          <li><a href="#"><i class="fas fa-users"></i> Comunidades</a></li>
+          <li><a href="#"><i class="fas fa-images"></i> Fotos</a></li>
+          <li><a href="#"><i class="fas fa-history"></i> Histórico</a></li>
+          <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+        </ul>
+      </div>
+
+      <div class="profile-card">
+        <h3 style="margin-top: 0;">Amigos Online</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); padding: 2px;">
+              <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div>
+              <div style="font-weight: 600;">Ana Santos</div>
+              <div style="font-size: 12px; color: var(--neon-cyan);">Online</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); padding: 2px;">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div>
+              <div style="font-weight: 600;">Pedro Costa</div>
+              <div style="font-size: 12px; color: var(--neon-cyan);">Online</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+      <!-- Create Post -->
+<!-- SEÇÃO DE CRIAÇÃO DE PUBLICAÇÃO -->
+<div class="content-section" style="background:rgba(255,255,255,0.03);border-radius:16px;padding:20px;box-shadow:0 0 20px rgba(0,255,255,0.1);max-width:800px;margin:40px auto;">
+  <div class="create-post" style="display:flex;align-items:flex-start;gap:15px;">
+    <div class="post-avatar">
+      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="Avatar" style="width:60px;height:60px;border-radius:50%;">
+    </div>
+    <textarea id="postText" class="post-input" placeholder="No que você está pensando, Carlos?" style="flex:1;background:rgba(255,255,255,0.05);border:none;padding:10px;color:white;border-radius:10px;height:80px;resize:none;"></textarea>
+  </div>
+
+  <div class="post-actions" style="display:flex;justify-content:space-between;align-items:center;margin-top:15px;">
+    <div style="display:flex;gap:10px;">
+      <button class="action-btn" id="btnFoto" style="background:linear-gradient(90deg,#00f7ff,#9d4edd);color:#000;border:none;padding:8px 15px;border-radius:10px;cursor:pointer;"><i class="fas fa-image"></i> Foto</button>
+      <button class="action-btn" id="btnVideo" style="background:linear-gradient(90deg,#00f7ff,#9d4edd);color:#000;border:none;padding:8px 15px;border-radius:10px;cursor:pointer;"><i class="fas fa-video"></i> Vídeo</button>
+      <button class="action-btn" id="btnEvento" style="background:linear-gradient(90deg,#00f7ff,#9d4edd);color:#000;border:none;padding:8px 15px;border-radius:10px;cursor:pointer;"><i class="fas fa-calendar"></i> Evento</button>
+    </div>
+    <button class="action-btn post-btn" id="btnPublicar" style="background:linear-gradient(90deg,#00f7ff,#9d4edd);color:#000;font-weight:700;border:none;padding:8px 25px;border-radius:10px;cursor:pointer;">🚀 Publicar</button>
+  </div>
+
+  <!-- Inputs de mídia escondidos -->
+  <input type="file" id="inputFoto" accept="image/*" multiple style="display:none;">
+  <input type="file" id="inputVideo" accept="video/*" multiple style="display:none;">
+  <input type="file" id="inputEvento" accept=".ics,.pdf,image/*" multiple style="display:none;">
+
+  <!-- Pré-visualização -->
+  <div id="preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;"></div>
+</div>
+
+<script>
+  const btnFoto = document.getElementById("btnFoto");
+  const btnVideo = document.getElementById("btnVideo");
+  const btnEvento = document.getElementById("btnEvento");
+  const btnPublicar = document.getElementById("btnPublicar");
+  const inputFoto = document.getElementById("inputFoto");
+  const inputVideo = document.getElementById("inputVideo");
+  const inputEvento = document.getElementById("inputEvento");
+  const preview = document.getElementById("preview");
+  const postText = document.getElementById("postText");
+
+  let arquivosSelecionados = [];
+
+  // Funções para abrir seletor de arquivos
+  btnFoto.onclick = () => inputFoto.click();
+  btnVideo.onclick = () => inputVideo.click();
+  btnEvento.onclick = () => inputEvento.click();
+
+  // Pré-visualização das mídias
+  function mostrarPreview(files) {
+    for (let file of files) {
+      arquivosSelecionados.push(file);
+      const reader = new FileReader();
+      reader.onload = e => {
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+
+        const midia = document.createElement(file.type.startsWith("video/") ? "video" : "img");
+        midia.src = e.target.result;
+        midia.style.width = "120px";
+        midia.style.height = "120px";
+        midia.style.objectFit = "cover";
+        midia.style.borderRadius = "10px";
+        midia.style.boxShadow = "0 0 10px rgba(0,255,255,0.3)";
+        if (file.type.startsWith("video/")) midia.controls = true;
+
+        const excluir = document.createElement("button");
+        excluir.textContent = "✖";
+        excluir.style.position = "absolute";
+        excluir.style.top = "3px";
+        excluir.style.right = "3px";
+        excluir.style.background = "rgba(0,0,0,0.7)";
+        excluir.style.border = "none";
+        excluir.style.color = "white";
+        excluir.style.borderRadius = "50%";
+        excluir.style.cursor = "pointer";
+        excluir.onclick = () => {
+          preview.removeChild(wrapper);
+          arquivosSelecionados = arquivosSelecionados.filter(f => f !== file);
+        };
+
+        wrapper.appendChild(midia);
+        wrapper.appendChild(excluir);
+        preview.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  inputFoto.onchange = e => mostrarPreview(e.target.files);
+  inputVideo.onchange = e => mostrarPreview(e.target.files);
+  inputEvento.onchange = e => mostrarPreview(e.target.files);
+
+  // Publicar
+  btnPublicar.onclick = () => {
+    const texto = postText.value.trim();
+    if (!texto && arquivosSelecionados.length === 0) {
+      alert("Adicione texto, foto, vídeo ou evento antes de publicar!");
+      return;
+    }
+
+    // Salvar publicação localmente (simulando backend)
+    const publicacoes = JSON.parse(localStorage.getItem("publicacoes") || "[]");
+
+    const novaPublicacao = {
+      id: Date.now(),
+      texto: texto,
+      data: new Date().toLocaleString(),
+      midia: arquivosSelecionados.map(file => ({
+        tipo: file.type,
+        url: URL.createObjectURL(file),
+        nome: file.name
+      }))
+    };
+
+    publicacoes.push(novaPublicacao);
+    localStorage.setItem("publicacoes", JSON.stringify(publicacoes));
+
+    alert("✅ Publicação enviada com sucesso!");
+    postText.value = "";
+    preview.innerHTML = "";
+    arquivosSelecionados = [];
+
+    // Redireciona para a página de recebimento
+    window.location.href = "receber_publicacao.html";
+  };
+</script>
+
+
+      <!-- Posts Feed -->
+      <div class="content-section">
+        <div class="section-header">
+          <h3 class="section-title">Atividade Recente</h3>
+          <div style="color: rgba(160,240,255,0.7); font-size: 14px;">Ordenar por: <span style="color: var(--neon-cyan);">Mais recente</span></div>
+        </div>
+
+        <div class="post">
+          <div class="post-header">
+            <div class="post-user">
+              <div class="post-user-avatar">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+              </div>
+              <div class="post-user-info">
+                <h4>Carlos Silva</h4>
+                <span>2 horas atrás · <i class="fas fa-globe-americas"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="post-content">
+            <p>Acabei de fazer um investimento significativo no SDP através do staking. Acredito muito no potencial deste projeto para revolucionar o mercado DeFi! 🚀</p>
+            <p>#SafeDefi #Staking #Crypto</p>
+          </div>
+          <div class="post-stats">
+            <div>125 curtidas · 23 comentários · 5 compartilhamentos</div>
+          </div>
+          <div class="post-actions-row">
+            <div class="post-action">
+              <i class="far fa-thumbs-up"></i> Curtir
+            </div>
+            <div class="post-action">
+              <i class="far fa-comment"></i> Comentar
+            </div>
+            <div class="post-action">
+              <i class="far fa-share-square"></i> Compartilhar
+            </div>
+          </div>
+        </div>
+
+        <div class="post">
+          <div class="post-header">
+            <div class="post-user">
+              <div class="post-user-avatar">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+              </div>
+              <div class="post-user-info">
+                <h4>Carlos Silva</h4>
+                <span>1 dia atrás · <i class="fas fa-user-friends"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="post-content">
+            <p>Participei da reunião da comunidade SDP hoje. Foi incrível ver tantas pessoas engajadas no projeto! Estamos construindo algo grande juntos. 💪</p>
+            <div class="post-image">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Community meeting">
+            </div>
+          </div>
+          <div class="post-stats">
+            <div>89 curtidas · 17 comentários · 3 compartilhamentos</div>
+          </div>
+          <div class="post-actions-row">
+            <div class="post-action">
+              <i class="far fa-thumbs-up"></i> Curtir
+            </div>
+            <div class="post-action">
+              <i class="far fa-comment"></i> Comentar
+            </div>
+            <div class="post-action">
+              <i class="far fa-share-square"></i> Compartilhar
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="content-section">
+        <div class="section-header">
+          <h3 class="section-title">Notificações</h3>
+          <div style="color: rgba(160,240,255,0.7); font-size: 14px;">3 não lidas</div>
+        </div>
+
+        <div class="notification-item unread">
+          <div class="notification-avatar">
+            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+          </div>
+          <div class="notification-content">
+            <div class="notification-text">
+              <strong>Ana Santos</strong> curtiu sua publicação sobre staking SDP.
+            </div>
+            <div class="notification-time">Há 15 minutos</div>
+          </div>
+          <div class="notification-badge"></div>
+        </div>
+
+        <div class="notification-item unread">
+          <div class="notification-avatar">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+          </div>
+          <div class="notification-content">
+            <div class="notification-text">
+              <strong>Pedro Costa</strong> comentou: "Concordo plenamente! O SDP tem um potencial enorme."
+            </div>
+            <div class="notification-time">Há 1 hora</div>
+          </div>
+          <div class="notification-badge"></div>
+        </div>
+
+        <div class="notification-item">
+          <div class="notification-avatar">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+          </div>
+          <div class="notification-content">
+            <div class="notification-text">
+              <strong>Comunidade SDP Brasil</strong> publicou um novo evento: "Workshop de Staking Avançado".
+            </div>
+            <div class="notification-time">Ontem às 14:30</div>
+          </div>
+        </div>
+
+        <div class="notification-item">
+          <div class="notification-avatar">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Avatar">
+          </div>
+          <div class="notification-content">
+            <div class="notification-text">
+              <strong>Maria Oliveira</strong> começou a seguir você.
+            </div>
+            <div class="notification-time">Ontem às 10:15</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communities -->
+      <div class="content-section">
+        <div class="section-header">
+          <h3 class="section-title">Suas Comunidades</h3>
+          <button class="cta" style="padding: 8px 16px; font-size: 14px;">Descobrir Comunidades</button>
+        </div>
+
+        <div class="communities-grid">
+          <div class="community-card">
+            <div class="community-avatar">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Community">
+            </div>
+            <div class="community-name">SDP Brasil</div>
+            <div class="community-members">12.5K membros</div>
+            <button class="join-btn joined-btn">Membro</button>
+          </div>
+
+          <div class="community-card">
+            <div class="community-avatar">
+              <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Community">
+            </div>
+            <div class="community-name">Staking Masters</div>
+            <div class="community-members">8.7K membros</div>
+            <button class="join-btn joined-btn">Membro</button>
+          </div>
+
+          <div class="community-card">
+            <div class="community-avatar">
+              <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Community">
+            </div>
+            <div class="community-name">DeFi Explorers</div>
+            <div class="community-members">15.2K membros</div>
+            <button class="join-btn">Participar</button>
+          </div>
+
+          <div class="community-card">
+            <div class="community-avatar">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Community">
+            </div>
+            <div class="community-name">Crypto Traders BR</div>
+            <div class="community-members">24.1K membros</div>
+            <button class="join-btn">Participar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credibility Levels -->
+      <div class="content-section">
+        <div class="section-header">
+          <h3 class="section-title">Níveis de Credibilidade</h3>
+          <div style="color: rgba(160,240,255,0.7); font-size: 14px;">Seu nível: <span style="color: var(--neon-cyan); font-weight: 600;">Confiável</span></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+          <div style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="font-size: 12px; color: rgba(160,240,255,0.6); margin-bottom: 5px;">Nível Atual</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--neon-cyan);">4</div>
+            <div style="font-size: 14px; color: var(--neon-cyan);">Confiável</div>
+          </div>
+          
+          <div style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="font-size: 12px; color: rgba(160,240,255,0.6); margin-bottom: 5px;">Pontuação</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--neon-cyan);">850</div>
+            <div style="font-size: 14px; color: rgba(160,240,255,0.7);">/ 1000 pontos</div>
+          </div>
+          
+          <div style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="font-size: 12px; color: rgba(160,240,255,0.6); margin-bottom: 5px;">Próximo Nível</div>
+            <div style="font-size: 24px; font-weight: 700; color: var(--neon-purple);">5</div>
+            <div style="font-size: 14px; color: var(--neon-purple);">Expert</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
+          <h4 style="margin-top: 0; color: var(--neon-cyan);">Como melhorar sua credibilidade:</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(0,247,255,0.1); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-check" style="color: var(--neon-cyan); font-size: 12px;"></i>
+              </div>
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Verificação de Identidade</div>
+                <div style="font-size: 12px; color: rgba(160,240,255,0.6);">+50 pontos</div>
+              </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(0,247,255,0.1); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-coins" style="color: var(--neon-cyan); font-size: 12px;"></i>
+              </div>
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Staking Ativo</div>
+                <div style="font-size: 12px; color: rgba(160,240,255,0.6);">+100 pontos</div>
+              </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(157,78,221,0.1); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-users" style="color: var(--neon-purple); font-size: 12px;"></i>
+              </div>
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Participação em Comunidades</div>
+                <div style="font-size: 12px; color: rgba(160,240,255,0.6);">+25 pontos</div>
+              </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(157,78,221,0.1); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-comment" style="color: var(--neon-purple); font-size: 12px;"></i>
+              </div>
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Posts de Qualidade</div>
+                <div style="font-size: 12px; color: rgba(160,240,255,0.6);">+10 pontos cada</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Animações para o perfil
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animação de entrada dos elementos
+      anime({
+        targets: '.profile-card, .content-section',
+        translateY: [20, 0],
+        opacity: [0, 1],
+        duration: 800,
+        delay: anime.stagger(100),
+        easing: 'easeOutCubic'
+      });
+
+      // Animação do nível de credibilidade
+      const progressBar = document.querySelector('.level-progress');
+      anime({
+        targets: progressBar,
+        width: ['0%', '75%'],
+        duration: 1500,
+        delay: 500,
+        easing: 'easeOutQuart'
+      });
+
+      // Interação com botões de ação
+      const actionButtons = document.querySelectorAll('.action-btn, .post-action, .join-btn');
+      actionButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+          anime({
+            targets: this,
+            scale: 1.05,
+            duration: 200,
+            easing: 'easeOutCubic'
+          });
+        });
+        
+        button.addEventListener('mouseleave', function() {
+          anime({
+            targets: this,
+            scale: 1,
+            duration: 200,
+            easing: 'easeOutCubic'
+          });
+        });
+      });
+
+      // Simulação de notificações em tempo real
+      setInterval(() => {
+        const notifications = document.querySelectorAll('.notification-item');
+        if (notifications.length > 0 && Math.random() > 0.7) {
+          const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+          anime({
+            targets: randomNotification,
+            backgroundColor: ['rgba(0,247,255,0.08)', 'rgba(0,247,255,0.02)'],
+            duration: 1000,
+            easing: 'easeInOutSine'
+          });
+        }
+      }, 5000);
+
+      // Sistema de níveis interativo
+      const levelElements = document.querySelectorAll('.level-info, .credibility-level');
+      levelElements.forEach(element => {
+        element.addEventListener('click', function() {
+          anime({
+            targets: this,
+            scale: [1, 1.02, 1],
+            duration: 300,
+            easing: 'easeInOutSine'
+          });
+        });
+      });
+
+      // Efeito de digitação para o textarea de post
+      const postInput = document.querySelector('.post-input');
+      postInput.addEventListener('focus', function() {
+        anime({
+          targets: this,
+          borderColor: [getComputedStyle(document.documentElement).getPropertyValue('--glass-border'), getComputedStyle(document.documentElement).getPropertyValue('--neon-cyan')],
+          duration: 300,
+          easing: 'easeOutCubic'
+        });
+      });
+
+      postInput.addEventListener('blur', function() {
+        anime({
+          targets: this,
+          borderColor: [getComputedStyle(document.documentElement).getPropertyValue('--neon-cyan'), getComputedStyle(document.documentElement).getPropertyValue('--glass-border')],
+          duration: 300,
+          easing: 'easeOutCubic'
+        });
+      });
+    });
+
+    // Sistema de notificações
+    function showNotification(message, type = 'info') {
+      // Criar elemento de notificação
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(30,6,50,0.9));
+        color: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(0,247,255,0.3);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+      `;
+      
+      if (type === 'success') {
+        notification.style.borderColor = 'rgba(78,205,196,0.5)';
+      } else if (type === 'error') {
+        notification.style.borderColor = 'rgba(255,107,107,0.5)';
+      }
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Animação de entrada
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 10);
+      
+      // Remover após 5 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 5000);
+    }
+
+    // Exemplo de uso: showNotification('Nova mensagem recebida!', 'success');
+  </script>
+  <script>
+  const API_BASE = 'http://localhost:4000';
+
+  // elementos
+  const btnFoto = document.querySelector('.action-btn i.fa-image').parentElement;
+  const btnVideo = document.querySelector('.action-btn i.fa-video').parentElement;
+  const btnEvento = document.querySelector('.action-btn i.fa-calendar').parentElement;
+  const postBtn = document.querySelector('.post-btn');
+  const postInput = document.querySelector('.post-input');
+
+  // arquivos selecionados
+  let selectedFiles = [];
+
+  // cria input oculto (reutilizável)
+  function createFileInput(accept, multi=false) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = accept;
+    if (multi) input.multiple = true;
+    input.style.display = 'none';
+    document.body.appendChild(input);
+    return input;
+  }
+
+  const inputFoto = createFileInput('image/*', true);
+  const inputVideo = createFileInput('video/*', true);
+
+  inputFoto.addEventListener('change', (e) => {
+    for (const f of e.target.files) selectedFiles.push(f);
+    showPreview(); // opcional: desenha miniaturas
+  });
+  inputVideo.addEventListener('change', (e) => {
+    for (const f of e.target.files) selectedFiles.push(f);
+    showPreview();
+  });
+
+  btnFoto.addEventListener('click', () => inputFoto.click());
+  btnVideo.addEventListener('click', () => inputVideo.click());
+  btnEvento.addEventListener('click', () => {
+    // redireciona para comunidade para marcar comunidade (ou abrir modal)
+    window.location.href = 'comunidade.html';
+  });
+
+  function showPreview() {
+    const previewArea = document.getElementById('previewArea');
+    if (!previewArea) return;
+    previewArea.innerHTML = '';
+    selectedFiles.forEach(f => {
+      const el = document.createElement(f.type.startsWith('video/') ? 'video' : 'img');
+      el.className = 'preview-thumb';
+      el.style.width = '120px'; el.style.height = '120px'; el.style.objectFit = 'cover';
+      el.src = URL.createObjectURL(f);
+      if (el.tagName === 'VIDEO') el.controls = true;
+      previewArea.appendChild(el);
+    });
+  }
+
+  // Publicar -> envia para API
+  postBtn.addEventListener('click', async () => {
+    const text = postInput.value.trim();
+    const author = 'Carlos Silva'; // pode vir do seu sistema de auth
+    const community = ''; // se marcou comunidade preencha aqui
+
+    if (!text && selectedFiles.length === 0) {
+      alert('Adicione texto, imagem ou vídeo antes de publicar.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('text', text);
+    formData.append('author', author);
+    formData.append('community', community);
+
+    selectedFiles.forEach(f => formData.append('files', f));
+
+    postBtn.disabled = true;
+    postBtn.textContent = 'Publicando...';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/posts`, {
+        method: 'POST',
+        body: formData
+      });
+      const j = await res.json();
+      if (j.success) {
+        showNotification('Publicação criada com sucesso!', 'success');
+        // limpar UI
+        postInput.value = '';
+        selectedFiles = [];
+        showPreview();
+        // opcional: atualizar feed local ou redirecionar para receber_publicacao.html
+        setTimeout(() => window.location.href = 'receber_publicacao.html', 700);
+      } else {
+        showNotification('Erro ao publicar', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showNotification('Erro de conexão ao publicar', 'error');
+    } finally {
+      postBtn.disabled = false;
+      postBtn.textContent = 'Publicar';
+    }
+  });
+
+  // Reações em um post (exemplo)
+  async function addReaction(postId, type='like', user='Carlos Silva') {
+    try {
+      const res = await fetch(`${API_BASE}/api/posts/${postId}/reactions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, user })
+      });
+      return res.json();
+    } catch (err) { console.error(err); }
+  }
+
+  // Função para carregar feed (pagina) -> use em receber_publicacao.html para infinite scroll
+  async function loadFeed(page = 1, limit = 8) {
+    const res = await fetch(`${API_BASE}/api/posts?page=${page}&limit=${limit}`);
+    return res.json();
+  }
+
+  // Exemplo: ao abrir receber_publicacao.html você pode chamar loadFeed e renderizar posts
+</script>
+
+</body>
+</html>

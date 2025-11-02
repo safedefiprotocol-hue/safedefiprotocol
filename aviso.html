@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aviso e Diretrizes | SafeDeFi Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#03040a;
+      --bg-2:#060818;
+      --neon-cyan:#00f7ff;
+      --neon-purple:#9d4edd;
+      --text:#cfeeff;
+      --glass-border:rgba(0,255,255,0.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,sans-serif;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+    }
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 30px;
+      backdrop-filter: blur(8px);
+      background: rgba(2,6,15,0.6);
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h1{
+      margin:0;
+      font-weight:900;
+      font-size:1.2rem;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .btn-voltar{
+      background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      color:#001;
+      padding:8px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:0 6px 26px rgba(157,78,221,0.18);
+      color:#fff;
+    }
+    main{
+      max-width:1000px;
+      margin:48px auto;
+      padding:34px;
+      background: rgba(255,255,255,0.02);
+      border-radius:14px;
+      border:1px solid var(--glass-border);
+      box-shadow: 0 16px 60px rgba(3,6,12,0.6);
+    }
+    h2{
+      margin:0 0 18px 0;
+      font-size:1.6rem;
+      font-weight:900;
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      -webkit-background-clip:text;
+      color:transparent;
+      text-align:left;
+    }
+    p.lead{
+      color:rgba(255,255,255,0.85);
+      margin:8px 0 20px 0;
+      line-height:1.5;
+    }
+    .card{
+      background: rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:18px;
+      border-radius:10px;
+      margin-bottom:14px;
+    }
+    .titulo-card{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:8px;
+    }
+    .titulo-card h3{
+      margin:0;
+      font-size:1.05rem;
+      color:var(--neon-cyan);
+      font-weight:800;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:rgba(255,255,255,0.85);
+      line-height:1.6;
+    }
+    li{margin:8px 0}
+    .danger{
+      color:#ffb3b3;
+      font-weight:700;
+    }
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:20px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      padding:10px 16px;
+      border-radius:10px;
+      border: none;
+      cursor:pointer;
+      font-weight:800;
+      box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    }
+    .btn-accept{
+      background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));
+      color:#001;
+    }
+    .btn-back{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.9);
+    }
+    .small{
+      font-size:0.88rem;
+      color:rgba(255,255,255,0.6);
+      margin-top:10px;
+    }
+    footer{
+      text-align:center;
+      padding:30px;
+      color:rgba(255,255,255,0.5);
+      font-size:0.9rem;
+      margin-top:30px;
+    }
+    .highlight{
+      background: linear-gradient(90deg, rgba(0,247,255,0.06), rgba(157,78,221,0.06));
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.03);
+      margin-top:12px;
+    }
+    @media (max-width:720px){
+      main{margin:20px}
+      .actions{flex-direction:column; align-items:stretch}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Aviso — Diretrizes da Comunidade</h1>
+    <a class="btn-voltar" href="index.html">⬅ Voltar</a>
+  </header>
+
+  <main>
+    <h2>Bem-vindo à SafeDeFi — regras e compromisso</h2>
+    <p class="lead">
+      Nossa missão é construir uma comunidade cripto e financeira segura, transparente e sustentável.
+      Abaixo você encontra as diretrizes que regem o uso da plataforma. A leitura e o cumprimento são obrigatórios para todos os membros.
+    </p>
+
+    <div class="card">
+      <div class="titulo-card">
+        <h3>Princípios</h3>
+        <div class="small">Transparência • Honestidade • Respeito</div>
+      </div>
+      <div class="highlight">
+         Não iremos tolerar condutas maliciosas. Queremos que todos possam participar de forma justa — ajudando a construir uma comunidade forte.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="titulo-card">
+        <h3>Ações proibidas (exemplos)</h3>
+        <div class="small">Lista não exaustiva</div>
+      </div>
+      <ul>
+        <li>Golpes, esquemas de phishing, engenharia social ou qualquer tentativa de obtenção fraudulenta de fundos.</li>
+        <li>Criação de contas ou carteiras para manipular votos, avaliações, reputação ou métricas da plataforma.</li>
+        <li>Assédio, difamação, calúnia ou publicações cujo objetivo seja denegrir a imagem da plataforma ou de outros membros.</li>
+        <li>Distribuição de malware, links maliciosos ou instruções para atividades ilegais.</li>
+        <li>Uso de múltiplas identidades para burlar limites, bônus, programas de afiliados ou processos de verificação.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="titulo-card">
+        <h3>Consequências</h3>
+        <div class="small">Medidas aplicáveis por violações</div>
+      </div>
+      <ul>
+        <li class="danger"><strong>Banimento permanente da carteira e do e-mail</strong> utilizados para praticar fraudes ou atos maliciosos.</li>
+        <li class="danger"><strong>Bloqueio permanente do endereço IP</strong> associado a ataques coordenados ou tentativas de prejudicar a plataforma.</li>
+        <li class="danger"><strong>Congelamento do stake</strong> (fundos em staking na plataforma) como medida provisória ou punitiva, enquanto investigação estiver em curso.</li>
+        <li>Suspensão temporária, remoção de conteúdos e invalidação de recompensas quando aplicável.</li>
+      </ul>
+      <p class="small">As medidas serão aplicadas conforme investigação interna e evidências coletadas. Em casos graves poderemos compartilhar informações com autoridades competentes.</p>
+    </div>
+
+    <div class="card">
+      <div class="titulo-card">
+        <h3>Denúncias e suporte</h3>
+        <div class="small">Como reportar</div>
+      </div>
+      <ul>
+        <li>Se você detectar comportamento suspeito, denuncie imediatamente pelo formulário de suporte ou e-mail oficial.</li>
+        <li>Inclua o máximo de informações possíveis: endereços de carteira, links, capturas de tela, hora e descrição do incidente.</li>
+        <li>Investigações são conduzidas de forma confidencial — tentaremos proteger denunciantes quando necessário.</li>
+      </ul>
+      <p class="small">E-mail de suporte: <strong>suporte@safedefiprotocol.com</strong>.</p>
+    </div>
+
+    <div class="card">
+      <div class="titulo-card">
+        <h3>Compromisso do projeto</h3>
+        <div class="small">Nossa promessa</div>
+      </div>
+      <ul>
+        <li>Promover um ambiente justo, com regras claras e aplicação consistente das diretrizes.</li>
+        <li>Proteger usuários e educar a comunidade sobre boas práticas de segurança.</li>
+        <li>Manter transparência nas ações administrativas e comunicar mudanças importantes com antecedência.</li>
+      </ul>
+      <p class="small">Agradecemos por fazer parte desta jornada — sua colaboração é essencial para uma comunidade forte e sustentável.</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-accept" id="btn-aceitar">Li e aceito as diretrizes</button>
+      <a class="btn btn-back" href="index.html">Voltar ao Painel</a>
+      <div style="flex:1"></div>
+      <div class="small">Última atualização: <strong>31/10/2025</strong></div>
+    </div>
+
+    <p class="small" style="margin-top:18px">
+      Observação: estas diretrizes compõem as regras internas da plataforma. Não substituem legislação local aplicável nem processos legais formais.
+    </p>
+  </main>
+
+  <footer>© 2025 SafeDeFi Protocol — Respeite as regras, proteja a comunidade</footer>
+
+  <script>
+    // Salva concordância no localStorage
+    const btn = document.getElementById('btn-aceitar');
+    btn.addEventListener('click', () => {
+      localStorage.setItem('safedefi_aviso_aceito', new Date().toISOString());
+      btn.textContent = 'Obrigado — Regras aceitas';
+      btn.disabled = true;
+      btn.style.opacity = '0.8';
+      // feedback visual breve
+      btn.style.transform = 'scale(0.98)';
+      setTimeout(()=> btn.style.transform = '', 120);
+    });
+
+    // se já aceitou antes, reflect na UI
+    const pode = localStorage.getItem('safedefi_aviso_aceito');
+    if (pode) {
+      btn.textContent = 'Você já aceitou as diretrizes';
+      btn.disabled = true;
+      btn.style.opacity = '0.8';
+    }
+  </script>
+</body>
+</html>

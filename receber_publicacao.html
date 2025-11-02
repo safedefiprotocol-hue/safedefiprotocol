@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Publicações | SafeDeFi Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at top left, #03040a, #060818);
+      color: #cfeeff;
+    }
+
+    header {
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(2,6,15,0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    header h1 {
+      background: linear-gradient(90deg,#00f7ff,#9d4edd);
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      font-size: 1.5rem;
+    }
+
+    header a {
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg,#00f7ff,#9d4edd);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(157,78,221,0.5);
+      transition: 0.3s;
+    }
+
+    header a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 35px rgba(157,78,221,0.8);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      background: linear-gradient(90deg,#00f7ff,#9d4edd);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 30px;
+      font-weight: 900;
+    }
+
+    .post {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.05);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .post-header span {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+    }
+
+    .post-text {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin: 10px 0;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .post-media {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .post-media img, .post-media video {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+    }
+
+    .delete-btn {
+      background: rgba(255,0,0,0.8);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .delete-btn:hover {
+      background: red;
+      transform: scale(1.05);
+    }
+
+    .no-posts {
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 1.1rem;
+      margin-top: 40px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>📢 Publicações Recentes</h1>
+    <a href="usuario.html">⬅ Voltar ao Perfil</a>
+  </header>
+
+  <main>
+    <h2>Suas Publicações</h2>
+    <div id="feed"></div>
+    <p class="no-posts" id="noPosts">Nenhuma publicação encontrada.</p>
+  </main>
+
+  <footer>© 2025 SafeDeFi Protocol — Comunidade & Publicações</footer>
+
+  <script>
+    const feed = document.getElementById("feed");
+    const noPosts = document.getElementById("noPosts");
+
+    function carregarPublicacoes() {
+      const publicacoes = JSON.parse(localStorage.getItem("publicacoes") || "[]");
+
+      feed.innerHTML = "";
+      if (publicacoes.length === 0) {
+        noPosts.style.display = "block";
+        return;
+      }
+
+      noPosts.style.display = "none";
+      publicacoes.reverse().forEach(pub => {
+        const post = document.createElement("div");
+        post.className = "post";
+
+        // Cabeçalho com data e botão de exclusão
+        const header = document.createElement("div");
+        header.className = "post-header";
+        header.innerHTML = `<span>${pub.data}</span>`;
+
+        const btnDel = document.createElement("button");
+        btnDel.textContent = "Excluir";
+        btnDel.className = "delete-btn";
+        btnDel.onclick = () => excluirPublicacao(pub.id);
+
+        header.appendChild(btnDel);
+        post.appendChild(header);
+
+        // Texto
+        if (pub.texto) {
+          const p = document.createElement("p");
+          p.className = "post-text";
+          p.textContent = pub.texto;
+          post.appendChild(p);
+        }
+
+        // Mídia (imagens e vídeos)
+        if (pub.midia && pub.midia.length > 0) {
+          const mediaDiv = document.createElement("div");
+          mediaDiv.className = "post-media";
+          pub.midia.forEach(m => {
+            const mediaEl = document.createElement(m.tipo.startsWith("video/") ? "video" : "img");
+            mediaEl.src = m.url;
+            if (m.tipo.startsWith("video/")) mediaEl.controls = true;
+            mediaDiv.appendChild(mediaEl);
+          });
+          post.appendChild(mediaDiv);
+        }
+
+        feed.appendChild(post);
+      });
+    }
+
+    function excluirPublicacao(id) {
+      if (!confirm("Deseja realmente excluir esta publicação?")) return;
+      let publicacoes = JSON.parse(localStorage.getItem("publicacoes") || "[]");
+      publicacoes = publicacoes.filter(p => p.id !== id);
+      localStorage.setItem("publicacoes", JSON.stringify(publicacoes));
+      carregarPublicacoes();
+    }
+
+    carregarPublicacoes();
+  </script>
+</body>
+</html>
