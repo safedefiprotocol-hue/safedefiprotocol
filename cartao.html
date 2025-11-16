@@ -1,302 +1,533 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Empréstimos • SafeDefi Protocol</title>
-  <style>
-    :root {
-      --bg-dark: #030b16;
-      --neon-cyan: #00f7ff;
-      --neon-purple: #9d4edd;
-      --text-light: #d8e1f0;
-      --text-muted: #9ab3cc;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cartão & Perfil — SafeDefi Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root{
+    --bg: #030617;
+    --card-grad-1: rgba(0,247,255,0.55);
+    --card-grad-2: rgba(157,78,221,0.55);
+    --muted: rgba(160,240,255,0.12);
+    --glass: rgba(255,255,255,0.03);
+    --text: #e6f9ff;
+    --accent: #00f7ff;
+    --accent-2: #9d4edd;
+    --success: #4ecdc4;
+    --danger: #ff6b6b;
+  }
 
-    body {
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(180deg, #000814, #030b16);
-      color: var(--text-light);
-      margin: 0;
-      padding: 0;
-    }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: linear-gradient(180deg,var(--bg), #05030a);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:28px;
+  }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: rgba(0,0,0,0.8);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+  .wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:420px 1fr;gap:24px;align-items:start}
+  @media (max-width: 920px){ .wrap{grid-template-columns:1fr; padding:20px} }
 
-    header .logo {
-      font-weight: 800;
-      font-size: 1.3em;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+  /* ====== Card + profile column ====== */
+  .left-col{display:flex;flex-direction:column;gap:18px;position:relative}
 
-    header nav a {
-      color: var(--text-light);
-      text-decoration: none;
-      margin: 0 15px;
-      transition: 0.3s;
-    }
+  /* Card 3D */
+  .card-container{perspective:1200px;}
+  .card{
+    width: 420px;
+    height: 260px;
+    border-radius:18px;
+    transform-style:preserve-3d;
+    transition: transform .7s cubic-bezier(.2,.9,.2,1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    cursor:pointer;
+    margin-bottom:8px;
+  }
+  .card.is-flipped{ transform: rotateY(180deg); }
 
-    header nav a:hover {
-      color: var(--neon-cyan);
-    }
+  .card-side{
+    position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;padding:22px;
+  }
 
-    main {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+  /* Front */
+  .card-front{
+    background: linear-gradient(135deg,var(--card-grad-1),var(--card-grad-2));
+    color:#041025;
+    filter: brightness(0.9); /* lowered brightness for readability */
+  }
+  .card-front .overlay{
+    position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.04));border-radius:18px;pointer-events:none;
+  }
+  .chip{width:56px;height:40px;border-radius:8px;background:linear-gradient(45deg,#e6e6e6,#cfcfcf);box-shadow:inset 0 -6px 18px rgba(0,0,0,0.15)}
+  .brand{font-weight:900;font-size:1rem;letter-spacing:0.6px}
+  .card-number{font-size:1.25rem;letter-spacing:3px;font-weight:700}
+  .card-bottom{display:flex;justify-content:space-between;align-items:center}
+  .card-name{font-weight:700}
+  .card-valid{font-size:.85rem;color:rgba(4,16,37,0.7)}
 
-    .profile-section {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 30px;
-      display: flex;
-      align-items: center;
-      gap: 25px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 25px rgba(0,255,255,0.08);
-    }
+  /* Back */
+  .card-back{
+    background: linear-gradient(135deg,#070912,#1a0920);
+    transform: rotateY(180deg);
+    color:var(--text);
+  }
+  .mag-strip{height:56px;background:#0a0a0a;border-radius:6px;margin-top:8px}
+  .sig-cvv{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+  .signature{background:#fff;color:#000;padding:8px;border-radius:6px;flex:1}
+  .cvv-box{min-width:72px;text-align:center;background:#111;padding:8px;border-radius:6px}
+  .back-info{font-size:0.8rem;opacity:.85;margin-top:14px;text-align:center}
 
-    .profile-section img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid var(--neon-cyan);
-    }
+  /* Profile small summary */
+  .profile-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);
+  }
+  .balance{display:flex;flex-direction:column;gap:6px}
+  .balance .amount{font-size:1.45rem;font-weight:800;color:var(--accent)}
+  .balance .sub{color:rgba(160,240,255,0.7);font-size:.9rem}
 
-    .profile-info h2 {
-      margin: 0;
-      color: var(--neon-cyan);
-      font-size: 1.5em;
-    }
+  .actions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .action-btn{
+    background:rgba(255,255,255,0.03);
+    border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(255,255,255,0.03);
+    cursor:pointer;font-weight:600;font-size:.9rem;
+  }
+  .action-btn i{display:block;font-size:18px;margin-bottom:6px;color:var(--accent)}
 
-    .profile-info p {
-      color: var(--text-muted);
-      font-size: 0.95em;
-    }
+  /* Credibility */
+  .cred{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .level-bar{height:10px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden}
+  .level-progress{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%}
+  .level-info{display:flex;justify-content:space-between;font-size:.85rem;color:rgba(160,240,255,0.85)}
 
-    .tokens {
-      display: flex;
-      gap: 20px;
-      margin-top: 10px;
-    }
+  /* Search & talk to AI */
+  .search-row{display:flex;gap:8px;margin-top:12px}
+  .search-row input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:var(--text)}
+  .search-row button{padding:10px 12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021025;font-weight:700;cursor:pointer}
 
-    .token-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 10px;
-      padding: 15px 20px;
-      text-align: center;
-      flex: 1;
-    }
+  .talk-ia{margin-top:10px;padding:10px;border-radius:10px;border:1px dashed rgba(255,255,255,0.06);text-align:center;cursor:pointer;background:rgba(255,255,255,0.01)}
+  .talk-ia.disabled{opacity:.8;cursor:not-allowed}
 
-    .token-card h3 {
-      color: var(--neon-cyan);
-      margin-bottom: 5px;
-    }
+  /* Right column: details + history */
+  .right-col{display:flex;flex-direction:column;gap:18px}
 
-    .token-card span {
-      font-weight: 600;
-      font-size: 1.1em;
-    }
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);
+  }
 
-    .loan-section {
-      background: rgba(255,255,255,0.03);
-      border-radius: 16px;
-      padding: 30px;
-      border: 1px solid rgba(255,255,255,0.05);
-      margin-bottom: 40px;
-      box-shadow: 0 0 25px rgba(0,255,255,0.08);
-    }
+  .panel h3{margin:0 0 8px 0}
+  .quick-contacts{display:flex;gap:10px;flex-wrap:wrap}
+  .contact{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;font-weight:600;cursor:pointer}
 
-    .loan-section h3 {
-      color: var(--neon-purple);
-      margin-bottom: 20px;
-    }
+  /* History table */
+  .history-table{width:100%;border-collapse:collapse;margin-top:12px}
+  .history-table th, .history-table td{padding:10px 8px;text-align:left;font-size:.95rem;border-bottom:1px dashed rgba(255,255,255,0.03)}
+  .history-status{font-weight:700;padding:6px 10px;border-radius:8px}
+  .history-status.in{background:rgba(78,205,196,0.12);color:var(--success)}
+  .history-status.out{background:rgba(255,107,107,0.08);color:var(--danger)}
+  .history-empty{opacity:.7;padding:20px;text-align:center}
 
-    .loan-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-
-    .loan-btn {
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 25px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .loan-btn:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    .loan-details {
-      background: rgba(0,0,0,0.2);
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 15px;
-      color: var(--text-light);
-    }
-
-    .info-section {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 0 25px rgba(0,255,255,0.05);
-    }
-
-    .info-section h3 {
-      color: var(--neon-cyan);
-      margin-bottom: 15px;
-    }
-
-    .info-section ul {
-      list-style: none;
-      padding: 0;
-      line-height: 1.8;
-      color: var(--text-muted);
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-muted);
-      background: #020912;
-      font-size: 0.9em;
-    }
-  </style>
+  /* small helpers */
+  .muted{color:rgba(160,240,255,0.6);font-size:.9rem}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .small{font-size:.85rem}
+</style>
 </head>
-
 <body>
-  <header>
-    <div class="logo">SafeDefi Protocol</div>
-    <nav>
-      <a href="index.html">Início</a>
-      <a href="cartao.html">Cartão</a>
-      <a href="usuario.html">Perfil</a>
-      <a href="stake.html">Stake</a>
-      <a href="emprestimos.html" style="color: var(--neon-cyan);">Empréstimos</a>
-    </nav>
-  </header>
 
-  <main>
-    <!-- Perfil e Saldos -->
-    <div class="profile-section">
-      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwIiB4Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBiMGZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGMzY2ZmIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJNMTggMjAgTDUwIDIwIEw4MiA1MCBMNTAgODAgTDE4IDgwIEw0NiA1MCBMMTggMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=" alt="Usuário">
-      <div class="profile-info">
-        <h2>Carteira</h2>
-        <p>Nível de credibilidade: <strong style="color:var(--neon-purple)">97%</strong></p>
+<div class="wrap">
 
-        <div class="tokens">
-          <div class="token-card">
-            <h3>BNB</h3>
-            <span id="saldoBNB">0</span>
+  <!-- LEFT: CARD + PROFILE -->
+  <div class="left-col">
+
+    <div class="card-container">
+      <div class="card" id="card3d" title="Clique para virar o cartão">
+        <!-- FRONT -->
+        <div class="card-side card-front">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;z-index:2">
+            <div class="brand">SafeDefi Protocol</div>
+            <div class="chip" aria-hidden="true"></div>
           </div>
-          <div class="token-card">
-            <h3>USDT</h3>
-            <span id="saldoUSDT">0</span>
+
+          <div style="z-index:2">
+            <div class="card-number" id="cardNumber">0101 0101 0101 0101</div>
+            <div style="height:8px"></div>
+            <div class="card-bottom">
+              <div>
+                <div class="card-name" id="cardHolder">SIMULADOR DE CARTÃO</div>
+                <div class="muted">TITULAR</div>
+              </div>
+              <div>
+                <div class="card-valid">VALID 12/40</div>
+                <div class="muted" style="text-align:right;font-size:.75rem">PLATINUM • SECURITY LOG</div>
+              </div>
+            </div>
           </div>
-          <div class="token-card">
-            <h3>SDP</h3>
-            <span id="saldoSDP">0</span>
+
+          <div class="overlay" aria-hidden="true"></div>
+        </div>
+
+        <!-- BACK -->
+        <div class="card-side card-back">
+          <div>
+            <div class="brand" style="color:var(--accent);">SafeDefi Protocol</div>
+            <div class="mag-strip"></div>
+
+            <div class="sig-cvv">
+              <div class="signature">SECURITY LOG</div>
+              <div class="cvv-box">CVV: <strong>731</strong></div>
+            </div>
+
+            <div class="back-info">
+              <div>Cartão Internacional • Emissão via SafeDefi</div>
+              <div style="margin-top:8px;font-size:.82rem;opacity:.9">Para uso em pagamentos locais e internacionais (integração com crypto via USDT/BNB/SDP/BTC disponível futuramente).</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Empréstimos -->
-    <div class="loan-section">
-      <h3>💰 Solicitar Empréstimo</h3>
-      <div class="loan-buttons">
-        <button class="loan-btn" onclick="calcularEmprestimo('BNB')">Emprestar em BNB</button>
-        <button class="loan-btn" onclick="calcularEmprestimo('USDT')">Emprestar em USDT</button>
-        <button class="loan-btn" onclick="calcularEmprestimo('SDP')">Emprestar em SDP</button>
+    <!-- Profile mini -->
+    <div class="profile-card">
+      <div class="row">
+        <div>
+          <div class="muted">Conta</div>
+          <div style="font-weight:800;font-size:1.05rem">USER NAME</div>
+          <div class="small muted">ID: user-000198</div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted small">Nível de Credibilidade</div>
+          <div style="font-weight:800;color:var(--accent)">Confiável • Nível 4</div>
+        </div>
       </div>
 
-      <div id="loanResult" class="loan-details">
-        Selecione um token para visualizar o valor disponível para empréstimo.
+      <div class="balance" style="margin-top:12px">
+        <div class="muted small">Saldo disponível</div>
+        <div class="amount" id="balanceAmount">R$ 0,00</div>
+        <div class="muted small">Limite usado <strong id="usedLimit">R$ 0,00</strong> · Limite total <strong id="totalLimit">R$ 0,00</strong></div>
+      </div>
+
+      <div class="actions-grid" id="actionGrid" style="margin-top:12px">
+        <div class="action-btn" data-action="pix"><i class="fa-solid fa-bolt"></i>PIX</div>
+        <div class="action-btn" data-action="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i>Transferir</div>
+        <div class="action-btn" data-action="pay"><i class="fa-solid fa-qrcode"></i>Pagar</div>
+        <div class="action-btn" data-action="topup"><i class="fa-solid fa-wallet"></i>Adicionar</div>
+        <div class="action-btn" data-action="card-settings"><i class="fa-solid fa-credit-card"></i>Cartão</div>
+        <div class="action-btn" data-action="loans"><i class="fa-solid fa-coins"></i>Empréstimo</div>
+      </div>
+
+      <div class="cred">
+        <div class="muted small">Pontuação</div>
+        <div class="level-bar"><div class="level-progress" id="credProgress"></div></div>
+        <div class="level-info small"><span id="credTxt">Nível 4 • Confiável</span><span id="credPct">85%</span></div>
+      </div>
+
+      <div class="search-row">
+        <input id="quickSearch" placeholder="Procurar contatos / funções (ex: PIX, Transferir, Ana)" />
+        <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+
+      <div class="talk-ia" id="talkIA">💬 Falar com a IA (em desenvolvimento)</div>
+    </div>
+
+  </div> <!-- end left-col -->
+
+  <!-- RIGHT: DETAILS + HISTORY -->
+  <div class="right-col">
+    <div class="panel">
+      <h3>Atalhos & Contatos</h3>
+      <div class="muted small">Toque para iniciar ação (funcionalidade mock)</div>
+      <div style="height:12px"></div>
+      <div class="quick-contacts" id="contactsList">
+        <!-- contacts filled by JS -->
+      </div>
+      <div style="height:12px"></div>
+      <div class="row" style="margin-top:10px">
+        <div class="muted small">Saldo Total (conta + cripto)</div>
+        <div style="font-weight:800" id="totalWallet">R$ 0,00</div>
       </div>
     </div>
 
-    <!-- Créditos -->
-    <div class="loan-section">
-      <h3>💳 Abrir Linha de Crédito</h3>
-      <div class="loan-buttons">
-        <button class="loan-btn" onclick="calcularCredito('BNB')">Crédito BNB</button>
-        <button class="loan-btn" onclick="calcularCredito('USDT')">Crédito USDT</button>
-        <button class="loan-btn" onclick="calcularCredito('SDP')">Crédito SDP</button>
-      </div>
+    <div class="panel">
+      <h3>Histórico — últimos 30 dias</h3>
+      <div class="muted small">Transações simuladas. Você pode apagar cada item (mock) usando o menu ao lado.</div>
 
-      <div id="creditoResult" class="loan-details">
-        Selecione um token para visualizar sua linha de crédito.
-      </div>
+      <table class="history-table" id="historyTable" aria-live="polite">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Conta</th>
+            <th>Valor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <!-- filled by JS -->
+        </tbody>
+      </table>
+
+      <div id="historyEmpty" class="history-empty" style="display:none">Nenhuma movimentação nos últimos 30 dias.</div>
     </div>
 
-    <!-- Regras e Política -->
-    <div class="info-section">
-      <h3>📜 Política de Empréstimos e Crédito</h3>
-      <ul>
-        <li>🪙 Você pode solicitar até <strong>20%</strong> do seu saldo em empréstimo.</li>
-        <li>💸 Juros diários equivalentes d/% de BNB + taxa de <strong>0,0001 BNB/dia</strong>.</li>
-        <li>💳 Linha de crédito: limite de até <strong>1.1x</strong> o valor total em conta.</li>
-        <li>⚠️ Juros de <strong>1.5% ao dia</strong> em BNB para atrasos superiores a 30 dias.</li>
-        <li>🔒 Depósitos serão congelados se houver tentativa de golpe ou uso indevido.</li>
-        <li>🤝 Nosso objetivo é incentivar o uso consciente e sustentável dos créditos.</li>
+    <div class="panel">
+      <h3>Configurações & Funções Futuras</h3>
+      <ul style="margin:0;padding-left:16px">
+        <li class="muted small">Pagamentos internacionais via USDT / BNB / SDP / BTC</li>
+        <li class="muted small">Empréstimos com garantia SDP</li>
+        <li class="muted small">Rendimentos & Staking</li>
+        <li class="muted small">Integração com PIX instantâneo</li>
       </ul>
+
+      <div style="height:12px"></div>
+      <div class="row">
+        <button class="action-btn" id="btnRequestCard" style="min-width:160px">🚀 Solicitar Cartão (KYC)</button>
+        <button class="action-btn" id="btnExport" style="min-width:160px"><i class="fa-solid fa-download"></i> Exportar histórico</button>
+      </div>
     </div>
-  </main>
+  </div> <!-- end right-col -->
 
-  <footer>
-    SafeDefi Protocol © 2025 — Plataforma de Empréstimos e Créditos Web3 Inteligentes.
-  </footer>
+</div> <!-- end wrap -->
 
-  <script>
-    const saldos = {
-      BNB: 12.5,
-      USDT: 2350,
-      SDP: 18000
-    };
+<script>
+  /* ---------- initial data & helpers ---------- */
+  const balanceEl = document.getElementById('balanceAmount');
+  const usedLimitEl = document.getElementById('usedLimit');
+  const totalLimitEl = document.getElementById('totalLimit');
+  const credProgressEl = document.getElementById('credProgress');
+  const credTxtEl = document.getElementById('credTxt');
+  const credPctEl = document.getElementById('credPct');
+  const historyBody = document.getElementById('historyBody');
+  const historyEmpty = document.getElementById('historyEmpty');
+  const contactsList = document.getElementById('contactsList');
+  const totalWalletEl = document.getElementById('totalWallet');
 
-    function calcularEmprestimo(token) {
-      const valor = saldos[token];
-      const emprestimo = valor * 0.2;
-      document.getElementById("loanResult").innerHTML = `
-        💰 Você pode solicitar até <strong>${emprestimo.toFixed(4)} ${token}</strong> como empréstimo.<br><br>
-        🕒 Juros semelhantes à AAVE + taxa fixa de <strong>0,0001 BNB/dia</strong> enquanto o saldo estiver ativo.
-      `;
+  // Simulated financial profile (start zeros as requested; apps can update this later)
+  let profile = {
+    balance: 0.00,
+    usedLimit: 0.00,
+    totalLimit: 0.00,
+    totalWallet: 0.00, // account + crypto
+    credibility: { level: 4, pct: 85, score: 850 }
+  };
+
+  // Mock contacts
+  const contacts = [
+    {name:'Ana Santos', id:'ana1'}, {name:'Pedro Costa', id:'pedro1'}, {name:'DeFi Explorers', id:'comm1'},
+    {name:'SDP Brasil', id:'comm2'}, {name:'Maria Oliveira', id:'maria1'}, {name:'Pagamento Loja', id:'shop1'}
+  ];
+
+  // Render contacts
+  function renderContacts(list = contacts){
+    contactsList.innerHTML = '';
+    list.forEach(c=>{
+      const el = document.createElement('div');
+      el.className = 'contact';
+      el.textContent = c.name;
+      el.dataset.id = c.id;
+      el.onclick = ()=> showNotification(`Ação mock: abrir conversa / pagamento para ${c.name}`, 'info');
+      contactsList.appendChild(el);
+    });
+  }
+
+  // Credibility render
+  function renderCred(){
+    credProgressEl.style.width = profile.credibility.pct + '%';
+    credTxtEl.textContent = `Nível ${profile.credibility.level} • Confiável`;
+    credPctEl.textContent = `${profile.credibility.pct}%`;
+  }
+
+  // Balance render
+  function renderBalance(){
+    balanceEl.textContent = formatBRL(profile.balance);
+    usedLimitEl.textContent = formatBRL(profile.usedLimit);
+    totalLimitEl.textContent = formatBRL(profile.totalLimit);
+    totalWalletEl.textContent = formatBRL(profile.totalWallet);
+  }
+
+  function formatBRL(v){ return 'R$ ' + v.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); }
+
+  /* ---------- Card flip interactions ---------- */
+  const card = document.getElementById('card3d');
+  card.addEventListener('click', ()=> card.classList.toggle('is-flipped'));
+  card.addEventListener('mouseenter', ()=> {/* optional hover effect */});
+  card.addEventListener('mouseleave', ()=> {/* */});
+
+  /* ---------- Quick actions ---------- */
+  document.querySelectorAll('.action-btn[data-action]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const a = btn.dataset.action;
+      if(a === 'pix') showNotification('Abrindo PIX (mock)...', 'info');
+      else if(a === 'transfer') showNotification('Iniciar transferência (mock)...', 'info');
+      else if(a === 'pay') showNotification('Gerar QR para pagamento (mock)...', 'info');
+      else if(a === 'topup') showNotification('Abrir opções de adicionar fundos (mock)...', 'info');
+      else if(a === 'card-settings') showNotification('Abrir configurações do cartão (mock)...', 'info');
+      else if(a === 'loans') showNotification('Abrir empréstimos (mock)...', 'info');
+    });
+  });
+
+  /* ---------- Search box behavior ---------- */
+  const quickSearch = document.getElementById('quickSearch');
+  document.getElementById('searchBtn').addEventListener('click', doSearch);
+  quickSearch.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') doSearch(); });
+
+  function doSearch(){
+    const q = quickSearch.value.trim().toLowerCase();
+    if(!q){ renderContacts(); showNotification('Mostrando todos os contatos e atalhos', 'success'); return; }
+
+    // filter contacts
+    const foundContacts = contacts.filter(c => c.name.toLowerCase().includes(q));
+    renderContacts(foundContacts);
+
+    // filter actions names (simple mapping)
+    const actions = Array.from(document.querySelectorAll('.action-btn[data-action]'));
+    actions.forEach(a=>{
+      const txt = a.textContent.trim().toLowerCase();
+      a.style.display = txt.includes(q) ? 'flex' : 'none';
+    });
+
+    showNotification(`Resultados para "${q}" (${foundContacts.length} contatos)`, 'info');
+  }
+
+  /* ---------- Talk to IA placeholder ---------- */
+  document.getElementById('talkIA').addEventListener('click', ()=>{
+    showNotification('A IA ainda está em desenvolvimento. Em breve você poderá conversar e pedir ações diretamente aqui.', 'info', 6500);
+  });
+
+  /* ---------- KYC / Request Card & Export ---------- */
+  document.getElementById('btnRequestCard').addEventListener('click', ()=>{
+    showNotification('Solicitação KYC enviada. Verificação em análise (mock).', 'success');
+  });
+  document.getElementById('btnExport').addEventListener('click', ()=>{
+    exportHistoryCSV();
+  });
+
+  /* ---------- Notifications (simple) ---------- */
+  function showNotification(msg, type='info', duration=3000){
+    const n = document.createElement('div');
+    n.textContent = msg;
+    n.style.cssText = 'position:fixed;right:20px;bottom:20px;padding:12px 16px;border-radius:10px;background:rgba(0,0,0,0.7);color:white;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.6);';
+    if(type==='success') n.style.background = 'linear-gradient(90deg,#4ecdc4,#00f7ff)';
+    if(type==='danger') n.style.background = 'linear-gradient(90deg,#ff6b6b,#9d4edd)';
+    document.body.appendChild(n);
+    setTimeout(()=>{ n.style.opacity = '0'; setTimeout(()=>n.remove(),400); }, duration);
+  }
+
+  /* ---------- History generation (last 30 days) ---------- */
+  function generateMockHistory(days = 30, count = 18){
+    const ops = ['Pagamento loja','Recebimento PIX','Transferência enviada','Compra online','Staking reward','Saque ATM','Recarga celular','Pagamento assinatura'];
+    const txs = [];
+    const now = new Date();
+    for(let i=0;i<count;i++){
+      const daysAgo = Math.floor(Math.random()*days);
+      const d = new Date(now);
+      d.setDate(now.getDate() - daysAgo);
+      // random time
+      d.setHours(Math.floor(Math.random()*24));
+      d.setMinutes(Math.floor(Math.random()*60));
+      const op = ops[Math.floor(Math.random()*ops.length)];
+      const amount = (Math.random()*800).toFixed(2);
+      const type = Math.random() > 0.5 ? 'in' : 'out';
+      const counter = type === 'in' ? 'Conta Recebida' : 'Cartão/Loja';
+      txs.push({ date: d, desc: op, account: counter, amount: parseFloat(amount), type });
     }
+    // sort by date desc
+    txs.sort((a,b)=>b.date - a.date);
+    return txs;
+  }
 
-    function calcularCredito(token) {
-      const valor = saldos[token];
-      const credito = valor * 1.1;
-      document.getElementById("creditoResult").innerHTML = `
-        💳 Sua linha de crédito é de até <strong>${credito.toFixed(4)} ${token}</strong>.<br><br>
-        ⚠️ Caso use o crédito e atrase o pagamento, incidirá <strong>1.5% ao dia</strong> em BNB após 30 dias.
-      `;
-    }
-  </script>
+  let history = generateMockHistory(30, 24);
+
+  function renderHistory(){
+    historyBody.innerHTML = '';
+    if(history.length === 0){
+      historyEmpty.style.display = 'block';
+      return;
+    } else historyEmpty.style.display = 'none';
+
+    history.forEach((tx, idx)=>{
+      const tr = document.createElement('tr');
+      const dateTd = document.createElement('td');
+      dateTd.textContent = tx.date.toLocaleString();
+      const descTd = document.createElement('td');
+      descTd.textContent = tx.desc;
+      const accTd = document.createElement('td');
+      accTd.textContent = tx.account;
+      const valTd = document.createElement('td');
+      valTd.textContent = (tx.type === 'out' ? '-' : '+') + formatBRL(tx.amount);
+      const statusTd = document.createElement('td');
+      const span = document.createElement('div');
+      span.className = 'history-status ' + (tx.type === 'in' ? 'in' : 'out');
+      span.textContent = tx.type === 'in' ? 'RECEBIDO' : 'PAGO';
+      statusTd.appendChild(span);
+
+      tr.appendChild(dateTd); tr.appendChild(descTd); tr.appendChild(accTd); tr.appendChild(valTd); tr.appendChild(statusTd);
+
+      // support delete via context menu / double click (mock)
+      tr.addEventListener('dblclick', ()=>{
+        if(confirm('Remover esta transação do histórico (apenas local, mock)?')){
+          history.splice(idx,1);
+          renderHistory();
+          showNotification('Transação removida (mock).', 'success');
+        }
+      });
+
+      historyBody.appendChild(tr);
+    });
+  }
+
+  /* Export CSV of history (mock) */
+  function exportHistoryCSV(){
+    if(history.length === 0){ showNotification('Histórico vazio', 'info'); return; }
+    const rows = [['Data','Descrição','Conta','Valor','Tipo']];
+    history.forEach(tx=>{
+      rows.push([tx.date.toISOString(), tx.desc, tx.account, tx.amount.toFixed(2), tx.type]);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'historico_cartao.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    showNotification('Exportando histórico (mock)...', 'success');
+  }
+
+  /* ---------- Init renders ---------- */
+  function init(){
+    renderContacts();
+    renderCred();
+    renderBalance();
+    renderHistory();
+  }
+  init();
+
+  /* ---------- small niceties: allow search clear on ESC ---------- */
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ quickSearch.value=''; doSearch(); } });
+
+  /* ---------- sample update to demonstrate dynamic balance changes (mock) ---------- */
+  // This simulates external updates; in real app you'd fetch from backend/wallet
+  setTimeout(()=>{
+    profile.balance = 1520.30;
+    profile.totalLimit = 5000.00;
+    profile.usedLimit = 124.50;
+    profile.totalWallet = profile.balance + 0; // if crypto balances added, sum here
+    profile.credibility.pct = 85;
+    profile.credibility.level = 4;
+    profile.credibility.score = 850;
+    renderBalance();
+    renderCred();
+    showNotification('Saldo sincronizado (mock).', 'success', 2500);
+  }, 900);
+
+</script>
 </body>
 </html>
