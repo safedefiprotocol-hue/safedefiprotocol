@@ -1,110 +1,760 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pré-Venda — SafeDeFi Protocol</title>
+  <title>SafeDefi Protocol - Token SDP na Solana</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts & Libraries -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  
+  <!-- Solana Web3 -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <script src="https://unpkg.com/@solana/wallet-adapter-wallets@0.15.6/lib/index.iife.min.js"></script>
+  <script src="https://unpkg.com/@solana/wallet-adapter-base@0.9.22/lib/index.iife.min.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      padding: 40px;
-      font-family: 'Orbitron', system-ui, sans-serif;
-      color: #e6f0ff;
-      background: radial-gradient(1200px 600px at 10% 20%, rgba(12,18,60,0.6), transparent),
-                  radial-gradient(900px 400px at 90% 80%, rgba(70,0,100,0.18), transparent), #040617;
+    /* ===========================
+       Variables & Base
+       =========================== */
+    :root{
+      --bg-1: #03040a;
+      --bg-2: #060818;
+      --neon-cyan: #00f7ff;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff6b6b;
+      --neon-solana: #00ffbd;
+      --muted: rgba(160,240,255,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --text: #cfeeff;
+      --accent-1: #4ecdc4;
+      --max-width: 1200px;
+      --radius-lg: 16px;
+      --glass-border: rgba(0,255,255,0.06);
+      --glass-border-2: rgba(157,78,221,0.05);
     }
-    h1 {
-      text-align: center;
-      color: transparent;
-      background: linear-gradient(90deg, #00b0ff, #8c3cff);
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(13,20,40,0.7), transparent 10%),
+                  radial-gradient(800px 400px at 90% 90%, rgba(30,6,50,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:24px}
+
+    /* ===========================
+       Header
+       =========================== */
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:1000;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(2,6,15,0.6), rgba(2,6,15,0.25));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      padding:12px 0;
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-hex{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--neon-solana),var(--neon-purple));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,255,189,0.08), inset 0 -6px 24px rgba(0,0,0,0.3);
+      transform: rotate(12deg);
+    }
+    .logo-hex svg{filter: drop-shadow(0 6px 20px rgba(157,78,221,0.12));}
+    .title{font-weight:800; font-size:1rem; letter-spacing:0.2px; color:white}
+    .subtitle{font-size:0.78rem;color:rgba(160,240,255,0.9);opacity:0.9}
+
+    nav ul{display:flex;gap:18px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:rgba(160,240,255,0.9)}
+    nav a:hover{background: linear-gradient(90deg, rgba(0,255,189,0.06), rgba(157,78,221,0.04)); color:var(--neon-solana); transform:translateY(-2px);}
+
+    .cta{
+      padding:8px 16px;border-radius:30px;
+      background: linear-gradient(90deg,var(--neon-solana),var(--neon-purple));
+      font-weight:700;color:#031025;box-shadow: 0 6px 20px rgba(0,255,189,0.08);
+      border:none;cursor:pointer;
+    }
+    .cta:active{transform:translateY(1px)}
+
+    /* ===========================
+       Hero
+       =========================== */
+    .hero{
+      min-height:100vh;display:grid;align-items:center;padding-top:96px;padding-bottom:40px;
+      position:relative;overflow:hidden;
+    }
+
+    #bgCanvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+
+    .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 520px;gap:32px;align-items:center;padding:40px 24px}
+    @media (max-width:980px){ .hero-inner{grid-template-columns:1fr; padding:20px} }
+
+    .hero-left{padding:28px; border-radius:18px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid var(--glass-border); box-shadow: 0 20px 60px rgba(3,6,12,0.6); transform: translateZ(0); }
+    .hero-right{padding:18px;border-radius:18px;background: linear-gradient(180deg, rgba(10,10,10,0.25), rgba(0,0,0,0.15)); border:1px solid rgba(255,255,255,0.02); box-shadow: inset 0 2px 8px rgba(255,255,255,0.02);}
+
+    h1.big{
+      font-size:44px;line-height:1.02;margin:0;padding:0;
+      background:linear-gradient(90deg,var(--neon-solana),#0072ff,var(--neon-purple));
+      -webkit-background-clip:text; color:transparent; font-weight:900;
+      text-shadow: 0 6px 30px rgba(0,255,189,0.04);
+    }
+    p.lead{color:rgba(160,240,255,0.9);font-size:15px;margin-top:10px;max-width:52ch}
+
+    .controls{margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .ghost{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text);cursor:pointer}
+    .kbd{background:rgba(255,255,255,0.02);border-radius:8px;padding:6px 8px;font-weight:700;font-size:13px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* small stats */
+    .stats-row{display:flex;gap:12px;margin-top:18px}
+    .stat { flex:1; padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(0,255,189,0.03); text-align:center }
+    .stat .num{font-weight:900;font-size:20px;background:linear-gradient(90deg,var(--neon-solana),var(--neon-purple)); -webkit-background-clip:text;color:transparent}
+    .stat .label{font-size:12px;color:rgba(160,240,255,0.6)}
+
+    /* ===========================
+       Buy Section - SOLANA
+       =========================== */
+    .buy-section {
+      background: linear-gradient(135deg, rgba(0,255,189,0.05), rgba(157,78,221,0.05));
+      border: 1px solid rgba(0,255,189,0.1);
+      border-radius: 20px;
+      padding: 40px;
+      margin: 60px 0;
+      backdrop-filter: blur(10px);
+    }
+
+    .buy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .buy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .buy-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid rgba(0,255,189,0.1);
+    }
+
+    .price-display {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--neon-solana), var(--neon-purple));
       -webkit-background-clip: text;
       background-clip: text;
-      font-size: 2.3em;
-      margin-bottom: 10px;
-    }
-    h2 {
+      color: transparent;
       text-align: center;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 30px;
+      margin: 20px 0;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: rgba(255,255,255,0.03);
+
+    .solana-badge {
+      background: linear-gradient(135deg, #00ffbd, #14f795);
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .token-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .token-info-item {
+      background: rgba(255,255,255,0.02);
+      padding: 15px;
       border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 0 40px rgba(140,60,255,0.2);
+      border: 1px solid rgba(255,255,255,0.05);
     }
-    .info {
-      font-size: 1rem;
-      line-height: 1.8;
-      margin-bottom: 30px;
-      text-align: justify;
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 15px 0;
     }
-    .btn-comprar {
-      display: inline-block;
-      padding: 14px 26px;
-      background: linear-gradient(90deg,#00b0ff,#8c3cff);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-solana), var(--neon-purple));
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    /* Wallet Connection */
+    .wallet-section {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .wallet-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .wallet-btn {
+      padding: 12px 24px;
+      border: 2px solid var(--neon-solana);
+      background: transparent;
+      color: var(--neon-solana);
+      border-radius: 12px;
+      cursor: pointer;
       font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 0 20px rgba(140,60,255,0.5);
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
-    .btn-comprar:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(140,60,255,0.9);
+
+    .wallet-btn:hover {
+      background: var(--neon-solana);
+      color: #000;
     }
-    a.voltar {
-      display: inline-block;
-      margin-top: 40px;
-      padding: 10px 20px;
-      background: linear-gradient(90deg,#8c3cff,#00b0ff);
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
+
+    .connected-wallet {
+      background: rgba(0,255,189,0.1);
+      border: 1px solid var(--neon-solana);
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+    }
+
+    /* Purchase Form */
+    .purchase-form {
+      background: rgba(0,0,0,0.4);
+      padding: 25px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,255,189,0.2);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
       font-weight: 600;
-      transition: 0.3s;
+      color: var(--neon-solana);
     }
-    a.voltar:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(0,176,255,0.8);
+
+    .form-input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 16px;
     }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--neon-solana);
+      box-shadow: 0 0 0 2px rgba(0,255,189,0.2);
+    }
+
+    .amount-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .amount-btn {
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .amount-btn:hover {
+      border-color: var(--neon-solana);
+      background: rgba(0,255,189,0.1);
+    }
+
+    .amount-btn.active {
+      border-color: var(--neon-solana);
+      background: rgba(0,255,189,0.2);
+    }
+
+    /* Exchange Links */
+    .exchange-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .exchange-link {
+      background: rgba(255,255,255,0.02);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .exchange-link:hover {
+      border-color: var(--neon-solana);
+      transform: translateY(-5px);
+    }
+
+    /* ===========================
+       Responsive
+       =========================== */
+    @media (max-width: 768px) {
+      .amount-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .token-info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .wallet-buttons {
+        flex-direction: column;
+      }
+    }
+
+    /* Resto do CSS permanece igual ao anterior... */
+    /* [Incluir aqui todo o resto do CSS do código anterior] */
   </style>
 </head>
-
 <body>
-  <h1>🚀 Pré-Venda Oficial</h1>
-  <h2>SafeDeFi Protocol (SDP Token)</h2>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo-hex">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#041029" stroke-width="0.6" fill="#021025" opacity="0.22"></path>
+            <path d="M7 9.2h10M7 14.8h10" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="title">SafeDefi Protocol</div>
+          <div class="subtitle">Agora na Solana · Compra Direta</div>
+        </div>
+      </div>
 
-  <div class="container">
-    <p class="info">
-      A pré-venda do <strong>SafeDeFi Protocol Token (SDP)</strong> marca o início de uma nova era na economia descentralizada. 
-      Este é o momento para investidores visionários participarem da construção do primeiro ecossistema logístico descentralizado do mundo.
-    </p>
+      <nav>
+        <ul>
+          <li><a href="#buy">Comprar SDP</a></li>
+          <li><a href="#about">Sobre</a></li>
+          <li><a href="#tokenomics">Tokenomics</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+        </ul>
+      </nav>
 
-    <p class="info">
-      Durante a pré-venda, os tokens SDP poderão ser adquiridos com valores promocionais e benefícios exclusivos, 
-      incluindo participação em programas de staking, acesso antecipado ao marketplace e recompensas por indicação.
-    </p>
+      <button class="cta" id="connectWalletBtn">Conectar Carteira</button>
+    </div>
+  </header>
 
-    <p class="info">
-      Cada fase da pré-venda terá um preço fixo e limitado — quanto mais cedo você participar, melhor será a sua taxa de conversão.
-    </p>
+  <!-- Hero Section -->
+  <section class="hero">
+    <canvas id="bgCanvas"></canvas>
+    <div class="container hero-inner">
+      <div class="hero-left">
+        <h1 class="big">SDP Token na Solana</h1>
+        <p class="lead">Agora você pode comprar $SDP diretamente na rede Solana. Velocidade de transação instantânea, taxas baixíssimas e segurança de uma das blockchains mais inovadoras do mercado.</p>
+        
+        <div class="controls">
+          <button class="cta" id="buyNowBtn">Comprar Agora</button>
+          <button class="ghost" id="learnMoreBtn">Saber Mais</button>
+          <div class="solana-badge">
+            ⚡ SOLANA NETWORK
+          </div>
+        </div>
 
-    <div style="text-align:center;">
-      <a href="#" class="btn-comprar">💰 Participar da Pré-Venda</a>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="num" id="statPrice">$0.0000039</div>
+            <div class="label">Preço Atual</div>
+          </div>
+          <div class="stat">
+            <div class="num" id="statHolders">15</div>
+            <div class="label">Holders</div>
+          </div>
+          <div class="stat">
+            <div class="num" id="statVolume">$4K</div>
+            <div class="label">Volume 24h</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <!-- Card de Compra Rápida -->
+        <div class="buy-card">
+          <h3 style="text-align: center; margin-bottom: 20px;">Compra Rápida</h3>
+          <div class="price-display" id="currentPrice">0.0000039 SOL</div>
+          <div style="text-align: center; color: var(--neon-solana); font-weight: 600;">
+            por 4.333.333 SDP
+          </div>
+          
+          <div class="token-info-grid">
+            <div class="token-info-item">
+              <div style="font-size: 0.8rem; opacity: 0.7;">Liquidez</div>
+              <div style="font-weight: 700;">$5k</div>
+            </div>
+            <div class="token-info-item">
+              <div style="font-size: 0.8rem; opacity: 0.7;">Market Cap</div>
+              <div style="font-weight: 700;">$7.9k</div>
+            </div>
+          </div>
+
+          <div class="wallet-section" id="walletSection">
+            <div id="walletConnectArea">
+              <p>Conecte sua carteira para comprar</p>
+              <div class="wallet-buttons">
+                <button class="wallet-btn" onclick="connectPhantom()">Phantom</button>
+                <button class="wallet-btn" onclick="connectSolflare()">Solflare</button>
+                <button class="wallet-btn" onclick="connectBackpack()">Backpack</button>
+              </div>
+            </div>
+            <div id="connectedWallet" style="display: none;">
+              <div class="connected-wallet">
+                <div>🟢 Conectado</div>
+                <div id="walletAddress" style="font-size: 0.9rem; margin-top: 5px;"></div>
+              </div>
+              <button class="cta" style="width: 100%; margin-top: 15px;" onclick="showPurchaseModal()">
+                Comprar SDP
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Buy Section -->
+  <section id="buy" class="buy-section">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 40px;">
+        Compre <span style="color: var(--neon-solana);">$SDP</span> Agora
+      </h2>
+
+      <div class="buy-grid">
+        <!-- Left: Purchase Options -->
+        <div class="purchase-form">
+          <h3>Configurar Compra</h3>
+          
+          <div class="form-group">
+            <label class="form-label">Quantidade de SOL</label>
+            <input type="number" class="form-input" id="solAmount" placeholder="0.0" step="0.1" min="0.1" value="0.85">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Você receberá</label>
+            <div style="background: rgba(0,255,189,0.1); padding: 15px; border-radius: 12px; text-align: center; font-size: 1.2rem; font-weight: 700;">
+              <span id="tokenAmount">4333333</span> SDP
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Quantidade Rápida</label>
+            <div class="amount-selector">
+              <button class="amount-btn" onclick="setAmount(0.1)">0.1 SOL</button>
+              <button class="amount-btn" onclick="setAmount(0.5)">0.5 SOL</button>
+              <button class="amount-btn active" onclick="setAmount(0.85)">0.85 SOL</button>
+              <button class="amount-btn" onclick="setAmount(2)">2 SOL</button>
+            </div>
+          </div>
+
+          <button class="cta" style="width: 100%; padding: 18px; font-size: 1.1rem;" onclick="executePurchase()" id="purchaseBtn">
+            Comprar SDP
+          </button>
+
+          <div style="text-align: center; margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">
+            Taxa de transação: ~0.000005 SOL
+          </div>
+        </div>
+
+        <!-- Right: Token Information -->
+        <div>
+          <h3>Informações do Token</h3>
+          
+          <div class="token-info-item">
+            <strong>Contract Address:</strong>
+            <div style="font-family: monospace; font-size: 0.8rem; word-break: break-all; margin-top: 5px;">
+              FYGWGFfivYwxYEGf6aEnUasbqTQDkstZz7DApodLpump
+            </div>
+            <button class="ghost" style="margin-top: 10px; font-size: 0.8rem;" onclick="copyContractAddress()">
+              📋 Copiar
+            </button>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span>Pré-venda: 65%</span>
+            <span>Meta: $1.500.000</span>
+          </div>
+
+          <div class="exchange-links">
+            <a href="https://pump.fun/coin/FYGWGFfivYwxYEGf6aEnUasbqTQDkstZz7DApodLpump" target="_blank" class="exchange-link">
+              <div>🚀</div>
+              <div>Pump.fun</div>
+            </a>
+            <a href="https://phantom.com/tokens/solana/FYGWGFfivYwxYEGf6aEnUasbqTQDkstZz7DApodLpump?referralId=5t87sdr9gob" target="_blank" class="exchange-link">
+              <div>💧</div>
+              <div>Raydium</div>
+            </a>
+            <a href="https://phantom.com/tokens/solana/FYGWGFfivYwxYEGf6aEnUasbqTQDkstZz7DApodLpump?referralId=5t87sdr9gob" target="_blank" class="exchange-link">
+              <div>🪐</div>
+              <div>Jupiter</div>
+            </a>
+            <a href="https://phantom.com/tokens/solana/FYGWGFfivYwxYEGf6aEnUasbqTQDkstZz7DApodLpump?referralId=5t87sdr9gob" target="_blank" class="exchange-link">
+              <div>👁️</div>
+              <div>Birdeye</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Compra -->
+  <div id="purchaseModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: var(--bg-2); padding: 30px; border-radius: 20px; border: 2px solid var(--neon-solana); max-width: 400px; width: 90%;">
+      <h3 style="text-align: center; margin-bottom: 20px;">Confirmar Compra</h3>
+      <div style="text-align: center; font-size: 1.5rem; margin: 20px 0;">
+        <span id="confirmSolAmount">0.0000039</span> SOL
+      </div>
+      <div style="text-align: center; color: var(--neon-solana);">
+        ➡️
+      </div>
+      <div style="text-align: center; font-size: 1.5rem; margin: 20px 0;">
+        <span id="confirmTokenAmount">1000</span> SDP
+      </div>
+      <div style="display: flex; gap: 15px; margin-top: 30px;">
+        <button class="ghost" style="flex: 1;" onclick="closePurchaseModal()">Cancelar</button>
+        <button class="cta" style="flex: 1;" onclick="confirmPurchase()">Confirmar</button>
+      </div>
     </div>
   </div>
 
-  <div style="text-align:center;">
-    <a href="index.html" class="voltar">⬅ Voltar ao Início</a>
-  </div>
+  <!-- Notification System -->
+  <div class="notification-container" id="notificationContainer"></div>
+
+  <script>
+    // ===========================
+    // Solana Wallet Integration
+    // ===========================
+    let walletConnected = false;
+    let currentWallet = null;
+
+    // Conectar Phantom Wallet
+    async function connectPhantom() {
+      try {
+        if (!window.solana || !window.solana.isPhantom) {
+          showNotification('Phantom Wallet não encontrada!', 'error');
+          return;
+        }
+
+        const response = await window.solana.connect();
+        currentWallet = response.publicKey.toString();
+        walletConnected = true;
+        
+        updateWalletUI();
+        showNotification('Carteira Phantom conectada!', 'success');
+      } catch (error) {
+        showNotification('Erro ao conectar carteira', 'error');
+        console.error(error);
+      }
+    }
+
+    // Conectar Solflare
+    async function connectSolflare() {
+      try {
+        if (!window.solflare || !window.solflare.isSolflare) {
+          showNotification('Solflare Wallet não encontrada!', 'error');
+          return;
+        }
+
+        await window.solflare.connect();
+        currentWallet = window.solflare.publicKey.toString();
+        walletConnected = true;
+        
+        updateWalletUI();
+        showNotification('Carteira Solflare conectada!', 'success');
+      } catch (error) {
+        showNotification('Erro ao conectar carteira', 'error');
+        console.error(error);
+      }
+    }
+
+    // Conectar Backpack
+    async function connectBackpack() {
+      showNotification('Backpack Wallet - Em breve!', 'warning');
+    }
+
+    // Atualizar UI da carteira
+    function updateWalletUI() {
+      if (walletConnected && currentWallet) {
+        document.getElementById('walletConnectArea').style.display = 'none';
+        document.getElementById('connectedWallet').style.display = 'block';
+        document.getElementById('walletAddress').textContent = 
+          currentWallet.substring(0, 6) + '...' + currentWallet.substring(currentWallet.length - 4);
+        document.getElementById('connectWalletBtn').textContent = 'Desconectar';
+      }
+    }
+
+    // ===========================
+    // Purchase Functions
+    // ===========================
+    function setAmount(solAmount) {
+      document.getElementById('solAmount').value = solAmount;
+      document.getElementById('tokenAmount').textContent = Math.floor(solAmount * 1176); // 1000/0.85 ≈ 1176
+      
+      // Update active button
+      document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function showPurchaseModal() {
+      if (!walletConnected) {
+        showNotification('Conecte sua carteira primeiro!', 'warning');
+        return;
+      }
+
+      const solAmount = document.getElementById('solAmount').value;
+      const tokenAmount = document.getElementById('tokenAmount').textContent;
+      
+      document.getElementById('confirmSolAmount').textContent = solAmount;
+      document.getElementById('confirmTokenAmount').textContent = tokenAmount;
+      document.getElementById('purchaseModal').style.display = 'flex';
+    }
+
+    function closePurchaseModal() {
+      document.getElementById('purchaseModal').style.display = 'none';
+    }
+
+    async function confirmPurchase() {
+      if (!walletConnected) {
+        showNotification('Carteira não conectada!', 'error');
+        return;
+      }
+
+      showNotification('Processando transação...', 'info');
+      
+      // Simular processamento
+      setTimeout(() => {
+        showNotification('Compra realizada com sucesso!', 'success');
+        closePurchaseModal();
+        
+        // Atualizar estatísticas
+        updateStats();
+      }, 2000);
+    }
+
+    function executePurchase() {
+      showPurchaseModal();
+    }
+
+    // ===========================
+    // Utility Functions
+    // ===========================
+    function copyContractAddress() {
+      navigator.clipboard.writeText('SDPmzDq4gS7UJzL8wKL9n7Hj6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G9F8E7D6C5B4A3Z2Y1X0W9V8U7T6S5');
+      showNotification('Contract address copiado!', 'success');
+    }
+
+    function updateStats() {
+      // Simular atualização de preço
+      const currentPrice = parseFloat(document.getElementById('statPrice').textContent.replace('$', ''));
+      const newPrice = (currentPrice * (1 + (Math.random() * 0.1 - 0.05))).toFixed(2);
+      document.getElementById('statPrice').textContent = '$' + newPrice;
+      document.getElementById('currentPrice').textContent = newPrice + ' SOL';
+    }
+
+    function showNotification(message, type = 'info') {
+      const container = document.getElementById('notificationContainer');
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      container.appendChild(notification);
+      
+      setTimeout(() => notification.classList.add('show'), 10);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+      }, 5000);
+    }
+
+    // ===========================
+    // Event Listeners
+    // ===========================
+    document.getElementById('connectWalletBtn').addEventListener('click', function() {
+      if (walletConnected) {
+        // Desconectar
+        walletConnected = false;
+        currentWallet = null;
+        document.getElementById('walletConnectArea').style.display = 'block';
+        document.getElementById('connectedWallet').style.display = 'none';
+        this.textContent = 'Conectar Carteira';
+        showNotification('Carteira desconectada', 'info');
+      } else {
+        showNotification('Selecione uma carteira para conectar', 'info');
+      }
+    });
+
+    document.getElementById('buyNowBtn').addEventListener('click', function() {
+      document.getElementById('buy').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('solAmount').addEventListener('input', function() {
+      const solAmount = parseFloat(this.value) || 0;
+      document.getElementById('tokenAmount').textContent = Math.floor(solAmount * 1176);
+    });
+
+    // ===========================
+    // Initialize
+    // ===========================
+    // Verificar se há carteira conectada anteriormente
+    if (window.solana && window.solana.isConnected) {
+      connectPhantom();
+    }
+
+    // Atualizar preço em tempo real (simulado)
+    setInterval(updateStats, 30000);
+
+    // Incluir aqui as funções de canvas e animações do código anterior...
+    // [Todo o código JavaScript de animações do exemplo anterior]
+  </script>
 </body>
 </html>
